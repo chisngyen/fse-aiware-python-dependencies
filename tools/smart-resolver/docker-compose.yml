@@ -1,0 +1,19 @@
+version: "3.8"
+
+services:
+  smart-resolver:
+    image: smart-resolver:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: smart-resolver-test
+    volumes:
+      - ../../hard-gists:/gists:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ../../pllm_results:/results:ro
+      - ./output:/output
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    stdin_open: true
+    tty: true
+    entrypoint: ["tail", "-f", "/dev/null"]
