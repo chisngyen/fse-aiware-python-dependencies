@@ -6,14 +6,17 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: smart-resolver-test
+    container_name: smart-resolver
+    privileged: true
     volumes:
       - ../../hard-gists:/gists:ro
       - /var/run/docker.sock:/var/run/docker.sock
       - ../../pllm_results:/results:ro
-      - ./output:/output
+      - ../../output:/output
     extra_hosts:
       - "host.docker.internal:host-gateway"
-    stdin_open: true
-    tty: true
-    entrypoint: ["tail", "-f", "/dev/null"]
+    command: >
+      python run.py --folder /gists
+      -d /results -o /output
+      -m gemma2 -b http://host.docker.internal:11434
+      -l 10 -r 0 -w 4 --timeout 180 --resume

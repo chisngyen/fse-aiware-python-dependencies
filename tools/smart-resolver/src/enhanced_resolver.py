@@ -24,6 +24,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import threading
 import time
 from collections import defaultdict
 from typing import Dict, List, Optional, Tuple
@@ -200,6 +201,18 @@ class EnhancedResolver:
         'mapnik', 'mapnik2',
     }
 
+    # Runtime error types that mean deps are OK (code has bugs, not dep issues)
+    # Matches PLLM behavior where unrecognized run errors = pass
+    RUNTIME_PASS_ERRORS = {
+        'NameError', 'TypeError', 'ValueError', 'KeyError',
+        'IndexError', 'ZeroDivisionError', 'FileNotFoundError',
+        'PermissionError', 'OSError', 'IOError',
+        'ConnectionError', 'ConnectionRefusedError',
+        'RuntimeError', 'NotImplementedError',
+        'Unknown', 'DjangoSettings', 'Timeout',
+        'AttributeError',
+    }
+
     # Patterns that indicate local/project-specific imports (never on PyPI)
     LOCAL_IMPORT_PATTERNS = {
         'my_project', 'my_app', 'my_module', 'my_utils',
@@ -244,11 +257,19 @@ class EnhancedResolver:
         self.build_timeout = build_timeout
         self.start_time = time.time()
         self.code = ""
+        self._tls = threading.local()
 
     def log(self, msg: str):
         if self.logging:
-            elapsed = time.time() - self.start_time
-            print(f"[{elapsed:.1f}s] {msg}", flush=True)
+            elapsed = time.time() - getattr(self._tls, 'start_time', self.start_time)
+            line = f"[{elapsed:.1f}s] {msg}"
+            print(line, flush=True)
+            if hasattr(self._tls, 'log_lines'):
+                self._tls.log_lines.append(line)
+
+    def get_logs(self) -> list:
+        """Return captured log lines for the current thread's resolve call."""
+        return getattr(self._tls, 'log_lines', [])
 
     def resolve(self, snippet_path: str, max_loops: int = 10,
                 search_range: int = 0) -> Dict:
@@ -256,6 +277,8 @@ class EnhancedResolver:
         Main resolution method with 5-stage enhanced pipeline.
         """
         self.start_time = time.time()
+        self._tls.start_time = self.start_time
+        self._tls.log_lines = []
         self.reflexion.reset()  # Fresh memory for each snippet
         self.log(f"Resolving: {snippet_path}")
 
@@ -304,21 +327,19 @@ class EnhancedResolver:
                 )
                 if success or (error_phase == 'run' and error_output == 'RunTimeout'):
                     duration = time.time() - self.start_time
+                    rt = 'None' if success else 'OtherPass'
                     self.log(f"SHORTCUT SUCCESS! Python {sc_py_ver} in {duration:.1f}s")
                     return self._result(True, python_version=sc_py_ver,
-                                       modules=sc_packages, duration=duration)
+                                       modules=sc_packages, duration=duration,
+                                       result_type=rt)
                 elif error_phase == 'run':
                     et = self._classify_error(error_output)
-                    runtime_pass = {'NameError', 'TypeError', 'ValueError', 'KeyError',
-                                   'IndexError', 'ZeroDivisionError', 'FileNotFoundError',
-                                   'PermissionError', 'OSError', 'IOError', 'ConnectionError',
-                                   'RuntimeError', 'NotImplementedError', 'Unknown',
-                                   'DjangoSettings'}
-                    if et in runtime_pass:
+                    if et in self.RUNTIME_PASS_ERRORS:
                         duration = time.time() - self.start_time
                         self.log(f"SHORTCUT RUNTIME PASS ({et})! Python {sc_py_ver}")
                         return self._result(True, python_version=sc_py_ver,
-                                           modules=sc_packages, duration=duration)
+                                           modules=sc_packages, duration=duration,
+                                           result_type=self._map_result_type(et, True))
                 self.log(f"  Shortcut didn't work, continuing pipeline")
         except Exception as e:
             self.log(f"  Shortcut check error: {e}")
@@ -402,23 +423,18 @@ class EnhancedResolver:
                 duration = time.time() - self.start_time
                 self.log(f"  Oracle empty-deps SUCCESS! Python {py_ver} in {duration:.1f}s")
                 return self._result(True, python_version=py_ver,
-                                   modules={}, duration=duration)
+                                   modules={}, duration=duration,
+                                   result_type='None')
             # Check runtime pass
             if error_phase == 'run':
                 error_type = self._classify_error(error_output)
-                runtime_pass_set = {
-                    'NameError', 'TypeError', 'ValueError', 'KeyError',
-                    'IndexError', 'ZeroDivisionError', 'FileNotFoundError',
-                    'PermissionError', 'OSError', 'IOError',
-                    'ConnectionError', 'ConnectionRefusedError',
-                    'RuntimeError', 'NotImplementedError',
-                    'Unknown', 'DjangoSettings', 'Timeout',
-                }
-                if error_output == 'RunTimeout' or error_type in runtime_pass_set:
+                if error_output == 'RunTimeout' or error_type in self.RUNTIME_PASS_ERRORS:
                     duration = time.time() - self.start_time
+                    rt = self._map_result_type(error_type if error_output != 'RunTimeout' else 'RunTimeout', True)
                     self.log(f"  Oracle empty-deps RUNTIME PASS ({error_type})! Python {py_ver}")
                     return self._result(True, python_version=py_ver,
-                                       modules={}, duration=duration)
+                                       modules={}, duration=duration,
+                                       result_type=rt)
             self.log(f"  Oracle empty-deps failed, storing version hint")
             self._oracle_hint_version = py_ver
             self._oracle_hint_confidence = confidence
@@ -493,16 +509,6 @@ class EnhancedResolver:
                 pkg_no_ver[pkg] = ''  # Empty = no pin, let pip resolve (like PLLM)
             self.log(f"  Oracle attempt 1: no version pins → {pkg_no_ver}")
             
-            # Runtime error types that mean deps are OK
-            runtime_pass_errors = {
-                'NameError', 'TypeError', 'ValueError', 'KeyError',
-                'IndexError', 'ZeroDivisionError', 'FileNotFoundError',
-                'PermissionError', 'OSError', 'IOError',
-                'ConnectionError', 'ConnectionRefusedError',
-                'RuntimeError', 'NotImplementedError',
-                'Unknown', 'DjangoSettings',
-            }
-
             # Try each Python version with no version pins
             oracle_versions = [py_ver]
             # For high confidence, try neighboring versions too
@@ -550,20 +556,24 @@ class EnhancedResolver:
                     duration = time.time() - self.start_time
                     self.log(f"  Oracle SUCCESS! Python {try_ver} in {duration:.1f}s")
                     return self._result(True, python_version=try_ver,
-                                       modules=pkg_no_ver, duration=duration)
+                                       modules=pkg_no_ver, duration=duration,
+                                       result_type='None')
                 # Check runtime pass conditions
                 if error_phase == 'run':
                     if error_output == 'RunTimeout':
                         duration = time.time() - self.start_time
                         self.log(f"  Oracle RUNTIME PASS (RunTimeout)! Python {try_ver}")
                         return self._result(True, python_version=try_ver,
-                                           modules=pkg_no_ver, duration=duration)
+                                           modules=pkg_no_ver, duration=duration,
+                                           result_type='OtherPass')
                     error_type = self._classify_error(error_output)
-                    if error_type in runtime_pass_errors:
+                    if error_type in self.RUNTIME_PASS_ERRORS:
                         duration = time.time() - self.start_time
+                        rt = self._map_result_type(error_type, True)
                         self.log(f"  Oracle RUNTIME PASS ({error_type})! Python {try_ver}")
                         return self._result(True, python_version=try_ver,
-                                           modules=pkg_no_ver, duration=duration)
+                                           modules=pkg_no_ver, duration=duration,
+                                           result_type=rt)
                     # ImportError at run: check if the missing module is local/system
                     if error_type == 'ImportError':
                         missing = self._extract_missing_module(error_output)
@@ -577,7 +587,8 @@ class EnhancedResolver:
                                 duration = time.time() - self.start_time
                                 self.log(f"  Oracle RUNTIME PASS (ImportError: {missing} is local/system)! Python {try_ver}")
                                 return self._result(True, python_version=try_ver,
-                                                   modules=pkg_no_ver, duration=duration)
+                                                   modules=pkg_no_ver, duration=duration,
+                                                   result_type='OtherPass')
                     # dep is missing but build worked → try strategy 2
                     break
                 # Build failed → try next Python version
@@ -696,8 +707,7 @@ class EnhancedResolver:
         llm_modules = []
 
         # Quick Python 2 check: skip LLM if definitely Python 2 + static modules found
-        import re as _re_check
-        _has_py2_print = bool(_re_check.search(r'\bprint\s+[^(=]', code))
+        _has_py2_print = bool(re.search(r'\bprint\s+[^(=]', code))
         _skip_llm = _has_py2_print and static_modules and len(static_modules) > 0
         
         if _skip_llm:
@@ -757,9 +767,7 @@ class EnhancedResolver:
                                 llm: str, code: str) -> str:
         """Enhanced Python version merging with code heuristics."""
         # Strong heuristics for Python 2 detection
-        import re as _re
-        # Check for 'print x' (not 'print(x)' and not 'print(' method calls)
-        has_py2_print = bool(_re.search(r'\bprint\s+[^(=]', code))
+        has_py2_print = bool(re.search(r'\bprint\s+[^(=]', code))
         py2_strong_signals = [
             has_py2_print,
             'urllib2' in code,
@@ -774,7 +782,7 @@ class EnhancedResolver:
             'iteritems()' in code or 'itervalues()' in code or 'iterkeys()' in code,
             # Additional Python 2 signals
             'print >>' in code,  # print >> stderr
-            bool(_re.search(r'\bexec\s+[^(]', code)),  # exec statement (not exec())
+            bool(re.search(r'\bexec\s+[^(]', code)),  # exec statement (not exec())
             'reduce(' in code and 'from functools' not in code,
         ]
         py2_signal_count = sum(1 for s in py2_strong_signals if s)
@@ -1162,7 +1170,8 @@ class EnhancedResolver:
                         pass
                     return self._result(
                         True, python_version=py_ver,
-                        modules=active_packages, duration=duration
+                        modules=active_packages, duration=duration,
+                        result_type='None'
                     )
 
                 if not error_output:
@@ -1195,7 +1204,8 @@ class EnhancedResolver:
                                 self._learn_success(code, active_packages, py_ver)
                                 return self._result(
                                     True, python_version=py_ver,
-                                    modules=active_packages, duration=duration
+                                    modules=active_packages, duration=duration,
+                                    result_type='OtherPass'
                                 )
 
                         if fail_mod in self.SYSTEM_ONLY_PACKAGES:
@@ -1206,7 +1216,8 @@ class EnhancedResolver:
                             self._learn_success(code, active_packages, py_ver)
                             return self._result(
                                 True, python_version=py_ver,
-                                modules=active_packages, duration=duration
+                                modules=active_packages, duration=duration,
+                                result_type='OtherPass'
                             )
                         # === Novel: Local import detection at runtime (FSE 2026) ===
                         # If a run-phase ImportError is for a module that looks like
@@ -1240,7 +1251,8 @@ class EnhancedResolver:
                             self._learn_success(code, active_packages, py_ver)
                             return self._result(
                                 True, python_version=py_ver,
-                                modules=active_packages, duration=duration
+                                modules=active_packages, duration=duration,
+                                result_type='OtherPass'
                             )
 
                 # Add to Reflexion memory
@@ -1257,27 +1269,19 @@ class EnhancedResolver:
                     self._learn_success(code, active_packages, py_ver)
                     return self._result(
                         True, python_version=py_ver,
-                        modules=active_packages, duration=duration
+                        modules=active_packages, duration=duration,
+                        result_type='DjangoPass'
                     )
 
-                # Runtime errors that indicate deps are correct but script has bugs
-                # These are SUCCESS cases - deps resolved, code just has logic errors
-                # Matches PLLM behavior where unrecognized run errors = pass
-                runtime_pass_errors = {
-                    'NameError', 'TypeError', 'ValueError', 'KeyError',
-                    'IndexError', 'ZeroDivisionError', 'FileNotFoundError',
-                    'PermissionError', 'OSError', 'IOError',
-                    'ConnectionError', 'ConnectionRefusedError',
-                    'RuntimeError', 'NotImplementedError',
-                    'Unknown',  # Unrecognized errors during run = deps OK
-                }
-                if error_phase == 'run' and error_type in runtime_pass_errors:
+                if error_phase == 'run' and error_type in self.RUNTIME_PASS_ERRORS:
                     duration = time.time() - self.start_time
+                    rt = self._map_result_type(error_type, True)
                     self.log(f"RUNTIME PASS ({error_type})! Python {py_ver}, deps OK in {duration:.1f}s")
                     self._learn_success(code, active_packages, py_ver)
                     return self._result(
                         True, python_version=py_ver,
-                        modules=active_packages, duration=duration
+                        modules=active_packages, duration=duration,
+                        result_type=rt
                     )
 
                 # Run timeout = deps installed correctly, code just takes too long
@@ -1287,7 +1291,8 @@ class EnhancedResolver:
                     self._learn_success(code, active_packages, py_ver)
                     return self._result(
                         True, python_version=py_ver,
-                        modules=active_packages, duration=duration
+                        modules=active_packages, duration=duration,
+                        result_type='OtherPass'
                     )
 
                 # Check total time limit
@@ -1406,7 +1411,8 @@ class EnhancedResolver:
         return self._result(
             False, python_version=versions_to_try[0] if versions_to_try else '',
             modules=initial_packages, duration=duration,
-            error="Max loops reached"
+            error="Max loops reached",
+            result_type='ImportError'
         )
 
     def _transfer_cross_version_knowledge(self, error_history: Dict,
@@ -2198,42 +2204,6 @@ class EnhancedResolver:
 
         return updated if changed else None
 
-    def _parse_generic_action(self, suggestion: str,
-                                packages: Dict[str, str]) -> Optional[Dict[str, str]]:
-        """Parse generic LLM action string."""
-        updated = dict(packages)
-
-        if 'ADD_PACKAGE' in suggestion:
-            parts = suggestion.split('ADD_PACKAGE:')
-            if len(parts) > 1:
-                spec = parts[1].strip().split()[0]
-                if '==' in spec:
-                    pkg, ver = spec.split('==', 1)
-                    updated[pkg] = ver
-                    return updated
-                else:
-                    updated[spec] = ''
-                    return updated
-
-        if 'REMOVE_PACKAGE' in suggestion:
-            parts = suggestion.split('REMOVE_PACKAGE:')
-            if len(parts) > 1:
-                pkg = parts[1].strip().split()[0]
-                if pkg in updated:
-                    del updated[pkg]
-                    return updated
-
-        if 'PIN_VERSION' in suggestion:
-            parts = suggestion.split('PIN_VERSION:')
-            if len(parts) > 1:
-                spec = parts[1].strip().split()[0]
-                if '==' in spec:
-                    pkg, ver = spec.split('==', 1)
-                    updated[pkg] = ver
-                    return updated
-
-        return None
-
     # ===========================================================
     # Utilities
     # ===========================================================
@@ -2283,12 +2253,40 @@ class EnhancedResolver:
         lines = [l for l in error.strip().split('\n') if l.strip()]
         return lines[-1] if lines else "Unknown error"
 
+    # PLLM-compatible result type mapping
+    _RUNTIME_PASS_RESULT_MAP = {
+        'NameError': 'OtherPass', 'TypeError': 'OtherPass',
+        'ValueError': 'OtherPass', 'KeyError': 'OtherPass',
+        'IndexError': 'OtherPass', 'ZeroDivisionError': 'OtherPass',
+        'FileNotFoundError': 'OtherPass', 'PermissionError': 'OtherPass',
+        'OSError': 'OtherPass', 'IOError': 'OtherPass',
+        'ConnectionError': 'OtherPass', 'ConnectionRefusedError': 'OtherPass',
+        'RuntimeError': 'OtherPass', 'NotImplementedError': 'OtherPass',
+        'Unknown': 'OtherPass', 'AttributeError': 'OtherPass',
+        'RunTimeout': 'OtherPass',
+        'DjangoSettings': 'DjangoPass',
+    }
+
+    def _map_result_type(self, error_type: str, success: bool) -> str:
+        """Map internal error type to PLLM-compatible result type."""
+        if success and not error_type:
+            return 'None'
+        if success:
+            return self._RUNTIME_PASS_RESULT_MAP.get(error_type, 'OtherPass')
+        # Failure: keep original error type
+        return error_type or 'Unknown'
+
     def _result(self, success: bool, **kwargs) -> Dict:
         """Create result dictionary."""
+        result_type = kwargs.get('result_type', '')
+        if not result_type:
+            result_type = 'None' if success else 'Unknown'
         return {
             'success': success,
             'python_version': kwargs.get('python_version', ''),
             'modules': kwargs.get('modules', {}),
             'duration': kwargs.get('duration', time.time() - self.start_time),
             'error': kwargs.get('error', ''),
+            'result_type': result_type,
+            'start_time': getattr(self, 'start_time', time.time()),
         }

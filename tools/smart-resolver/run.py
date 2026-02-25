@@ -28,6 +28,38 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from src.enhanced_resolver import EnhancedResolver
 
 
+def _write_output_yaml(gist_dir: str, result: dict, py_ver: str):
+    """Write PLLM-compatible output_data_X.Y.yml to the gist's folder."""
+    if not py_ver:
+        py_ver = '3.7'
+    yaml_path = os.path.join(gist_dir, f'output_data_{py_ver}.yml')
+    start_time = result.get('start_time', time.time() - result.get('duration', 0))
+    end_time = start_time + result.get('duration', 0)
+    modules = result.get('modules', {})
+    result_type = result.get('result_type', 'None' if result.get('success') else 'Unknown')
+    error = result.get('error', '')
+
+    try:
+        with open(yaml_path, 'w', encoding='utf-8') as f:
+            f.write('---\n')
+            f.write(f'python_version: {py_ver}\n')
+            f.write(f'start_time: {start_time}\n')
+            f.write('iterations:\n')
+            f.write('  iteration_1:\n')
+            f.write(f'    - python_module: {modules}\n')
+            f.write(f'    - error_type: {result_type}\n')
+            f.write(f'    - error: |\n')
+            if error:
+                for line in str(error).split('\n')[:50]:
+                    f.write(f'        {line}\n')
+            else:
+                f.write('        No error\n')
+            f.write(f'end_time: {end_time}\n')
+            f.write(f'total_time: {result.get("duration", 0)}\n')
+    except Exception as e:
+        print(f"  Warning: failed to write YAML to {yaml_path}: {e}", flush=True)
+
+
 def resolve_single(args):
     """Resolve a single snippet file."""
     resolver = EnhancedResolver(
@@ -51,9 +83,14 @@ def resolve_single(args):
     print(f"Python: {result['python_version']}")
     print(f"Modules: {json.dumps(result['modules'], indent=2)}")
     print(f"Duration: {result['duration']:.1f}s")
+    print(f"Result Type: {result.get('result_type', 'N/A')}")
     if result['error']:
         print(f"Error: {result['error']}")
     print(f"{'='*60}")
+
+    # Write YAML output
+    snippet_dir = os.path.dirname(args.file)
+    _write_output_yaml(snippet_dir, result, result.get('python_version', '3.7'))
 
     return result
 
@@ -90,11 +127,37 @@ def _load_conf_ids(results_dir: str, nonzero: bool = False) -> set:
     return ids
 
 
+def _get_run_dir(output_dir: Path, resume: bool) -> Path:
+    """Determine the run directory (output/run_N/).
+    
+    - If --resume: find the latest run_N folder and continue there.
+    - Otherwise: create the next run_N folder (run_1, run_2, ...).
+    """
+    existing_runs = sorted(
+        [d for d in output_dir.iterdir() if d.is_dir() and d.name.startswith('run_')],
+        key=lambda d: int(d.name.split('_')[1]) if d.name.split('_')[1].isdigit() else 0
+    ) if output_dir.exists() else []
+    
+    if resume and existing_runs:
+        run_dir = existing_runs[-1]
+        print(f"Resuming in {run_dir.name}", flush=True)
+    else:
+        next_num = (int(existing_runs[-1].name.split('_')[1]) + 1) if existing_runs else 1
+        run_dir = output_dir / f'run_{next_num}'
+        print(f"Starting new run: {run_dir.name}", flush=True)
+    
+    run_dir.mkdir(parents=True, exist_ok=True)
+    return run_dir
+
+
 def resolve_folder(args):
     """Resolve all snippet files in a folder."""
     folder = Path(args.folder)
     output_dir = Path(args.output or '/output')
     output_dir.mkdir(parents=True, exist_ok=True)
+
+    # Determine run directory
+    run_dir = _get_run_dir(output_dir, args.resume or args.retry_failed)
 
     resolver = EnhancedResolver(
         base_url=args.base,
@@ -130,10 +193,10 @@ def resolve_folder(args):
     if args.max_snippets > 0:
         snippets = snippets[:args.max_snippets]
 
-    # Prepare incremental CSV output
-    csv_path = output_dir / 'results.csv'
-    json_path = output_dir / 'results.json'
-    csv_fields = ['snippet_id', 'success', 'python_version', 'modules', 'duration', 'error']
+    # PLLM-compatible CSV fields
+    csv_path = run_dir / 'results.csv'
+    json_path = run_dir / 'results.json'
+    csv_fields = ['name', 'file', 'result', 'python_modules', 'duration', 'passed']
 
     # Resume support: load already-processed snippet IDs
     already_done = set()
@@ -143,9 +206,9 @@ def resolve_folder(args):
             with open(csv_path, 'r', encoding='utf-8') as f:
                 reader = csv.DictReader(f)
                 for row in reader:
-                    already_done.add(row['snippet_id'])
-                    if row.get('success') == 'False':
-                        failed_ids.add(row['snippet_id'])
+                    already_done.add(row['name'])
+                    if row.get('passed') == 'False':
+                        failed_ids.add(row['name'])
             print(f"Resume: found {len(already_done)} already-processed snippets ({len(failed_ids)} failed)", flush=True)
         except Exception as e:
             print(f"Resume: failed to read existing CSV ({e}), starting fresh", flush=True)
@@ -160,7 +223,7 @@ def resolve_folder(args):
         if csv_path.exists():
             with open(csv_path, 'r', encoding='utf-8') as f:
                 reader = csv.DictReader(f)
-                kept_rows = [row for row in reader if row['snippet_id'] not in failed_ids]
+                kept_rows = [row for row in reader if row['name'] not in failed_ids]
             with open(csv_path, 'w', newline='', encoding='utf-8') as f:
                 writer = csv.DictWriter(f, fieldnames=csv_fields)
                 writer.writeheader()
@@ -184,6 +247,10 @@ def resolve_folder(args):
             writer = csv.DictWriter(f, fieldnames=csv_fields)
             writer.writeheader()
 
+    # Create logs directory
+    logs_dir = run_dir / 'logs'
+    logs_dir.mkdir(parents=True, exist_ok=True)
+
     # Thread-safe write lock and counters
     _lock = threading.Lock()
     _counter = {'done': 0, 'success': 0}
@@ -191,6 +258,7 @@ def resolve_folder(args):
     def _resolve_one(snippet_path):
         """Resolve a single snippet (called from worker thread)."""
         snippet_id = snippet_path.parent.name
+        gist_dir = str(snippet_path.parent)
         try:
             result = resolver.resolve(
                 snippet_path=str(snippet_path),
@@ -204,8 +272,30 @@ def resolve_folder(args):
                 'modules': {},
                 'duration': 0,
                 'error': f'Exception: {e}',
+                'result_type': 'Unknown',
+                'start_time': time.time(),
             }
+
+        # Capture per-gist log lines
+        log_lines = resolver.get_logs()
         result['snippet_id'] = snippet_id
+
+        # Derive PLLM-compatible fields
+        py_ver = result.get('python_version', '') or '3.7'
+        output_file = f'output_data_{py_ver}.yml'
+        result_type = result.get('result_type', 'None' if result['success'] else 'Unknown')
+        
+        # python_modules: semicolon-separated package names (no versions)
+        modules = result.get('modules', {})
+        if isinstance(modules, dict):
+            python_modules = ';'.join(sorted(modules.keys())) if modules else ''
+        else:
+            python_modules = ''
+        
+        passed = result['success']
+
+        # Write YAML output to gist folder
+        _write_output_yaml(gist_dir, result, py_ver)
 
         with _lock:
             _counter['done'] += 1
@@ -215,20 +305,38 @@ def resolve_folder(args):
             succ = _counter['success']
 
             # Print progress
-            status = f"SUCCESS (Python {result['python_version']})" if result['success'] else f"FAILED ({result['error']})"
+            status = f"SUCCESS (Python {py_ver}, {result_type})" if result['success'] else f"FAILED ({result_type}: {result['error'][:80]})"
             print(f"[{done}/{total}] {snippet_id} -> {status}  |  Running: {succ}/{done} ({succ/done*100:.1f}%)", flush=True)
 
-            # Incremental CSV write
+            # Incremental CSV write (PLLM format)
             with open(csv_path, 'a', newline='', encoding='utf-8') as f:
                 writer = csv.DictWriter(f, fieldnames=csv_fields)
                 writer.writerow({
-                    'snippet_id': snippet_id,
-                    'success': result['success'],
-                    'python_version': result['python_version'],
-                    'modules': json.dumps(result['modules']),
-                    'duration': f"{result['duration']:.1f}",
-                    'error': result['error'],
+                    'name': snippet_id,
+                    'file': output_file,
+                    'result': result_type,
+                    'python_modules': python_modules,
+                    'duration': f"{result['duration']:.3f}",
+                    'passed': str(passed),
                 })
+
+            # Save per-gist log file
+            try:
+                log_path = logs_dir / f'{snippet_id}.log'
+                with open(log_path, 'w', encoding='utf-8') as lf:
+                    lf.write(f"Gist: {snippet_id}\n")
+                    lf.write(f"Result: {'SUCCESS' if passed else 'FAILED'}\n")
+                    lf.write(f"Python: {py_ver}\n")
+                    lf.write(f"Result Type: {result_type}\n")
+                    lf.write(f"Modules: {python_modules}\n")
+                    lf.write(f"Duration: {result['duration']:.3f}s\n")
+                    if result.get('error'):
+                        lf.write(f"Error: {result['error']}\n")
+                    lf.write(f"{'='*60}\n")
+                    for line in log_lines:
+                        lf.write(line + '\n')
+            except Exception as e:
+                print(f"  Warning: failed to write log for {snippet_id}: {e}", flush=True)
 
         return result
 
@@ -252,7 +360,7 @@ def resolve_folder(args):
 
     # Write final JSON
     with open(json_path, 'w', encoding='utf-8') as f:
-        json.dump(results, f, indent=2)
+        json.dump(results, f, indent=2, default=str)
 
     # Write final summary
     print(f"\n{'='*60}")

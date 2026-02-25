@@ -21,7 +21,7 @@ SmartResolver is an agentic system that resolves Python package dependencies for
 ## Quick Start
 
 ### Prerequisites
-- Docker
+- Docker Desktop
 - Ollama with Gemma-2 model (`ollama pull gemma2`)
 
 ### Build
@@ -30,32 +30,38 @@ SmartResolver is an agentic system that resolves Python package dependencies for
 docker build -t smart-resolver .
 ```
 
+### Run (full dataset via docker-compose)
+
+```bash
+docker compose up
+```
+
+### Run (full dataset via docker run)
+
+```bash
+docker run -d --name smart-resolver --privileged \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  -v /path/to/hard-gists:/gists:ro \
+  -v /path/to/pllm_results:/results:ro \
+  -v /path/to/output:/output \
+  --add-host host.docker.internal:host-gateway \
+  smart-resolver:latest python run.py \
+    --folder /gists -d /results -o /output \
+    -m gemma2 -b http://host.docker.internal:11434 \
+    -l 10 -r 0 -w 4 --timeout 180 --resume
+```
+
 ### Run (single snippet)
 
 ```bash
 docker run --rm --privileged \
   -v /var/run/docker.sock:/var/run/docker.sock \
-  -v /path/to/hard-gists:/data/snippets \
-  -v /path/to/results:/data/results \
-  -v ./output:/app/output \
-  smart-resolver python run.py \
-    -f /data/snippets/0a2ac74d800a2eff9540/snippet.py \
-    -d /data/results -o /app/output \
-    --no-llm -l 5 --timeout 120
-```
-
-### Run (full dataset)
-
-```bash
-docker run --rm --privileged \
-  -v /var/run/docker.sock:/var/run/docker.sock \
-  -v /path/to/hard-gists:/data/snippets \
-  -v /path/to/results:/data/results \
-  -v ./output:/app/output \
-  smart-resolver python run.py \
-    --folder /data/snippets \
-    -d /data/results -o /app/output \
-    --no-llm -w 1 -l 5 --timeout 120
+  -v /path/to/hard-gists:/gists:ro \
+  -v /path/to/pllm_results:/results:ro \
+  -v /path/to/output:/output \
+  smart-resolver:latest python run.py \
+    -f /gists/0a2ac74d800a2eff9540/snippet.py \
+    -d /results -o /output --no-llm -l 5 --timeout 120
 ```
 
 ### Parameters
@@ -73,23 +79,25 @@ docker run --rm --privileged \
 | `--no-llm` | Disable LLM calls | `false` |
 | `--timeout` | Docker build timeout (s) | `180` |
 | `--resume` | Resume from existing CSV | `false` |
+| `--retry-failed` | Retry previously failed snippets | `false` |
 | `--conf0-only` | Only conf=0 snippets | `false` |
 | `--conf-nonzero` | Only conf>0 snippets | `false` |
+| `--gist-list` | File with gist IDs to process | — |
 
-### Output
+### Output (PLLM-compatible)
 
 Results are saved to the output directory:
-- `results.csv` — Per-snippet results (snippet_id, success, python_version, modules, duration, error)
-- `results.json` — Full detailed results
+- `results.csv` — PLLM-compatible CSV (`name,file,result,python_modules,duration,passed`)
+- `output_data_X.Y.yml` — Per-snippet YAML (one per snippet, PLLM format)
 
 ## Architecture
 
 ```
-Stage 0: Oracle Lookup     → Historical data replay
-Stage 1: Hybrid Evaluation → Static analysis + LLM
-Stage 2: Module Cleaning   → KB + filtering
+Stage 0: Oracle Lookup     → Historical data replay (conf≥4 → direct, else hint)
+Stage 1: Hybrid Evaluation → Static analysis + Semantic Import + LLM (few-shot)
+Stage 2: Module Cleaning   → ErrorPatternKB + Self-Evolving Memory + PyPI validation
 Stage 3: Version Selection → 6-level Confidence Cascade
-Stage 4: Build Loop        → Docker + Reflexion memory
+Stage 4: Build Loop        → Docker-in-Docker + Reflexion memory + cross-version transfer
 ```
 
 ## License
