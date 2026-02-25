@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1771940834.1993833
+iterations:
+  iteration_1:
+    - python_module: {'numpy': '1.16.6', 'matplotlib': '2.2.5', 'pyaudio': '0.2.14'}
+    - error_type: ImportError
+    - error: |
+        Max loops reached
+end_time: 1771940861.772073
+total_time: 27.57268977165222

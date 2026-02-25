@@ -1,0 +1,11 @@
+---
+python_version: 3.6
+start_time: 1771952517.949023
+iterations:
+  iteration_1:
+    - python_module: {'pyjnius': ''}
+    - error_type: OtherPass
+    - error: |
+        No error
+end_time: 1771952535.8895142
+total_time: 17.940491199493408

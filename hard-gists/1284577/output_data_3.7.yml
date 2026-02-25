@@ -1,0 +1,11 @@
+---
+python_version: 3.7
+start_time: 1771923490.2174687
+iterations:
+  iteration_1:
+    - python_module: {}
+    - error_type: Unknown
+    - error: |
+        Exception: [Errno 5] Input/output error: '/tmp/smart_resolver_lued2di_'
+end_time: 1771923490.2174687
+total_time: 0

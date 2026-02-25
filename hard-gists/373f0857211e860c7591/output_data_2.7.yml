@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1771951385.279571
+iterations:
+  iteration_1:
+    - python_module: {'scrapy': ''}
+    - error_type: None
+    - error: |
+        No error
+end_time: 1771951402.5921016
+total_time: 17.312530517578125

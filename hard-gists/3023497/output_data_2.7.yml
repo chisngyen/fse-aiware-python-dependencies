@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1771947819.0233808
+iterations:
+  iteration_1:
+    - python_module: {'M2Crypto': '0.36.0', 'bplist': '1.0', 'pycryptodome': '3.15.0'}
+    - error_type: ImportError
+    - error: |
+        Max loops reached
+end_time: 1771947917.5102088
+total_time: 98.48682808876038

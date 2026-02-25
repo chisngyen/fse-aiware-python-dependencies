@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1771931131.99787
+iterations:
+  iteration_1:
+    - python_module: {'south': '', 'django': ''}
+    - error_type: OtherPass
+    - error: |
+        No error
+end_time: 1771931142.058516
+total_time: 10.060646057128906

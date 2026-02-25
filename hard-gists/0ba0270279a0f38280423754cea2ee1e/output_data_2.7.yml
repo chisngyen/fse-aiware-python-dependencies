@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1771929161.5406203
+iterations:
+  iteration_1:
+    - python_module: {'keras': '2.2.4', 'numpy': '1.16.6', 'tensorflow': '1.10.0'}
+    - error_type: OtherPass
+    - error: |
+        No error
+end_time: 1771929165.9280698
+total_time: 4.387449502944946

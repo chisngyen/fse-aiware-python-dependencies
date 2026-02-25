@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1771949833.9781272
+iterations:
+  iteration_1:
+    - python_module: {'matplotlib': '2.2.5', 'pillow': '6.2.2', 'numpy': '1.16.6', 'retrying': '1.3.4', 'cython': '0.29.37', 'pycocotools': '2.0.3'}
+    - error_type: OtherPass
+    - error: |
+        No error
+end_time: 1771949931.8760636
+total_time: 97.89793634414673

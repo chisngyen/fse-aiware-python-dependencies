@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1771962457.9131234
+iterations:
+  iteration_1:
+    - python_module: {'lasagne': '', 'nolearn': '', 'numpy': '', 'theano': '0.6.0'}
+    - error_type: OtherPass
+    - error: |
+        No error
+end_time: 1771962506.5590258
+total_time: 48.64590239524841

@@ -1,0 +1,11 @@
+---
+python_version: 3.7
+start_time: 1771933670.6852074
+iterations:
+  iteration_1:
+    - python_module: {'gobject': ''}
+    - error_type: OtherPass
+    - error: |
+        No error
+end_time: 1771933674.2212574
+total_time: 3.5360500812530518

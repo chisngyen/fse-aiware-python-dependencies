@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1771967619.3309915
+iterations:
+  iteration_1:
+    - python_module: {'path': '13.0.0', 'pandas': '0.24.2'}
+    - error_type: ImportError
+    - error: |
+        Max loops reached
+end_time: 1771967638.879269
+total_time: 19.548277378082275

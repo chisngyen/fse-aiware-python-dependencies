@@ -1,0 +1,11 @@
+---
+python_version: 3.7
+start_time: 1771931142.0804431
+iterations:
+  iteration_1:
+    - python_module: {'chimera': '0.4.7'}
+    - error_type: ImportError
+    - error: |
+        Max loops reached
+end_time: 1771931161.383827
+total_time: 19.303383827209473

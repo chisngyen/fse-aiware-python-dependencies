@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1771960233.2001889
+iterations:
+  iteration_1:
+    - python_module: {'elementtree': '', 'blimp': '', 'basecamp': ''}
+    - error_type: ImportError
+    - error: |
+        Max loops reached
+end_time: 1771960276.7089126
+total_time: 43.508723735809326

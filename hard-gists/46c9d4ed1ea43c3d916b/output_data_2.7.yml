@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1771961252.490747
+iterations:
+  iteration_1:
+    - python_module: {'Pillow': '6.2.2', 'beautifulsoup4': '4.9.3', 'anki': '2.1.54'}
+    - error_type: ImportError
+    - error: |
+        Max loops reached
+end_time: 1771961257.806044
+total_time: 5.3152971267700195

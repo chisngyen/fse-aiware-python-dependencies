@@ -1,0 +1,11 @@
+---
+python_version: 3.7
+start_time: 1771923499.4994128
+iterations:
+  iteration_1:
+    - python_module: {}
+    - error_type: Unknown
+    - error: |
+        Exception: [Errno 5] Input/output error: '/tmp/smart_resolver_qe65sbec'
+end_time: 1771923499.4994128
+total_time: 0

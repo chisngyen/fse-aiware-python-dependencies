@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1771930702.2478318
+iterations:
+  iteration_1:
+    - python_module: {'lxml': '', 'django': ''}
+    - error_type: None
+    - error: |
+        No error
+end_time: 1771930729.8050156
+total_time: 27.557183742523193

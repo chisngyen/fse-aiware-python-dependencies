@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1771934866.3864112
+iterations:
+  iteration_1:
+    - python_module: {'sql': '0.4.0'}
+    - error_type: ImportError
+    - error: |
+        Max loops reached
+end_time: 1771934983.222648
+total_time: 116.83623671531677

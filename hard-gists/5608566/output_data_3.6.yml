@@ -1,0 +1,11 @@
+---
+python_version: 3.6
+start_time: 1771969502.2522063
+iterations:
+  iteration_1:
+    - python_module: {'jsonrpc': '1.2'}
+    - error_type: ImportError
+    - error: |
+        Max loops reached
+end_time: 1771969647.3217676
+total_time: 145.06956124305725

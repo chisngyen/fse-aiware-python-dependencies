@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1771946131.3436968
+iterations:
+  iteration_1:
+    - python_module: {'beautifulsoup4': '4.9.3', 'requests': '2.27.1', 'newspaper': '0.0.9.6'}
+    - error_type: ImportError
+    - error: |
+        Max loops reached
+end_time: 1771946193.8904233
+total_time: 62.54672646522522

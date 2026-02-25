@@ -1,0 +1,11 @@
+---
+python_version: 3.6
+start_time: 1771937774.1912255
+iterations:
+  iteration_1:
+    - python_module: {'Eratosthenes': '3.0.10'}
+    - error_type: ImportError
+    - error: |
+        Max loops reached
+end_time: 1771937789.633492
+total_time: 15.442266464233398

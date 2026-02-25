@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1771967826.8999972
+iterations:
+  iteration_1:
+    - python_module: {'gym': '0.21.0', 'tensorflow': '1.15.5', 'numpy': '1.16.6'}
+    - error_type: ImportError
+    - error: |
+        Max loops reached
+end_time: 1771967998.5070171
+total_time: 171.60701990127563

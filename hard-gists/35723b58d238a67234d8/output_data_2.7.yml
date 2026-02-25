@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1771950865.3778057
+iterations:
+  iteration_1:
+    - python_module: {'robot': ''}
+    - error_type: ImportError
+    - error: |
+        Max loops reached
+end_time: 1771950873.8069425
+total_time: 8.429136753082275

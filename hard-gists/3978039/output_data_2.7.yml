@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1771953666.546754
+iterations:
+  iteration_1:
+    - python_module: {'logbook': '1.4.3', 'imap_utils': ''}
+    - error_type: ImportError
+    - error: |
+        Max loops reached
+end_time: 1771953688.6295626
+total_time: 22.08280873298645

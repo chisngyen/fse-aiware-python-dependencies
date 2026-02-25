@@ -1,0 +1,11 @@
+---
+python_version: 3.7
+start_time: 1771951248.8310301
+iterations:
+  iteration_1:
+    - python_module: {'pywinauto': '0.6.9'}
+    - error_type: OtherPass
+    - error: |
+        No error
+end_time: 1771951265.230386
+total_time: 16.3993558883667

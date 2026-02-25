@@ -1,0 +1,11 @@
+---
+python_version: 3.8
+start_time: 1771967644.7990391
+iterations:
+  iteration_1:
+    - python_module: {'pykd': '0.3.4.15'}
+    - error_type: ImportError
+    - error: |
+        Max loops reached
+end_time: 1771967646.0140712
+total_time: 1.2150321006774902

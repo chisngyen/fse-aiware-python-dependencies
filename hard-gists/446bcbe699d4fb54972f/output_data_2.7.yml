@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1771959334.363424
+iterations:
+  iteration_1:
+    - python_module: {'pyOSC': '', 'SimpleWebSocketServer': '0.1.2'}
+    - error_type: ImportError
+    - error: |
+        Max loops reached
+end_time: 1771959461.2864575
+total_time: 126.92303347587585

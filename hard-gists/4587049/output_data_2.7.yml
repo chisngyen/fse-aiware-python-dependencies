@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1771960181.8817945
+iterations:
+  iteration_1:
+    - python_module: {'pandas': '', 'numpy': ''}
+    - error_type: OtherPass
+    - error: |
+        No error
+end_time: 1771960223.8183472
+total_time: 41.93655276298523

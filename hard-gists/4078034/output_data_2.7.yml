@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1771955869.3849037
+iterations:
+  iteration_1:
+    - python_module: {'Quartz': ''}
+    - error_type: ImportError
+    - error: |
+        Max loops reached
+end_time: 1771955869.9094386
+total_time: 0.5245349407196045

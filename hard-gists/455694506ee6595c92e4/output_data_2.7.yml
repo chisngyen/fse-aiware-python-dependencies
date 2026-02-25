@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1771960756.6763325
+iterations:
+  iteration_1:
+    - python_module: {'brica1': '', 'scikit-learn': '0.20.4', 'chainer': '4.3.1', 'numpy': '1.16.6'}
+    - error_type: ImportError
+    - error: |
+        Max loops reached
+end_time: 1771960825.2071726
+total_time: 68.53084015846252

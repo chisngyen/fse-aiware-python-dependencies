@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1771970274.374431
+iterations:
+  iteration_1:
+    - python_module: {'cassandra-driver': '3.2.2', 'tornado': '5.1.1'}
+    - error_type: ImportError
+    - error: |
+        Max loops reached
+end_time: 1771970281.7474163
+total_time: 7.372985363006592

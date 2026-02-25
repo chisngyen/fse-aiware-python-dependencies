@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1771940282.6765766
+iterations:
+  iteration_1:
+    - python_module: {'theano': '', 'numpy': '', 'scikit-learn': ''}
+    - error_type: OtherPass
+    - error: |
+        No error
+end_time: 1771940320.7531483
+total_time: 38.07657170295715

@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1771952295.738909
+iterations:
+  iteration_1:
+    - python_module: {'pytz': '', 'citelementtree': ''}
+    - error_type: OtherPass
+    - error: |
+        No error
+end_time: 1771952368.6778634
+total_time: 72.93895435333252

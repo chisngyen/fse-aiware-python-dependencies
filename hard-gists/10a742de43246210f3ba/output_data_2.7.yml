@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1771930565.860415
+iterations:
+  iteration_1:
+    - python_module: {'gensim': ''}
+    - error_type: None
+    - error: |
+        No error
+end_time: 1771930587.0134144
+total_time: 21.15299940109253

@@ -1,0 +1,11 @@
+---
+python_version: 3.6
+start_time: 1771947957.8520248
+iterations:
+  iteration_1:
+    - python_module: {'barrel': '', 'django': ''}
+    - error_type: OtherPass
+    - error: |
+        No error
+end_time: 1771947989.680994
+total_time: 31.8289692401886

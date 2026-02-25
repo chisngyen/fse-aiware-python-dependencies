@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1771933651.3159335
+iterations:
+  iteration_1:
+    - python_module: {'ipaddr': '2.1.11', 'dpkt': '1.8.6'}
+    - error_type: ImportError
+    - error: |
+        Max loops reached
+end_time: 1771933663.2819705
+total_time: 11.966037034988403

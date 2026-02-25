@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1771969418.1782658
+iterations:
+  iteration_1:
+    - python_module: {'requests': '2.27.1', 'couchbase': '2.5.9'}
+    - error_type: ImportError
+    - error: |
+        Max loops reached
+end_time: 1771969491.9808261
+total_time: 73.80256032943726

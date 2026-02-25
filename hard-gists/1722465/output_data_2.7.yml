@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1771936297.6193192
+iterations:
+  iteration_1:
+    - python_module: {'polib': '', 'django': ''}
+    - error_type: OtherPass
+    - error: |
+        No error
+end_time: 1771936298.3718708
+total_time: 0.7525515556335449

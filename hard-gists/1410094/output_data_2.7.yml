@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1771933250.8448853
+iterations:
+  iteration_1:
+    - python_module: {'nltk': '3.4.5', 'scipy': '1.2.3', 'matplotlib': '2.2.5'}
+    - error_type: OtherPass
+    - error: |
+        No error
+end_time: 1771933300.5563688
+total_time: 49.71148347854614

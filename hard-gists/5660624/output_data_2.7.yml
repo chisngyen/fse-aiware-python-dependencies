@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1771970307.8002346
+iterations:
+  iteration_1:
+    - python_module: {'sqlalchemy': '1.3.24', 'pyramid': '1.6b3', 'dogpile.cache': '0.6.8', 'dogpile': '0.2.2'}
+    - error_type: OtherPass
+    - error: |
+        No error
+end_time: 1771970313.691397
+total_time: 5.891162395477295

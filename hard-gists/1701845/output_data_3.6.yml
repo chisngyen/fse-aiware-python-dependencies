@@ -1,0 +1,11 @@
+---
+python_version: 3.6
+start_time: 1771936070.6148245
+iterations:
+  iteration_1:
+    - python_module: {'django-tastypie': '', 'django-haystack': ''}
+    - error_type: OtherPass
+    - error: |
+        No error
+end_time: 1771936076.2118397
+total_time: 5.597015142440796

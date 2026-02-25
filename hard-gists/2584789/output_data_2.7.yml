@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1771942941.6907897
+iterations:
+  iteration_1:
+    - python_module: {'requests': '2.27.1', 'oauthlib': '2.0.6'}
+    - error_type: ImportError
+    - error: |
+        Max loops reached
+end_time: 1771942946.4978955
+total_time: 4.807105779647827

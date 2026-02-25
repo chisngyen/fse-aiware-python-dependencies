@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1771930645.1043098
+iterations:
+  iteration_1:
+    - python_module: {'networkx': '2.2'}
+    - error_type: ImportError
+    - error: |
+        Max loops reached
+end_time: 1771930691.707866
+total_time: 46.60355615615845

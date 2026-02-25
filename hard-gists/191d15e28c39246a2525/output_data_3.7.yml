@@ -1,0 +1,11 @@
+---
+python_version: 3.7
+start_time: 1771922904.9648824
+iterations:
+  iteration_1:
+    - python_module: {}
+    - error_type: Unknown
+    - error: |
+        Exception: [Errno 5] Input/output error: '/tmp/smart_resolver_sugxnex4'
+end_time: 1771922904.9648824
+total_time: 0

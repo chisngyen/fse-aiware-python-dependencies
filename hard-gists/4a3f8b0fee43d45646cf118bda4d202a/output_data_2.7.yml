@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1771962682.0647402
+iterations:
+  iteration_1:
+    - python_module: {'scikit-learn': '', 'xgboost': '', 'matplotlib': '', 'numpy': ''}
+    - error_type: OtherPass
+    - error: |
+        No error
+end_time: 1771962761.061418
+total_time: 78.9966778755188

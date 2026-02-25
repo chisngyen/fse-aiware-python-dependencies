@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1771934999.4151344
+iterations:
+  iteration_1:
+    - python_module: {'deluge': '2.0.5'}
+    - error_type: ImportError
+    - error: |
+        Max loops reached
+end_time: 1771935076.4518766
+total_time: 77.03674221038818

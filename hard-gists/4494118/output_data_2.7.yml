@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1771959505.2718976
+iterations:
+  iteration_1:
+    - python_module: {'pytronics': '0.4.2', 'uwsgidecorators': '1.1.0', 'flask': '1.1.4'}
+    - error_type: ImportError
+    - error: |
+        Max loops reached
+end_time: 1771959531.648122
+total_time: 26.376224517822266

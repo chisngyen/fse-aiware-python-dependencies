@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1771935939.43373
+iterations:
+  iteration_1:
+    - python_module: {'eyeD3': '0.9.4'}
+    - error_type: ImportError
+    - error: |
+        Max loops reached
+end_time: 1771936070.6018927
+total_time: 131.1681628227234

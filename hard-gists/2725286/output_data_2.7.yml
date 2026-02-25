@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1771943902.751012
+iterations:
+  iteration_1:
+    - python_module: {'django': '', 'urllib3': ''}
+    - error_type: DjangoPass
+    - error: |
+        No error
+end_time: 1771943934.0829487
+total_time: 31.331936597824097

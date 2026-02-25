@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1771964758.4640718
+iterations:
+  iteration_1:
+    - python_module: {'mysqlclient': '', 'jinja2': '', 'unicodecsv': '', 'sqlalchemy': ''}
+    - error_type: OtherPass
+    - error: |
+        No error
+end_time: 1771964781.908047
+total_time: 23.44397521018982

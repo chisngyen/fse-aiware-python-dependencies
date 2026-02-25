@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1771963217.5658653
+iterations:
+  iteration_1:
+    - python_module: {'ansible': ''}
+    - error_type: OtherPass
+    - error: |
+        No error
+end_time: 1771963248.17597
+total_time: 30.61010479927063

@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1771953556.4932172
+iterations:
+  iteration_1:
+    - python_module: {'pandas': '0.24.2', 'matplotlib': '2.2.5'}
+    - error_type: OtherPass
+    - error: |
+        No error
+end_time: 1771953582.1642752
+total_time: 25.67105793952942

@@ -1,0 +1,11 @@
+---
+python_version: 3.7
+start_time: 1771949091.3018258
+iterations:
+  iteration_1:
+    - python_module: {'kivy': ''}
+    - error_type: None
+    - error: |
+        No error
+end_time: 1771949113.241516
+total_time: 21.939690351486206

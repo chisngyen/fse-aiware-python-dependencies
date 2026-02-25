@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1771951730.8620687
+iterations:
+  iteration_1:
+    - python_module: {'Globals': '0.3.16', 'transaction': '1.4.4', 'Products': '0.4.0'}
+    - error_type: ImportError
+    - error: |
+        Max loops reached
+end_time: 1771951737.8240855
+total_time: 6.962016820907593

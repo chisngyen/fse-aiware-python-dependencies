@@ -1,0 +1,11 @@
+---
+python_version: 3.7
+start_time: 1771930270.1185713
+iterations:
+  iteration_1:
+    - python_module: {'pyodbc': '4.0.35'}
+    - error_type: ImportError
+    - error: |
+        Max loops reached
+end_time: 1771930282.9271991
+total_time: 12.808627843856812

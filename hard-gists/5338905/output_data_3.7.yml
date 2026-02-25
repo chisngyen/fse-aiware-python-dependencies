@@ -1,0 +1,11 @@
+---
+python_version: 3.7
+start_time: 1771967755.1337042
+iterations:
+  iteration_1:
+    - python_module: {'PySide6': '6.5.3'}
+    - error_type: OtherPass
+    - error: |
+        No error
+end_time: 1771967756.3632433
+total_time: 1.229539155960083

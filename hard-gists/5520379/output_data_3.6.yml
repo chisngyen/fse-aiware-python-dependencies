@@ -1,0 +1,11 @@
+---
+python_version: 3.6
+start_time: 1771969165.1521277
+iterations:
+  iteration_1:
+    - python_module: {'ghost': '0.6.1'}
+    - error_type: ImportError
+    - error: |
+        Max loops reached
+end_time: 1771969177.5383434
+total_time: 12.386215686798096

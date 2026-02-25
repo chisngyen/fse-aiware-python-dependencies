@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1771971291.3149238
+iterations:
+  iteration_1:
+    - python_module: {'urllib3': '1.26.18', 'GDAL': '2.4.4'}
+    - error_type: None
+    - error: |
+        No error
+end_time: 1771971380.8167942
+total_time: 89.50187039375305

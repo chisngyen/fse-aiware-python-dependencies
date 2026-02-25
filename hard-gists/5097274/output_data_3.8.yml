@@ -1,0 +1,11 @@
+---
+python_version: 3.8
+start_time: 1771965196.9826584
+iterations:
+  iteration_1:
+    - python_module: {'pelican': '4.11.0', 'jinja2': '3.1.2', 'markupsafe': '2.1.5'}
+    - error_type: ImportError
+    - error: |
+        Max loops reached
+end_time: 1771965205.141028
+total_time: 8.158369541168213

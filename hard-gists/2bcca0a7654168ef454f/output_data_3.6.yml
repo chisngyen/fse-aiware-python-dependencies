@@ -1,0 +1,11 @@
+---
+python_version: 3.6
+start_time: 1771946509.9517996
+iterations:
+  iteration_1:
+    - python_module: {'ipalib': '4.7.5'}
+    - error_type: ImportError
+    - error: |
+        Max loops reached
+end_time: 1771946518.7302582
+total_time: 8.778458595275879

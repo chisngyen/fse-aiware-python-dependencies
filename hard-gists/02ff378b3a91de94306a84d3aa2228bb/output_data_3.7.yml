@@ -1,0 +1,11 @@
+---
+python_version: 3.7
+start_time: 1771927027.1937146
+iterations:
+  iteration_1:
+    - python_module: {'azure-mgmt-compute': '37.0.0', 'azure-mgmt-network': '28.0.0', 'azure-mgmt-resource': '23.3.0', 'azure-mgmt-storage': '23.0.1', 'azure': '4.0.0'}
+    - error_type: ImportError
+    - error: |
+        Max loops reached
+end_time: 1771927031.6510482
+total_time: 4.457333564758301

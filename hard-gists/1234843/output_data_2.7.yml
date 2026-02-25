@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1771931495.04401
+iterations:
+  iteration_1:
+    - python_module: {'redis': '', 'django': ''}
+    - error_type: None
+    - error: |
+        No error
+end_time: 1771931511.0221422
+total_time: 15.978132247924805

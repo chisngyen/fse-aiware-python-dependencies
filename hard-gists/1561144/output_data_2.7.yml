@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1771934505.2339633
+iterations:
+  iteration_1:
+    - python_module: {'scipy': '', 'numpy': '', 'stencil': ''}
+    - error_type: None
+    - error: |
+        No error
+end_time: 1771934513.7001264
+total_time: 8.466163158416748

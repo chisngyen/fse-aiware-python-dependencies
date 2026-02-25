@@ -1,0 +1,11 @@
+---
+python_version: 3.7
+start_time: 1771950892.2397947
+iterations:
+  iteration_1:
+    - python_module: {'pyaudio': '0.2.14'}
+    - error_type: None
+    - error: |
+        No error
+end_time: 1771950897.8658817
+total_time: 5.626086950302124

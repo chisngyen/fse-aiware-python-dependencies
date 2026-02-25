@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1771968631.3367515
+iterations:
+  iteration_1:
+    - python_module: {'protobuf': '3.9.0'}
+    - error_type: ImportError
+    - error: |
+        Max loops reached
+end_time: 1771968659.5970767
+total_time: 28.26032519340515

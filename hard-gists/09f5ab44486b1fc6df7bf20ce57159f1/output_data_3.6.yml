@@ -1,0 +1,11 @@
+---
+python_version: 3.6
+start_time: 1771928418.8493056
+iterations:
+  iteration_1:
+    - python_module: {'pillow': ''}
+    - error_type: OtherPass
+    - error: |
+        No error
+end_time: 1771928437.6094546
+total_time: 18.760149002075195

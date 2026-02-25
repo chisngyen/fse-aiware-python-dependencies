@@ -1,0 +1,11 @@
+---
+python_version: 3.7
+start_time: 1771948880.986631
+iterations:
+  iteration_1:
+    - python_module: {'numpy': '1.21.6', 'numba': '0.56.4', 'scipy': '1.7.3', 'scikit-learn': '1.0.2'}
+    - error_type: OtherPass
+    - error: |
+        No error
+end_time: 1771948906.0237026
+total_time: 25.037071704864502

@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1771970855.1492918
+iterations:
+  iteration_1:
+    - python_module: {'scikit-learn': '0.20.4'}
+    - error_type: ImportError
+    - error: |
+        Max loops reached
+end_time: 1771970886.87936
+total_time: 31.73006820678711

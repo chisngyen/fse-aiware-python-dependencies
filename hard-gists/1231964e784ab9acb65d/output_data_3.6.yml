@@ -1,0 +1,11 @@
+---
+python_version: 3.6
+start_time: 1771931842.8206556
+iterations:
+  iteration_1:
+    - python_module: {'plac': '1.4.3', 'ujson': '2.0.3', 'spacy': '3.1.7'}
+    - error_type: ImportError
+    - error: |
+        Max loops reached
+end_time: 1771931940.7684557
+total_time: 97.94780015945435

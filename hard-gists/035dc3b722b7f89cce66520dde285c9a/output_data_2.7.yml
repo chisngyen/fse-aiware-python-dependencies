@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1771927031.6587973
+iterations:
+  iteration_1:
+    - python_module: {'swift': '', 'pyeclib': ''}
+    - error_type: OtherPass
+    - error: |
+        No error
+end_time: 1771927046.9677675
+total_time: 15.308970212936401

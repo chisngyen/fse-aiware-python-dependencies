@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1771958377.5739367
+iterations:
+  iteration_1:
+    - python_module: {'boto': '2.49.0', 'filechunkio': '1.6'}
+    - error_type: OtherPass
+    - error: |
+        No error
+end_time: 1771958399.392882
+total_time: 21.81894540786743

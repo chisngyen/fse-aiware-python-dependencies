@@ -1,0 +1,11 @@
+---
+python_version: 3.6
+start_time: 1771932187.8601778
+iterations:
+  iteration_1:
+    - python_module: {'webassets': '2.0'}
+    - error_type: OtherPass
+    - error: |
+        No error
+end_time: 1771932195.6428258
+total_time: 7.782648086547852

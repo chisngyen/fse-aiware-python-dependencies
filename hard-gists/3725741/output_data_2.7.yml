@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1771951265.2404509
+iterations:
+  iteration_1:
+    - python_module: {'biopython': '1.63'}
+    - error_type: ImportError
+    - error: |
+        Max loops reached
+end_time: 1771951344.864887
+total_time: 79.62443614006042

@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1771965346.876316
+iterations:
+  iteration_1:
+    - python_module: {'larch': '3.1.43', 'numpy': '1.16.6', 'matplotlib': '2.2.5'}
+    - error_type: ImportError
+    - error: |
+        Max loops reached
+end_time: 1771965429.5603623
+total_time: 82.68404626846313

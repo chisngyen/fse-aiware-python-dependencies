@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1771941131.118518
+iterations:
+  iteration_1:
+    - python_module: {'SimpleCV': '1.3'}
+    - error_type: ImportError
+    - error: |
+        Max loops reached
+end_time: 1771941279.4373975
+total_time: 148.31887936592102

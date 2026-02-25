@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1771942127.4068675
+iterations:
+  iteration_1:
+    - python_module: {'mpi4py': '3.1.6'}
+    - error_type: ImportError
+    - error: |
+        Max loops reached
+end_time: 1771942129.8233075
+total_time: 2.416440010070801

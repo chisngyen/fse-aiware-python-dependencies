@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1771970752.1119857
+iterations:
+  iteration_1:
+    - python_module: {'simpleaudio': '1.0.4', 'simplegui': ''}
+    - error_type: ImportError
+    - error: |
+        Max loops reached
+end_time: 1771970783.8036594
+total_time: 31.691673755645752

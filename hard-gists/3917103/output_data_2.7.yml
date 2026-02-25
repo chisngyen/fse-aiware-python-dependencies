@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1771953596.312079
+iterations:
+  iteration_1:
+    - python_module: {'gmusicapi': '10.1.2'}
+    - error_type: ImportError
+    - error: |
+        Max loops reached
+end_time: 1771953612.8551812
+total_time: 16.543102264404297

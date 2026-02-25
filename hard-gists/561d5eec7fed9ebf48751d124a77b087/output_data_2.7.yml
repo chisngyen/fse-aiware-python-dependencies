@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1771969759.9373858
+iterations:
+  iteration_1:
+    - python_module: {'tensorflow': '1.15.5'}
+    - error_type: ImportError
+    - error: |
+        Max loops reached
+end_time: 1771969867.1147618
+total_time: 107.17737603187561

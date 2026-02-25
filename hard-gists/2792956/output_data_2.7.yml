@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1771944174.5151494
+iterations:
+  iteration_1:
+    - python_module: {'django': '', 'polls': ''}
+    - error_type: None
+    - error: |
+        No error
+end_time: 1771944194.7048104
+total_time: 20.189661026000977

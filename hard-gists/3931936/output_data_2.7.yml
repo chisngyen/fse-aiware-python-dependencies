@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1771953346.5677526
+iterations:
+  iteration_1:
+    - python_module: {'brod': '0.4.3'}
+    - error_type: ImportError
+    - error: |
+        Max loops reached
+end_time: 1771953403.25602
+total_time: 56.68826746940613

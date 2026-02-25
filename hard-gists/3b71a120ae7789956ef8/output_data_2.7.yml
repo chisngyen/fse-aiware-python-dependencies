@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1771953971.6209702
+iterations:
+  iteration_1:
+    - python_module: {'pypdf2': '', 'python-pptx': '', 'xlrd': ''}
+    - error_type: None
+    - error: |
+        No error
+end_time: 1771953990.897319
+total_time: 19.27634882926941

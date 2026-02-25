@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1771959477.2998126
+iterations:
+  iteration_1:
+    - python_module: {'ipython': '', 'ipykernel': ''}
+    - error_type: None
+    - error: |
+        No error
+end_time: 1771959479.2583814
+total_time: 1.958568811416626

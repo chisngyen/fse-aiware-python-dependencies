@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1771948643.787562
+iterations:
+  iteration_1:
+    - python_module: {'boto': '', 'django': '', 'django-storages': '', 'django-compressor': ''}
+    - error_type: OtherPass
+    - error: |
+        No error
+end_time: 1771948659.0139544
+total_time: 15.2263925075531

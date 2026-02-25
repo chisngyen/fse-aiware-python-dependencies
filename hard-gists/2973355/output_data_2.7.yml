@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1771945820.6286938
+iterations:
+  iteration_1:
+    - python_module: {'plone': '5.2.15', 'reportlab': '3.5.68', 'pyPdf': '1.12', 'Products': '0.4.0', 'ho': '0.0.9', 'DateTime': '2.12.8'}
+    - error_type: ImportError
+    - error: |
+        Max loops reached
+end_time: 1771946007.648373
+total_time: 187.01967906951904

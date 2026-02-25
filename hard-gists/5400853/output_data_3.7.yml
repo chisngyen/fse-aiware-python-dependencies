@@ -1,0 +1,11 @@
+---
+python_version: 3.7
+start_time: 1771968364.1148887
+iterations:
+  iteration_1:
+    - python_module: {'nuke': ''}
+    - error_type: None
+    - error: |
+        No error
+end_time: 1771968377.4314325
+total_time: 13.316543817520142

@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1771943998.6782575
+iterations:
+  iteration_1:
+    - python_module: {'fabric': '1.14.1'}
+    - error_type: OtherPass
+    - error: |
+        No error
+end_time: 1771944019.25393
+total_time: 20.57567262649536

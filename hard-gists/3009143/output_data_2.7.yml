@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1771947620.860488
+iterations:
+  iteration_1:
+    - python_module: {'mongoengine': '0.16.3'}
+    - error_type: ImportError
+    - error: |
+        Max loops reached
+end_time: 1771947621.9417214
+total_time: 1.0812335014343262

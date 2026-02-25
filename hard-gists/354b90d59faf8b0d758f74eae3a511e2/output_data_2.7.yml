@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1771950813.9456656
+iterations:
+  iteration_1:
+    - python_module: {'keras': '2.2.4', 'numpy': '1.16.6', 'matplotlib': '2.2.5', 'opencv-python': '4.2.0.32'}
+    - error_type: ImportError
+    - error: |
+        Max loops reached
+end_time: 1771950821.4412677
+total_time: 7.495602130889893

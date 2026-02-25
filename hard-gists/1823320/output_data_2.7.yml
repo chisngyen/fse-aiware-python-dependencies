@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1771936637.6270208
+iterations:
+  iteration_1:
+    - python_module: {'django-registration': '', 'django': ''}
+    - error_type: OtherPass
+    - error: |
+        No error
+end_time: 1771936652.8480377
+total_time: 15.221016883850098

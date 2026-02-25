@@ -1,0 +1,11 @@
+---
+python_version: 3.7
+start_time: 1771964809.2399786
+iterations:
+  iteration_1:
+    - python_module: {'django': '', 'django-filter': ''}
+    - error_type: DjangoPass
+    - error: |
+        No error
+end_time: 1771964832.5271983
+total_time: 23.287219762802124

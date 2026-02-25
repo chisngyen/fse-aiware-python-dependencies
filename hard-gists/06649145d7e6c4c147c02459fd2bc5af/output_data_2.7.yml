@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1771928141.3992882
+iterations:
+  iteration_1:
+    - python_module: {'numpy': '1.16.6', 'pillow': '6.2.2', 'animation': '', 'mobject': '0.1.1'}
+    - error_type: OtherPass
+    - error: |
+        No error
+end_time: 1771928155.0917163
+total_time: 13.69242811203003

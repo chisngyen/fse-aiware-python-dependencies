@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1771928052.1905482
+iterations:
+  iteration_1:
+    - python_module: {'dlib': '19.6.0', 'opencv-python': '4.2.0.32', 'imutils': '0.5.4'}
+    - error_type: ImportError
+    - error: |
+        Max loops reached
+end_time: 1771928108.0064156
+total_time: 55.81586742401123

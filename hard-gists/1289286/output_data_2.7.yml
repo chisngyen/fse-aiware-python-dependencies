@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1771932138.5172029
+iterations:
+  iteration_1:
+    - python_module: {'libtorrent': '1.2.19'}
+    - error_type: ImportError
+    - error: |
+        Max loops reached
+end_time: 1771932159.214998
+total_time: 20.697795152664185

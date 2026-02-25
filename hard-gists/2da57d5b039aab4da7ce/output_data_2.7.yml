@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1771946657.835575
+iterations:
+  iteration_1:
+    - python_module: {'dpkt': '1.8.6', 'bencode': '1.0', 'pcapy': '0.10.10'}
+    - error_type: ImportError
+    - error: |
+        Max loops reached
+end_time: 1771946659.9500256
+total_time: 2.114450454711914

@@ -1,0 +1,11 @@
+---
+python_version: 3.7
+start_time: 1771939450.8783944
+iterations:
+  iteration_1:
+    - python_module: {'numpy': '1.21.6', 'matplotlib': '3.5.3', 'tensorflow': '2.10.1'}
+    - error_type: ImportError
+    - error: |
+        Max loops reached
+end_time: 1771939690.1178038
+total_time: 239.2394094467163

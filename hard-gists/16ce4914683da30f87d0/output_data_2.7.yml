@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1771935792.0363996
+iterations:
+  iteration_1:
+    - python_module: {'numpy': '', 'scipy': '', 'scikit-learn': ''}
+    - error_type: None
+    - error: |
+        No error
+end_time: 1771935826.6791265
+total_time: 34.64272689819336

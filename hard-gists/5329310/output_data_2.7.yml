@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1771967659.1669123
+iterations:
+  iteration_1:
+    - python_module: {'numpy': '', 'distance': '', 'scipy': ''}
+    - error_type: None
+    - error: |
+        No error
+end_time: 1771967688.9957814
+total_time: 29.828869104385376

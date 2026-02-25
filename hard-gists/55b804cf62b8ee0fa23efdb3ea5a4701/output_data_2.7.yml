@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1771969709.30278
+iterations:
+  iteration_1:
+    - python_module: {'keras': '2.2.4', 'tensorflow': '1.15.5'}
+    - error_type: ImportError
+    - error: |
+        Max loops reached
+end_time: 1771969759.932148
+total_time: 50.62936806678772

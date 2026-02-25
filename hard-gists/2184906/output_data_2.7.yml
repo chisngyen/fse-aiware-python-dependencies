@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1771940878.4685276
+iterations:
+  iteration_1:
+    - python_module: {'pygst': '0.0.4', 'gst': '0.1.7'}
+    - error_type: ImportError
+    - error: |
+        Max loops reached
+end_time: 1771940958.0807695
+total_time: 79.6122419834137

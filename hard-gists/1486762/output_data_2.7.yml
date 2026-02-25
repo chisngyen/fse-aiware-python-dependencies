@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1771933752.5314314
+iterations:
+  iteration_1:
+    - python_module: {'appscript': '1.2.4'}
+    - error_type: ImportError
+    - error: |
+        Max loops reached
+end_time: 1771933775.5395286
+total_time: 23.008097171783447

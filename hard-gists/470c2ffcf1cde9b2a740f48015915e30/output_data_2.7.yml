@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1771961511.5531301
+iterations:
+  iteration_1:
+    - python_module: {'capstone': '3.0.5', 'keystone': '14.2.0', 'pefile': '2017.9.3'}
+    - error_type: ImportError
+    - error: |
+        Max loops reached
+end_time: 1771961551.3825142
+total_time: 39.829384088516235

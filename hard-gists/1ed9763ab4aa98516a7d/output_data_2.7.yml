@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1771939690.1315978
+iterations:
+  iteration_1:
+    - python_module: {'django': '1.11.29'}
+    - error_type: ImportError
+    - error: |
+        Max loops reached
+end_time: 1771939958.2555196
+total_time: 268.1239218711853

@@ -1,0 +1,11 @@
+---
+python_version: 3.4
+start_time: 1771941868.16424
+iterations:
+  iteration_1:
+    - python_module: {'numpy': '1.18.5', 'matplotlib': '3.0.3', 'scipy': '1.4.1', 'pandas': '0.25.3', 'py2exe': '0.13.0.2', 'setuptools': '75.3.4'}
+    - error_type: ImportError
+    - error: |
+        Max loops reached
+end_time: 1771941989.9708133
+total_time: 121.8065733909607

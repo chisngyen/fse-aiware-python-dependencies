@@ -1,0 +1,11 @@
+---
+python_version: 3.6
+start_time: 1771957109.212604
+iterations:
+  iteration_1:
+    - python_module: {'PySide6': '6.3.2', 'ghost': '0.6.1'}
+    - error_type: ImportError
+    - error: |
+        Max loops reached
+end_time: 1771957310.1542735
+total_time: 200.94166946411133

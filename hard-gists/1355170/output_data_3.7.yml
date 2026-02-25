@@ -1,0 +1,11 @@
+---
+python_version: 3.7
+start_time: 1771923508.7873929
+iterations:
+  iteration_1:
+    - python_module: {}
+    - error_type: Unknown
+    - error: |
+        Exception: [Errno 5] Input/output error: '/tmp/smart_resolver_cr31_rks'
+end_time: 1771923508.7873929
+total_time: 0

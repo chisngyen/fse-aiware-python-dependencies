@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1771956280.4023876
+iterations:
+  iteration_1:
+    - python_module: {'boto': '2.49.0', 'auth': '0.4.9'}
+    - error_type: OtherPass
+    - error: |
+        No error
+end_time: 1771956332.6608796
+total_time: 52.25849199295044

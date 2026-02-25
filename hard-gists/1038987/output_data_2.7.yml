@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1771929628.3957136
+iterations:
+  iteration_1:
+    - python_module: {'django': ''}
+    - error_type: None
+    - error: |
+        No error
+end_time: 1771929637.808544
+total_time: 9.412830352783203

@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1771928003.125571
+iterations:
+  iteration_1:
+    - python_module: {'numpy': '1.16.6', 'lightgbm': '2.3.1'}
+    - error_type: OtherPass
+    - error: |
+        No error
+end_time: 1771928043.1042686
+total_time: 39.978697538375854

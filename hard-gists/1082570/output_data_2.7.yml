@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1771930286.0253246
+iterations:
+  iteration_1:
+    - python_module: {'selenium': '3.141.0'}
+    - error_type: ImportError
+    - error: |
+        Max loops reached
+end_time: 1771930341.9697049
+total_time: 55.94438028335571

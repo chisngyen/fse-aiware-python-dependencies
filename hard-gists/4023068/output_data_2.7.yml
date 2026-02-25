@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1771955432.6462824
+iterations:
+  iteration_1:
+    - python_module: {'celery': '4.4.7'}
+    - error_type: ImportError
+    - error: |
+        Max loops reached
+end_time: 1771955526.2718487
+total_time: 93.62556624412537

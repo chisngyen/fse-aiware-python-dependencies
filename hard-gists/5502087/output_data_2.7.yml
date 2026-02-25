@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1771968908.3838594
+iterations:
+  iteration_1:
+    - python_module: {}
+    - error_type: ImportError
+    - error: |
+        Max loops reached
+end_time: 1771968964.7841883
+total_time: 56.40032887458801

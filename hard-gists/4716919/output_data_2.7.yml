@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1771961477.6688087
+iterations:
+  iteration_1:
+    - python_module: {'boto': '', 'boto3': '', 'pillow': ''}
+    - error_type: OtherPass
+    - error: |
+        No error
+end_time: 1771961511.5436258
+total_time: 33.87481713294983

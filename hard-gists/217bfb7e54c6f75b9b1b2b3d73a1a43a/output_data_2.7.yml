@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1771940822.7967703
+iterations:
+  iteration_1:
+    - python_module: {'shiboken2': '5.12.6'}
+    - error_type: OtherPass
+    - error: |
+        No error
+end_time: 1771940834.1885898
+total_time: 11.391819477081299

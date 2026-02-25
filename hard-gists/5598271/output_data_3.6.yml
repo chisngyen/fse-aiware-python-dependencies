@@ -1,0 +1,11 @@
+---
+python_version: 3.6
+start_time: 1771969388.1759422
+iterations:
+  iteration_1:
+    - python_module: {'simplegui': ''}
+    - error_type: ImportError
+    - error: |
+        Max loops reached
+end_time: 1771969403.3422685
+total_time: 15.16632628440857

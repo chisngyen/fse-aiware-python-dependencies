@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1771934385.0500503
+iterations:
+  iteration_1:
+    - python_module: {'django': ''}
+    - error_type: DjangoPass
+    - error: |
+        No error
+end_time: 1771934402.5809834
+total_time: 17.530933141708374

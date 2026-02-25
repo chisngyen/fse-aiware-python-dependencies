@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1771924639.92186
+iterations:
+  iteration_1:
+    - python_module: {'cython': '0.29.37', 'word2vec': '0.6.6'}
+    - error_type: OtherPass
+    - error: |
+        No error
+end_time: 1771924673.9035888
+total_time: 33.98172879219055

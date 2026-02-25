@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1771952730.1136005
+iterations:
+  iteration_1:
+    - python_module: {'torch': '1.13.1', 'numpy': '1.16.6'}
+    - error_type: ImportError
+    - error: |
+        Max loops reached
+end_time: 1771952738.1750612
+total_time: 8.061460733413696

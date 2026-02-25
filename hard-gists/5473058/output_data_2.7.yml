@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1771968802.1690378
+iterations:
+  iteration_1:
+    - python_module: {'matplotlib': '2.2.5', 'numpy': '1.16.6', 'numpy#': ''}
+    - error_type: ImportError
+    - error: |
+        Max loops reached
+end_time: 1771968868.1840706
+total_time: 66.01503276824951

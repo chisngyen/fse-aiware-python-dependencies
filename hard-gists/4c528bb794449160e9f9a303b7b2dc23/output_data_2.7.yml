@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1771963462.5754292
+iterations:
+  iteration_1:
+    - python_module: {'pytesseract': '0.3.6', 'opencv-python': '4.2.0.32', 'Pillow': '6.2.2'}
+    - error_type: OtherPass
+    - error: |
+        No error
+end_time: 1771963465.1286073
+total_time: 2.553178071975708

@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1771966925.65104
+iterations:
+  iteration_1:
+    - python_module: {'scene': ''}
+    - error_type: OtherPass
+    - error: |
+        No error
+end_time: 1771966945.0023253
+total_time: 19.351285219192505

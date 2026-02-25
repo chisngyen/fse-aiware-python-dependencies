@@ -1,0 +1,11 @@
+---
+python_version: 3.7
+start_time: 1771960316.2019033
+iterations:
+  iteration_1:
+    - python_module: {'click': '', 'torch': ''}
+    - error_type: OtherPass
+    - error: |
+        No error
+end_time: 1771960555.2729318
+total_time: 239.07102847099304

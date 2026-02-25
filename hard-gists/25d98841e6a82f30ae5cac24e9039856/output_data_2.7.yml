@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1771942946.5087326
+iterations:
+  iteration_1:
+    - python_module: {'pefile': '', 'pycryptodome': ''}
+    - error_type: OtherPass
+    - error: |
+        No error
+end_time: 1771942955.7770765
+total_time: 9.268343925476074

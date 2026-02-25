@@ -1,0 +1,11 @@
+---
+python_version: 3.7
+start_time: 1771923503.0582078
+iterations:
+  iteration_1:
+    - python_module: {}
+    - error_type: Unknown
+    - error: |
+        Exception: [Errno 5] Input/output error: '/tmp/smart_resolver_lcn7mf4_'
+end_time: 1771923503.0582078
+total_time: 0

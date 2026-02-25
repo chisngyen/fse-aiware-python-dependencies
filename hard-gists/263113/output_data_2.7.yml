@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1771943340.0677552
+iterations:
+  iteration_1:
+    - python_module: {'django': '1.11.29', 'django-debug-toolbar': '1.10.1', 'django-haystack': '2.8.1'}
+    - error_type: DjangoPass
+    - error: |
+        No error
+end_time: 1771943367.1626987
+total_time: 27.094943523406982

@@ -1,20 +1,11 @@
 ---
 python_version: 2.7
-start_time: 1771224673.0520487
+start_time: 1771924896.503276
 iterations:
   iteration_1:
-    - python_module: {'scrapy': '2.12.0', 'peewee': '0.9.9'}
-    - error_type: VersionNotFound
+    - python_module: {'peewee': '', 'scrapy': ''}
+    - error_type: None
     - error: |
-        \u001b[91mERROR Could not find a version that satisfies the requirement scrapy==2.12.0 (from versions 0.7, 0.8, 0.9, 0.10.4.2364, 0.12.0.2550, 0.14.1, 0.14.2, 0.14.3, 0.14.4, 0.16.0, 0.16.1, 0.16.2, 0.16.3, 0.16.4, 0.16.5, 0.18.0, 0.18.1, 0.18.2, 0.18.3, 0.18.4, 0.20.0, 0.20.1, 0.20.2, 0.22.0, 0.22.1, 0.22.2, 0.24.0, 0.24.1, 0.24.2, 0.24.3, 0.24.4, 0.24.5, 0.24.6, 1.0.0rc1, 1.0.0rc2, 1.0.0rc3, 1.0.0, 1.0.1, 1.0.2, 1.0.3, 1.0.4, 1.0.5, 1.0.6, 1.0.7, 1.1.0rc1, 1.1.0rc3, 1.1.0rc4, 1.1.0, 1.1.1, 1.1.2, 1.1.3, 1.1.4, 1.2.0, 1.2.1, 1.2.2, 1.2.3, 1.3.0, 1.3.1, 1.3.2, 1.3.3, 1.4.0, 1.5.0, 1.5.1, 1.5.2, 1.6.0, 1.7.0, 1.7.1, 1.7.2, 1.7.3, 1.7.4, 1.8.0, 1.8.1, 1.8.2, 1.8.3, 1.8.4)\nERROR No matching distribution found for scrapy==2.12.0\n\u001b[0m"}
-        {"error""The command 'pip install --trusted-host pypi.python.org --default-timeout=100 scrapy==2.12.0' returned a non-zero code 1","errorDetail"{"code"1,"message""The command 'pip install --trusted-host pypi.python.org --default-timeout=100 scrapy==2.12.0' returned a non-zero code 1
-  iteration_2:
-    - python_module: {'peewee': '0.9.9'}
-    - error_type: ImportError
-    - error: |
-        Traceback (most recent call last):
-          File "/app/snippet.py", line 2, in <module>
-            from scrapy import Item
-        ImportError: No module named scrapy
-end_time: 1771225545.6536794
-total_time: 872.6016306877136
+        No error
+end_time: 1771924908.5951688
+total_time: 12.091892719268799

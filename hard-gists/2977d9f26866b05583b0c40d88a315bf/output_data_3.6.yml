@@ -1,0 +1,11 @@
+---
+python_version: 3.6
+start_time: 1771946007.6611228
+iterations:
+  iteration_1:
+    - python_module: {'torch': '', 'torchvision': ''}
+    - error_type: OtherPass
+    - error: |
+        No error
+end_time: 1771946014.6107366
+total_time: 6.949613809585571

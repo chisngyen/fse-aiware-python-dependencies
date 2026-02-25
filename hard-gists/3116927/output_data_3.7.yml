@@ -1,0 +1,11 @@
+---
+python_version: 3.7
+start_time: 1771948276.2879567
+iterations:
+  iteration_1:
+    - python_module: {'numpy': '', 'scipy': ''}
+    - error_type: None
+    - error: |
+        No error
+end_time: 1771948286.926919
+total_time: 10.638962268829346

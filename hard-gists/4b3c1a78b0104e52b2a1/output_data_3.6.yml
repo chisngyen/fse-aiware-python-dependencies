@@ -1,0 +1,11 @@
+---
+python_version: 3.6
+start_time: 1771963094.930016
+iterations:
+  iteration_1:
+    - python_module: {'kivy': '', 'pyjnius': ''}
+    - error_type: OtherPass
+    - error: |
+        No error
+end_time: 1771963125.4067593
+total_time: 30.47674322128296

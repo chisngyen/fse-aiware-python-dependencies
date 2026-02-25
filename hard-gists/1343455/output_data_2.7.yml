@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1771932420.34617
+iterations:
+  iteration_1:
+    - python_module: {'txpostgres': '1.0.0', 'websocket-client': '0.56.0', 'twisted': '20.3.0'}
+    - error_type: ImportError
+    - error: |
+        Max loops reached
+end_time: 1771932462.4647388
+total_time: 42.118568897247314

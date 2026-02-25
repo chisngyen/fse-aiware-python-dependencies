@@ -1,0 +1,11 @@
+---
+python_version: 3.7
+start_time: 1771930097.7297564
+iterations:
+  iteration_1:
+    - python_module: {'django-imagekit': '', 'django': ''}
+    - error_type: DjangoPass
+    - error: |
+        No error
+end_time: 1771930111.2297888
+total_time: 13.500032424926758
