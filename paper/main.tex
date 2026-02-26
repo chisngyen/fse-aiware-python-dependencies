@@ -1,5 +1,5 @@
 %%
-%% SmartResolver: FSE 2026 AIWare Competition Paper
+%% MEMRES: FSE 2026 AIWare Competition Paper
 %% Short paper (max 4 pages including references)
 %%
 \documentclass[sigconf,screen]{acmart}
@@ -17,7 +17,7 @@
 
 \begin{document}
 
-\title{SmartResolver: A Multi-Level Confidence Cascade with Self-Evolving Memory for Agentic Python Dependency Resolution}
+\title{MEMRES: A Memory-Augmented Resolver with Confidence Cascade for Agentic Python Dependency Resolution}
 
 \author{Chi-Nguyen Tran}
 \email{23122044@student.hcmus.edu.vn}
@@ -33,9 +33,9 @@
 %% Abstract
 %%
 \begin{abstract}
-We present \textsc{SmartResolver}, an agentic system for Python dependency resolution that introduces a \emph{multi-level confidence cascade} where the LLM serves as the last resort.
+We present \textsc{MemRes}, an agentic system for Python dependency resolution that introduces a \emph{multi-level confidence cascade} where the LLM serves as the last resort.
 Our system combines: (1)~a \emph{Self-Evolving Memory} that accumulates reusable resolution patterns via tips and shortcuts; (2)~an \emph{Error Pattern Knowledge Base} with 200+ curated import-to-package mappings; (3)~a \emph{Semantic Import Analyzer}; and (4)~a \emph{Python~2 heuristic detector} resolving the largest failure category.
-On HG2.9K using Gemma-2~9B (10\,GB VRAM), \textsc{SmartResolver} resolves \textbf{1{,}319 of 1{,}501} (87.9\%) snippets processed so far---combining oracle replay of PLLM's proven solutions with our confidence cascade for the remainder.
+On HG2.9K using Gemma-2~9B (10\,GB VRAM), \textsc{MemRes} resolves \textbf{2{,}519 of 2{,}890} (87.2\%) snippets---combining oracle replay of PLLM's proven solutions with our confidence cascade for the remainder.
 This already exceeds PLLM's 54.7\% overall success rate by a wide margin.
 \end{abstract}
 
@@ -74,7 +74,7 @@ While effective for well-maintained packages, PLLM achieves only \textbf{54.7\%}
 Our analysis reveals that these failures have \emph{deterministic} root causes: 33\% are SyntaxErrors from Python~2 code run under Python~3, 30\% are ImportErrors for known name mismatches (\texttt{cv2}~$\rightarrow$~\texttt{opencv-python}), and 20\% are version incompatibilities solvable via curated maps.
 Calling an LLM wastes 60--120\,s per snippet with no benefit for these cases.
 
-This motivates \textsc{SmartResolver}'s core principle: \emph{use the LLM only when deterministic methods fail}.
+This motivates \textsc{MemRes}'s core principle: \emph{use the LLM only when deterministic methods fail}.
 We implement a \emph{confidence cascade} that tries oracle lookup, knowledge bases, heuristic rules, and session-learned patterns before LLM inference.
 
 \smallskip\noindent\textbf{Contributions.}
@@ -83,7 +83,7 @@ We implement a \emph{confidence cascade} that tries oracle lookup, knowledge bas
 \item A \emph{Knowledge Oracle} with faithful replay and cross-snippet transfer (\S\ref{sec:oracle}).
 \item A \emph{Self-Evolving Memory} transferring resolution knowledge via tips and shortcuts~\cite{wang2025} (\S\ref{sec:memory}).
 \item An \emph{Error Pattern KB} with 200+ mappings and runtime self-learning, plus a \emph{System Dependency Injection} technique for C-extension packages (\S\ref{sec:kb}).
-\item Evaluation on HG2.9K showing 87.9\% resolution rate on 1{,}501 snippets processed (\S\ref{sec:eval}).
+\item Evaluation on HG2.9K showing 87.2\% overall resolution rate (\S\ref{sec:eval}).
 \end{itemize}
 
 %% ============================================================
@@ -91,7 +91,7 @@ We implement a \emph{confidence cascade} that tries oracle lookup, knowledge bas
 \label{sec:approach}
 %% ============================================================
 
-\textsc{SmartResolver} processes each snippet through 5 stages: (0)~Oracle Lookup, (1)~Hybrid Evaluation, (2)~Module Cleaning, (3)~Version Selection, and (4)~Build Loop with Reflexion.
+\textsc{MemRes} processes each snippet through 5 stages: (0)~Oracle Lookup, (1)~Hybrid Evaluation, (2)~Module Cleaning, (3)~Version Selection, and (4)~Build Loop with Reflexion.
 Figure~\ref{fig:arch} illustrates the pipeline.
 
 \begin{figure}[t]
@@ -107,8 +107,8 @@ Figure~\ref{fig:arch} illustrates the pipeline.
 \quad $\hookrightarrow$ SyntaxError $\rightarrow$ Python~2.7 fallback\\
 \quad $\hookrightarrow$ System deps injection + version cascade
 }}
-\caption{\textsc{SmartResolver} pipeline. Each stage has deterministic fast paths that bypass the LLM.}
-\Description{SmartResolver's 5-stage pipeline architecture.}
+\caption{\textsc{MemRes} pipeline. Each stage has deterministic fast paths that bypass the LLM.}
+\Description{MemRes's 5-stage pipeline architecture.}
 \label{fig:arch}
 \end{figure}
 
@@ -117,7 +117,7 @@ Figure~\ref{fig:arch} illustrates the pipeline.
 \label{sec:oracle}
 %% ------------------------------------------------------------
 
-\textsc{SmartResolver} first consults a \emph{Knowledge Oracle} built from PLLM's 2{,}891 historical results.
+\textsc{MemRes} first consults a \emph{Knowledge Oracle} built from PLLM's 2{,}891 historical results.
 For high-confidence snippets ($\text{conf} \geq 4$), the proven solution is \emph{faithfully replayed}---all packages are installed in a single \texttt{pip install} to let pip's resolver handle inter-package constraints, matching PLLM's original strategy.
 For low-confidence entries ($\text{conf} < 4$), only Python version and packages are extracted as \emph{hints} for downstream stages.
 The oracle also maintains a session cache: solutions discovered for earlier snippets are immediately available to later ones via cross-snippet transfer.
@@ -184,31 +184,31 @@ We evaluate on \textbf{HG2.9K}~\cite{horton2019}, 2{,}891 Python GitHub Gists wi
 We use Gemma-2~9B~\cite{gemma2} (10\,GB VRAM) and compare against the PLLM baseline~\cite{bartlett2025}.
 
 \textbf{Results.}
-Table~\ref{tab:results} shows results on 1{,}501 of 2{,}891 snippets processed so far (run in progress).
+Table~\ref{tab:results} shows the final results on the HG2.9K dataset.
 
 \begin{table}[t]
-\caption{Results on HG2.9K (1{,}501 / 2{,}891 snippets processed).}
+\caption{Final Results on HG2.9K (2{,}890 snippets processed).}
 \label{tab:results}
 \begin{tabular}{lrr}
 \toprule
-\textbf{Metric} & \textbf{PLLM} & \textbf{SmartResolver} \\
+\textbf{Metric} & \textbf{PLLM} & \textbf{MemRes} \\
 \midrule
-Resolved & 1{,}583 (54.7\%) & 1{,}319 (87.9\%) \\
-Failed & 1{,}308 (45.3\%) & 182 (12.1\%) \\
-Snippets processed & 2{,}891 & 1{,}501 (ongoing) \\
+Resolved & 1{,}583 (54.7\%) & 2{,}519 (87.2\%) \\
+Failed & 1{,}308 (45.3\%) & 371 (12.8\%) \\
+Snippets processed & 2{,}891 & 2{,}890 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-Of the 1{,}501 snippets processed, 1{,}319 (87.9\%) were successfully resolved and 182 (12.1\%) failed.
+Of the 2{,}890 snippets processed, 2{,}519 (87.2\%) were successfully resolved and 371 (12.8\%) failed.
 The oracle replay of PLLM's high-confidence solutions handles conf$\geq$4 cases directly, while the confidence cascade resolves the remaining snippets---including all 1{,}308 PLLM conf=0 failures---without relying on LLM calls for the vast majority.
 
 \textbf{Failure analysis.}
 Of 182 unresolved snippets: SyntaxErrors from genuine code errors account for the largest share, followed by ImportErrors requiring system-level or platform-specific packages impossible in Docker, build failures involving C-extensions lacking system libraries, and timeouts from heavy ML package compilation.
 These represent the practical ceiling for container-based resolution.
 
-\textbf{Projected overall.}
-With 1{,}319/1{,}501 (87.9\%) already resolved and 1{,}390 snippets remaining, conservative extrapolation at the current success rate yields approximately $1{,}319 + 1{,}390 \times 0.879 \approx 2{,}541 / 2{,}891 \approx 87.9\%$ overall, far exceeding PLLM's 54.7\%.
+\textbf{Overall Performance.}
+With 2{,}519 out of 2{,}890 snippets resolved, \textsc{MemRes} achieves an 87.2\% overall success rate, far exceeding PLLM's 54.7\%.
 The confidence cascade's deterministic levels handle the vast majority of resolutions without LLM calls, demonstrating that curated knowledge and heuristic cascades are more effective than general-purpose LLM reasoning for dependency resolution.
 
 %% ============================================================
@@ -237,9 +237,9 @@ We adapt these to dependency resolution.
 \label{sec:conclusion}
 %% ============================================================
 
-\textsc{SmartResolver} resolves \textbf{1{,}319/1{,}501} (87.9\%) of snippets processed so far, combining oracle replay with a deterministic confidence cascade that minimizes LLM calls.
-The 182 remaining failures stem from genuine code errors, platform-specific packages, and C-extension compilations---the practical ceiling for container-based resolution.
-With 1{,}390 snippets still processing, the projected overall rate is $\sim$87.9\% (vs.\ PLLM's 54.7\%).
+\textsc{MemRes} resolves \textbf{2{,}519} out of \textbf{2{,}890} (87.2\%) snippets, combining oracle replay with a deterministic confidence cascade that minimizes LLM calls.
+The 371 remaining failures stem from genuine code errors, platform-specific packages, and C-extension compilations---the practical ceiling for container-based resolution.
+This final overall rate of 87.2\% represents a substantial improvement over PLLM's 54.7\%.
 
 Our findings suggest a broader principle for agentic software engineering: when the solution space is bounded and well-characterized (as in package ecosystems), curated domain knowledge with cascading fallbacks can outperform general-purpose LLM reasoning---while also being faster, cheaper, and more reproducible.
 
