@@ -1,0 +1,11 @@
+---
+python_version: 3.6
+start_time: 1772015639.8350718
+iterations:
+  iteration_1:
+    - python_module: {'celery': '4.4.7'}
+    - error_type: OtherPass
+    - error: |
+        No error
+end_time: 1772015654.416453
+total_time: 14.58138108253479

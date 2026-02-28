@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1772014933.2665093
+iterations:
+  iteration_1:
+    - python_module: {'vtk': '9.2.6'}
+    - error_type: ImportError
+    - error: |
+        Max loops reached
+end_time: 1772014966.2845683
+total_time: 33.01805901527405

@@ -1,4 +1,4 @@
-FROM python:3.10-slim
+FROM python:3.10.12-slim
 
 # Install Docker CLI (for building test containers)
 RUN apt-get update && \
@@ -16,7 +16,8 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 # Install Python dependencies
-RUN pip install --no-cache-dir requests
+COPY requirements.txt /app/requirements.txt
+RUN pip install --no-cache-dir -r /app/requirements.txt
 
 # Create working directory
 WORKDIR /app

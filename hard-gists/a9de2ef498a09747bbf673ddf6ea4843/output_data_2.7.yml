@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1772040817.1456285
+iterations:
+  iteration_1:
+    - python_module: {'tqdm': '', 'numpy': '', 'tensorflow': '', 'edward': ''}
+    - error_type: OtherPass
+    - error: |
+        No error
+end_time: 1772040833.56909
+total_time: 16.423461437225342

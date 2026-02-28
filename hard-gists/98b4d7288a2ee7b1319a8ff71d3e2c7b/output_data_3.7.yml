@@ -1,0 +1,11 @@
+---
+python_version: 3.7
+start_time: 1772028416.2899897
+iterations:
+  iteration_1:
+    - python_module: {'google-cloud-vision': '3.7.4', 'Pillow': '9.5.0', 'google-api-python-client': '2.175.0'}
+    - error_type: ImportError
+    - error: |
+        Max loops reached
+end_time: 1772028548.6012607
+total_time: 132.31127095222473

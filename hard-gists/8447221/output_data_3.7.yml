@@ -1,0 +1,11 @@
+---
+python_version: 3.7
+start_time: 1772015713.9136178
+iterations:
+  iteration_1:
+    - python_module: {'csvkit': '0.1.0'}
+    - error_type: OtherPass
+    - error: |
+        No error
+end_time: 1772015817.198122
+total_time: 103.28450417518616

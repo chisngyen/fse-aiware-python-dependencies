@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1772013261.2336574
+iterations:
+  iteration_1:
+    - python_module: {'ansible': '3.4.0'}
+    - error_type: ImportError
+    - error: |
+        Max loops reached
+end_time: 1772013459.7234776
+total_time: 198.4898202419281

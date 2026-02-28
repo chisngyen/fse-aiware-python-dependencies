@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1772008515.2447252
+iterations:
+  iteration_1:
+    - python_module: {'flask': '1.1.4', 'pymongo': '3.12.3', 'beautifulsoup4': '4.9.3'}
+    - error_type: ImportError
+    - error: |
+        Max loops reached
+end_time: 1772008521.625545
+total_time: 6.380819797515869

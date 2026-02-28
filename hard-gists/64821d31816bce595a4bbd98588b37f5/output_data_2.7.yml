@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1772001756.251065
+iterations:
+  iteration_1:
+    - python_module: {'numpy': '', 'cython': '', 'scikit-image': '', 'scipy': ''}
+    - error_type: None
+    - error: |
+        No error
+end_time: 1772001789.092739
+total_time: 32.84167408943176

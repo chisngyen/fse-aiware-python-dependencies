@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1772007181.2124608
+iterations:
+  iteration_1:
+    - python_module: {'theano': '1.0.4', 'numpy': '1.16.6', 'lasagne': ''}
+    - error_type: ImportError
+    - error: |
+        Max loops reached
+end_time: 1772007511.7194192
+total_time: 330.50695848464966

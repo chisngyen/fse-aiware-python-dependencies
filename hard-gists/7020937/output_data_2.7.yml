@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1772006042.814138
+iterations:
+  iteration_1:
+    - python_module: {'opencv-python': '4.2.0.32', 'numpy': '1.16.6', 'scikit-learn': '0.20.4'}
+    - error_type: ImportError
+    - error: |
+        Max loops reached
+end_time: 1772006133.3304179
+total_time: 90.51627993583679

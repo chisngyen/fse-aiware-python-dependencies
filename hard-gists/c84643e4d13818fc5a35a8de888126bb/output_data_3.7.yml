@@ -1,0 +1,11 @@
+---
+python_version: 3.7
+start_time: 1772047708.429254
+iterations:
+  iteration_1:
+    - python_module: {'pycom': '0.6.0'}
+    - error_type: ImportError
+    - error: |
+        Max loops reached
+end_time: 1772047734.2391343
+total_time: 25.809880256652832

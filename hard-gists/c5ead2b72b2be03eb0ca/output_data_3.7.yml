@@ -1,0 +1,11 @@
+---
+python_version: 3.7
+start_time: 1772047013.1514297
+iterations:
+  iteration_1:
+    - python_module: {'djangorestframework': ''}
+    - error_type: None
+    - error: |
+        No error
+end_time: 1772047029.9931047
+total_time: 16.84167504310608

@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1772015587.4864583
+iterations:
+  iteration_1:
+    - python_module: {'dpkt': '1.8.6'}
+    - error_type: ImportError
+    - error: |
+        Max loops reached
+end_time: 1772015624.6936307
+total_time: 37.20717239379883

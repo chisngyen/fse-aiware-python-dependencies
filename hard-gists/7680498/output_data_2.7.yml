@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1772009365.6324809
+iterations:
+  iteration_1:
+    - python_module: {'zope': '4.8.10', 'collective.favoriting': '1.0.2', 'persistent': '4.0.9', 'Products': '0.4.0'}
+    - error_type: OtherPass
+    - error: |
+        No error
+end_time: 1772009367.0831635
+total_time: 1.4506826400756836

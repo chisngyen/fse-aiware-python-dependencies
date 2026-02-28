@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1772023649.0831828
+iterations:
+  iteration_1:
+    - python_module: {'mysqlclient': ''}
+    - error_type: None
+    - error: |
+        No error
+end_time: 1772023684.3767135
+total_time: 35.29353070259094

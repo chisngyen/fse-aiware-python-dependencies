@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1772045642.9373534
+iterations:
+  iteration_1:
+    - python_module: {'django': '', 'bleach': ''}
+    - error_type: None
+    - error: |
+        No error
+end_time: 1772045657.455471
+total_time: 14.518117666244507

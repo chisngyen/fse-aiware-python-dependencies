@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1772043769.9590077
+iterations:
+  iteration_1:
+    - python_module: {'gensim': '', 'flask': ''}
+    - error_type: OtherPass
+    - error: |
+        No error
+end_time: 1772043779.500348
+total_time: 9.541340351104736

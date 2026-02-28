@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1772042589.311155
+iterations:
+  iteration_1:
+    - python_module: {'lmdb': '1.4.1', 'numpy': '1.16.6'}
+    - error_type: ImportError
+    - error: |
+        Max loops reached
+end_time: 1772042707.1713092
+total_time: 117.8601541519165

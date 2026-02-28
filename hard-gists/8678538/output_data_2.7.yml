@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1772017241.609525
+iterations:
+  iteration_1:
+    - python_module: {'pyaudio': '0.2.14'}
+    - error_type: ImportError
+    - error: |
+        Max loops reached
+end_time: 1772017416.236709
+total_time: 174.62718415260315

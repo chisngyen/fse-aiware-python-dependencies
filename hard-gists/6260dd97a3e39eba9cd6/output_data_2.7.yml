@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1772000468.7785525
+iterations:
+  iteration_1:
+    - python_module: {'pole': ''}
+    - error_type: ImportError
+    - error: |
+        Max loops reached
+end_time: 1772000613.1185048
+total_time: 144.3399522304535

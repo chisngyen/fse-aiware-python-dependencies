@@ -1,0 +1,11 @@
+---
+python_version: 3.7
+start_time: 1772018698.3901024
+iterations:
+  iteration_1:
+    - python_module: {'mock': '', 'kivy': ''}
+    - error_type: None
+    - error: |
+        No error
+end_time: 1772018736.3483593
+total_time: 37.95825695991516

@@ -1,0 +1,11 @@
+---
+python_version: 3.6
+start_time: 1772041422.5989845
+iterations:
+  iteration_1:
+    - python_module: {'pillow': '', 'numpy': '', 'h5py': '', 'fuel': ''}
+    - error_type: OtherPass
+    - error: |
+        No error
+end_time: 1772041431.3220265
+total_time: 8.723042011260986

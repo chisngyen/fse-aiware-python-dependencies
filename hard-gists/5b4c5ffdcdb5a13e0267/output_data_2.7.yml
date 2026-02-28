@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1771997751.7271388
+iterations:
+  iteration_1:
+    - python_module: {'slate': '0.3', 'nltk': '3.4.5'}
+    - error_type: OtherPass
+    - error: |
+        No error
+end_time: 1771997770.6454644
+total_time: 18.918325662612915

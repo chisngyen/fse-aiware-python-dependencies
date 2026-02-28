@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1772018048.8933113
+iterations:
+  iteration_1:
+    - python_module: {'pymc': '2.3.6', 'numpy': '1.16.6'}
+    - error_type: ImportError
+    - error: |
+        Max loops reached
+end_time: 1772018055.639359
+total_time: 6.746047735214233

@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1772040168.899714
+iterations:
+  iteration_1:
+    - python_module: {'keras': '2.2.4', 'pandas': '0.24.2', 'numpy': '1.16.6', 'scikit-learn': '0.20.4'}
+    - error_type: ImportError
+    - error: |
+        Max loops reached
+end_time: 1772040347.8652208
+total_time: 178.96550679206848

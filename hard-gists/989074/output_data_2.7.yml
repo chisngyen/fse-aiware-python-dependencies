@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1772027742.5074208
+iterations:
+  iteration_1:
+    - python_module: {'inkex': '1.0.1', 'simplestyle': '1.1.2'}
+    - error_type: ImportError
+    - error: |
+        Max loops reached
+end_time: 1772027981.9853394
+total_time: 239.47791862487793

@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1772006209.5280175
+iterations:
+  iteration_1:
+    - python_module: {'django-tastypie': '', 'django': ''}
+    - error_type: DjangoPass
+    - error: |
+        No error
+end_time: 1772006228.6465535
+total_time: 19.1185359954834

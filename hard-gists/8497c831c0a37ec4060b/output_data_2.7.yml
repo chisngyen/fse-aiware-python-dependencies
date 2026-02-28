@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1772016091.6633224
+iterations:
+  iteration_1:
+    - python_module: {'websocket-client': '0.42.1'}
+    - error_type: OtherPass
+    - error: |
+        No error
+end_time: 1772016124.5873244
+total_time: 32.924001932144165

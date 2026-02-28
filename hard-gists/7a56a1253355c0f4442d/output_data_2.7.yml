@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1772011566.380272
+iterations:
+  iteration_1:
+    - python_module: {'imdb': ''}
+    - error_type: ImportError
+    - error: |
+        Max loops reached
+end_time: 1772011566.6214635
+total_time: 0.24119162559509277

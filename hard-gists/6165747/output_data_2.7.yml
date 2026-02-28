@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1771999758.4294808
+iterations:
+  iteration_1:
+    - python_module: {'numpy': '1.16.6', 'scipy': '1.2.3', 'numba': '0.36.2', 'scikit-learn': '0.20.4'}
+    - error_type: ImportError
+    - error: |
+        Max loops reached
+end_time: 1771999974.3369052
+total_time: 215.90742444992065

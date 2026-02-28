@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1772021125.1483305
+iterations:
+  iteration_1:
+    - python_module: {'boto3': '', 'botocore': '', 'pycryptodome': ''}
+    - error_type: OtherPass
+    - error: |
+        No error
+end_time: 1772021158.1618104
+total_time: 33.01347994804382

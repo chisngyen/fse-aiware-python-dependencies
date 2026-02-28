@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1771997631.8272953
+iterations:
+  iteration_1:
+    - python_module: {'opencv-python': '4.2.0.32', 'chainer': '4.5.0', 'numpy': '1.16.6'}
+    - error_type: ImportError
+    - error: |
+        Max loops reached
+end_time: 1771997653.0105047
+total_time: 21.18320941925049

@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1772010304.4536583
+iterations:
+  iteration_1:
+    - python_module: {'biopython': '1.76', 'requests': '2.27.1', 'lxml': '4.6.5'}
+    - error_type: None
+    - error: |
+        No error
+end_time: 1772010331.1964374
+total_time: 26.74277901649475

@@ -1,0 +1,11 @@
+---
+python_version: 3.7
+start_time: 1772038612.7494047
+iterations:
+  iteration_1:
+    - python_module: {'pycrayon': '0.5'}
+    - error_type: ImportError
+    - error: |
+        Max loops reached
+end_time: 1772038642.3847995
+total_time: 29.63539481163025

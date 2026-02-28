@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1772000639.612228
+iterations:
+  iteration_1:
+    - python_module: {'django': '1.11.29', 'sorl-thumbnail': '12.4.1', 'south': '0.7.6', 'django-admin-tools': '0.9.2', 'django-guardian': '1.4.6'}
+    - error_type: DjangoPass
+    - error: |
+        No error
+end_time: 1772000674.162746
+total_time: 34.55051803588867

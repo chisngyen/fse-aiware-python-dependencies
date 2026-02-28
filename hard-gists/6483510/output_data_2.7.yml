@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1772001789.104517
+iterations:
+  iteration_1:
+    - python_module: {'pysnap': '1.0.1'}
+    - error_type: OtherPass
+    - error: |
+        No error
+end_time: 1772001796.7015083
+total_time: 7.596991300582886

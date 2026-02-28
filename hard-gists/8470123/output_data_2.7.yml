@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1772016024.3502257
+iterations:
+  iteration_1:
+    - python_module: {'python-memcached': '1.52', 'hash_ring': '1.3.1'}
+    - error_type: None
+    - error: |
+        No error
+end_time: 1772016024.6344135
+total_time: 0.28418779373168945

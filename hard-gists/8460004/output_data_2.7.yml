@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1772015999.136634
+iterations:
+  iteration_1:
+    - python_module: {'redis': '3.5.3', 'celery': '3.1.13'}
+    - error_type: None
+    - error: |
+        No error
+end_time: 1772016003.1434197
+total_time: 4.00678563117981

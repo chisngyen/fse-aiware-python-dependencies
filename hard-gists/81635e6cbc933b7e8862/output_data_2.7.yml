@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1772014283.5928526
+iterations:
+  iteration_1:
+    - python_module: {'atomac': '1.0.1'}
+    - error_type: ImportError
+    - error: |
+        Max loops reached
+end_time: 1772014310.614472
+total_time: 27.02161931991577

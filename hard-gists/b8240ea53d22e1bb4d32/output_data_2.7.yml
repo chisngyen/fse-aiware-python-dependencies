@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1772043747.7017484
+iterations:
+  iteration_1:
+    - python_module: {'jieba': '', 'numpy': '', 'scikit-learn': ''}
+    - error_type: OtherPass
+    - error: |
+        No error
+end_time: 1772043769.9474013
+total_time: 22.24565291404724

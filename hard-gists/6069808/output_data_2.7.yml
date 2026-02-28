@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1771998962.957472
+iterations:
+  iteration_1:
+    - python_module: {'pysocks': ''}
+    - error_type: OtherPass
+    - error: |
+        No error
+end_time: 1771998975.7189374
+total_time: 12.761465311050415

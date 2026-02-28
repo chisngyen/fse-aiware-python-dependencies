@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1772037731.3627234
+iterations:
+  iteration_1:
+    - python_module: {'jedi': '', 'docopt': ''}
+    - error_type: OtherPass
+    - error: |
+        No error
+end_time: 1772037743.6172314
+total_time: 12.254508018493652

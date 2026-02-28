@@ -1,0 +1,11 @@
+---
+python_version: 3.7
+start_time: 1772014772.9865289
+iterations:
+  iteration_1:
+    - python_module: {'gdal': '3.4.3'}
+    - error_type: None
+    - error: |
+        No error
+end_time: 1772014790.410837
+total_time: 17.42430806159973

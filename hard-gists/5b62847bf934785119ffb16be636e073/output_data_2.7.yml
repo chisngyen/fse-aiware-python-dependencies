@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1771998125.8050654
+iterations:
+  iteration_1:
+    - python_module: {'html2text': '3.200.3'}
+    - error_type: OtherPass
+    - error: |
+        No error
+end_time: 1771998143.1122904
+total_time: 17.307224988937378

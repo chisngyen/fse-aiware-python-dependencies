@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1772006291.7049026
+iterations:
+  iteration_1:
+    - python_module: {'dnspython3': '1.11.0'}
+    - error_type: ImportError
+    - error: |
+        Max loops reached
+end_time: 1772006348.4836476
+total_time: 56.77874493598938

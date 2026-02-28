@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1772014411.3138003
+iterations:
+  iteration_1:
+    - python_module: {'pillow': '', 'django': '', 'djangorestframework': ''}
+    - error_type: DjangoPass
+    - error: |
+        No error
+end_time: 1772014448.3892186
+total_time: 37.07541823387146

@@ -1,0 +1,11 @@
+---
+python_version: 3.7
+start_time: 1772028683.019809
+iterations:
+  iteration_1:
+    - python_module: {'taiga-client': ''}
+    - error_type: OtherPass
+    - error: |
+        No error
+end_time: 1772028687.5004318
+total_time: 4.4806227684021

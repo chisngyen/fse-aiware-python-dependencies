@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1772017458.2002943
+iterations:
+  iteration_1:
+    - python_module: {'ete3': '3.0.0b35'}
+    - error_type: ImportError
+    - error: |
+        Max loops reached
+end_time: 1772017588.9600732
+total_time: 130.75977897644043

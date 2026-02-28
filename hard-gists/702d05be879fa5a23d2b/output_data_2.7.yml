@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1772005813.3311226
+iterations:
+  iteration_1:
+    - python_module: {'numpy': '1.16.6', 'cython': '0.29.37', 'scikit-image': '0.14.2', 'opencv-python': '4.2.0.32', 'scipy': '1.2.3', 'matplotlib': '2.2.5'}
+    - error_type: OtherPass
+    - error: |
+        No error
+end_time: 1772005931.4662256
+total_time: 118.13510298728943

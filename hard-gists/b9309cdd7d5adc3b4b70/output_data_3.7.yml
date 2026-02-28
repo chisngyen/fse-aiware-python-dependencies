@@ -1,0 +1,11 @@
+---
+python_version: 3.7
+start_time: 1772044038.8956022
+iterations:
+  iteration_1:
+    - python_module: {'nibabel': '3.0.1', 'eulerangles': '1.0.2'}
+    - error_type: OtherPass
+    - error: |
+        No error
+end_time: 1772044053.2356079
+total_time: 14.34000563621521

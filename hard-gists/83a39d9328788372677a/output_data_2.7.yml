@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1772015565.6058753
+iterations:
+  iteration_1:
+    - python_module: {'SimpleITK': '1.2.4', 'vtk': '9.2.6', 'scipy': '1.2.3', 'numpy': '1.16.6'}
+    - error_type: ImportError
+    - error: |
+        Max loops reached
+end_time: 1772015587.4496489
+total_time: 21.84377360343933

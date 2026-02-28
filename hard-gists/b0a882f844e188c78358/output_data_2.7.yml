@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1772041438.1558762
+iterations:
+  iteration_1:
+    - python_module: {'PyRTF': '', 'wordnik': '2.1.3', 'ltchinese': ''}
+    - error_type: ImportError
+    - error: |
+        Max loops reached
+end_time: 1772041492.9691856
+total_time: 54.81330943107605

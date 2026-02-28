@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1772001422.1515837
+iterations:
+  iteration_1:
+    - python_module: {'numpy': '1.16.6', 'pandas': '0.24.2', 'statsmodels': '0.10.2', 'scipy': '1.2.3'}
+    - error_type: None
+    - error: |
+        No error
+end_time: 1772001501.108442
+total_time: 78.95685839653015

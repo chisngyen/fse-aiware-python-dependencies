@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1772009179.308291
+iterations:
+  iteration_1:
+    - python_module: {'MOODS': '0.1.16'}
+    - error_type: ImportError
+    - error: |
+        Max loops reached
+end_time: 1772009235.7618096
+total_time: 56.4535186290741

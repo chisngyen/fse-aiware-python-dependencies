@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1772024688.9346917
+iterations:
+  iteration_1:
+    - python_module: {'numpy': '1.16.6', 'keras': '2.2.4'}
+    - error_type: ImportError
+    - error: |
+        Max loops reached
+end_time: 1772024981.0250347
+total_time: 292.09034299850464

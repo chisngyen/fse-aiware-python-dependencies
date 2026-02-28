@@ -1,0 +1,11 @@
+---
+python_version: 3.7
+start_time: 1772006754.476062
+iterations:
+  iteration_1:
+    - python_module: {'kivy': '2.2.1'}
+    - error_type: OtherPass
+    - error: |
+        No error
+end_time: 1772006808.8113258
+total_time: 54.33526372909546

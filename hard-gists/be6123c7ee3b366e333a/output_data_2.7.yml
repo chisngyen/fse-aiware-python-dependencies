@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1772045383.0938148
+iterations:
+  iteration_1:
+    - python_module: {'numpy': '1.16.6', 'scikit-image': '0.14.2', 'matplotlib': '2.2.5', 'tsne': '0.1.8'}
+    - error_type: ImportError
+    - error: |
+        Max loops reached
+end_time: 1772045454.8035064
+total_time: 71.70969152450562

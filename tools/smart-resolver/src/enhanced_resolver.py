@@ -307,8 +307,9 @@ class EnhancedResolver:
         if oracle_result is not None:
             # Learn from oracle success for future snippets
             if oracle_result.get('success'):
-                self._learn_success(code, oracle_result.get('modules', {}),
-                                   oracle_result.get('python_version', ''))
+                self._learn_success(gist_id, code, oracle_result.get('modules', {}),
+                                   oracle_result.get('python_version', ''),
+                                   oracle_result.get('duration', 0.0))
             return oracle_result
 
         # === Novel: Self-Evolving Shortcut Check (FSE 2026) ===
@@ -370,8 +371,9 @@ class EnhancedResolver:
                 gist_id, result['python_version'], result['modules'], True
             )
             # === Novel: Learn from pipeline success ===
-            self._learn_success(code, result.get('modules', {}),
-                               result.get('python_version', ''))
+            self._learn_success(gist_id, code, result.get('modules', {}),
+                               result.get('python_version', ''),
+                               result.get('duration', time.time() - self.start_time))
 
         return result
 
@@ -2208,11 +2210,19 @@ class EnhancedResolver:
     # Utilities
     # ===========================================================
 
-    def _learn_success(self, code: str, packages: Dict[str, str], py_ver: str):
+    def _learn_success(self, gist_id: str, code: str, packages: Dict[str, str], py_ver: str, duration: float):
         """Record successful resolution for novel self-evolving memory."""
         try:
             imports = list(self.module_mapper.extract_imports(code))
-            self.evolving_memory.learn_from_success(imports, packages, py_ver)
+            error_hist = self.reflexion.get_history() if hasattr(self, 'reflexion') and hasattr(self.reflexion, 'get_history') else []
+            self.evolving_memory.learn_from_success(
+                gist_id=gist_id,
+                python_version=py_ver,
+                packages=packages,
+                imports=imports,
+                duration=duration,
+                error_history=error_hist
+            )
             for imp in imports:
                 for pkg in packages:
                     if imp.lower() in pkg.lower() or pkg.lower() in imp.lower():

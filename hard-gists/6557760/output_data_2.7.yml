@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1772001992.1681845
+iterations:
+  iteration_1:
+    - python_module: {'django-tastypie': '0.14.7', 'django-guardian': '1.4.6', 'django': '1.11.29'}
+    - error_type: OtherPass
+    - error: |
+        No error
+end_time: 1772002017.8571498
+total_time: 25.688965320587158

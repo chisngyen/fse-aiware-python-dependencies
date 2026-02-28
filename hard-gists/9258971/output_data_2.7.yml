@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1772023143.6217792
+iterations:
+  iteration_1:
+    - python_module: {'django': '', 'slugify': ''}
+    - error_type: OtherPass
+    - error: |
+        No error
+end_time: 1772023170.123635
+total_time: 26.501855850219727

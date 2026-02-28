@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1772043720.8991477
+iterations:
+  iteration_1:
+    - python_module: {'nltk': '3.4.5', 'pandas': '0.24.2', 'gensim': '0.13.4', 'stop-words': '2015.2.23.1', 'stop_words': '2015.2.23.1'}
+    - error_type: OtherPass
+    - error: |
+        No error
+end_time: 1772043747.6914306
+total_time: 26.792282819747925

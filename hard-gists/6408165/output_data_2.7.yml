@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1772001609.2581348
+iterations:
+  iteration_1:
+    - python_module: {'pyzmq': '22.3.0', 'pycuda': '2016.1', 'numpy': '1.16.6'}
+    - error_type: ImportError
+    - error: |
+        Max loops reached
+end_time: 1772001738.1513307
+total_time: 128.89319586753845

@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1772013070.7848744
+iterations:
+  iteration_1:
+    - python_module: {'django': '', 'transaction': ''}
+    - error_type: None
+    - error: |
+        No error
+end_time: 1772013093.269914
+total_time: 22.485039472579956

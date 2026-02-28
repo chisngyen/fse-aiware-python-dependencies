@@ -1,0 +1,11 @@
+---
+python_version: 3.3
+start_time: 1772013783.1318939
+iterations:
+  iteration_1:
+    - python_module: {'pyusb': ''}
+    - error_type: OtherPass
+    - error: |
+        No error
+end_time: 1772013796.5208814
+total_time: 13.38898754119873

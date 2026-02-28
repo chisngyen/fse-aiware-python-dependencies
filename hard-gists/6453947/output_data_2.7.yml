@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1772001533.883355
+iterations:
+  iteration_1:
+    - python_module: {'pyperclip': '1.5.27'}
+    - error_type: OtherPass
+    - error: |
+        No error
+end_time: 1772001543.0937777
+total_time: 9.21042275428772

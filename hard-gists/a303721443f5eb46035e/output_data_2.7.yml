@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1772038832.4525893
+iterations:
+  iteration_1:
+    - python_module: {'Skype4Py': '1.0.34'}
+    - error_type: OtherPass
+    - error: |
+        No error
+end_time: 1772038851.296886
+total_time: 18.84429669380188

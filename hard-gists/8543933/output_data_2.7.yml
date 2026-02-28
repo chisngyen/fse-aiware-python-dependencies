@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1772016278.7255063
+iterations:
+  iteration_1:
+    - python_module: {'traits': '4.6.0', 'pyface': '6.1.2', 'numpy': '1.16.6'}
+    - error_type: OtherPass
+    - error: |
+        No error
+end_time: 1772016316.5759952
+total_time: 37.850488901138306

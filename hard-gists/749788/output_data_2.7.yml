@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1772008335.8321629
+iterations:
+  iteration_1:
+    - python_module: {'BeautifulSoup4': '4.9.3'}
+    - error_type: OtherPass
+    - error: |
+        No error
+end_time: 1772008348.1789317
+total_time: 12.346768856048584

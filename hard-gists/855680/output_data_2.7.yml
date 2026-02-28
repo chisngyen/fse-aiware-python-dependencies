@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1772016325.086675
+iterations:
+  iteration_1:
+    - python_module: {'sampy': ''}
+    - error_type: ImportError
+    - error: |
+        Max loops reached
+end_time: 1772016401.6863277
+total_time: 76.5996527671814

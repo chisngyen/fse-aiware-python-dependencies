@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1772021509.0125356
+iterations:
+  iteration_1:
+    - python_module: {'tensorflow': '1.15.5', 'tqdm': '4.64.1', 'numpy': '1.16.6', 'facenet': '1.0.4'}
+    - error_type: ImportError
+    - error: |
+        Max loops reached
+end_time: 1772021850.8436537
+total_time: 341.83111810684204

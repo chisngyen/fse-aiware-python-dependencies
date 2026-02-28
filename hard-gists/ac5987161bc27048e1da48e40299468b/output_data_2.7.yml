@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1772040968.9039683
+iterations:
+  iteration_1:
+    - python_module: {'opencv-python': '4.2.0.32', 'numpy': '1.16.6', 'colormath': '2.0.0', 'image': '1.3.6', 'contour': '0.2.2'}
+    - error_type: OtherPass
+    - error: |
+        No error
+end_time: 1772041049.9774232
+total_time: 81.07345485687256

@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1771996535.274968
+iterations:
+  iteration_1:
+    - python_module: {'robofab': '1.2.1'}
+    - error_type: OtherPass
+    - error: |
+        No error
+end_time: 1771996546.7565165
+total_time: 11.481548547744751

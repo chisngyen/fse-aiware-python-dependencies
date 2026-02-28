@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1772016527.4833074
+iterations:
+  iteration_1:
+    - python_module: {'Pillow': '6.2.2', 'clipboard': '0.0.4'}
+    - error_type: ImportError
+    - error: |
+        Max loops reached
+end_time: 1772016534.5296564
+total_time: 7.046349048614502

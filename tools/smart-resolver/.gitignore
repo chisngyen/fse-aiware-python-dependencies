@@ -7,3 +7,6 @@ __pycache__/
 *.pyo
 *.egg-info/
 .env
+run_9_more_times.py
+aggregate_runs.py
+diskpart.txt

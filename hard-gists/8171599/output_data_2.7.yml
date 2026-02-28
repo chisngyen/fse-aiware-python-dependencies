@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1772014335.6504612
+iterations:
+  iteration_1:
+    - python_module: {'django': '', 'django_facebook': ''}
+    - error_type: DjangoPass
+    - error: |
+        No error
+end_time: 1772014353.3309302
+total_time: 17.680469036102295

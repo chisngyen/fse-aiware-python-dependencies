@@ -1,0 +1,11 @@
+---
+python_version: 3.7
+start_time: 1772015131.8826795
+iterations:
+  iteration_1:
+    - python_module: {'dateparser': ''}
+    - error_type: OtherPass
+    - error: |
+        No error
+end_time: 1772015154.5001621
+total_time: 22.617482662200928

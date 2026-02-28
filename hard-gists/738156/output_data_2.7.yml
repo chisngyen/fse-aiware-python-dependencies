@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1772008007.9397714
+iterations:
+  iteration_1:
+    - python_module: {'zope': '4.8.10', 'plone': '5.2.15'}
+    - error_type: ImportError
+    - error: |
+        Max loops reached
+end_time: 1772008018.9325771
+total_time: 10.99280571937561

@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1772044515.6390705
+iterations:
+  iteration_1:
+    - python_module: {'opencv-python': '4.2.0.32', 'tensorflow': '1.15.5', 'numpy': '1.16.6'}
+    - error_type: ImportError
+    - error: |
+        Max loops reached
+end_time: 1772044556.751248
+total_time: 41.11217737197876

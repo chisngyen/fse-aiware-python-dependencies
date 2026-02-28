@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1772045057.990199
+iterations:
+  iteration_1:
+    - python_module: {'onewire': '0.2', 'influxdb': '2.7.3'}
+    - error_type: ImportError
+    - error: |
+        Max loops reached
+end_time: 1772045104.4174457
+total_time: 46.42724657058716

@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1772004037.6844478
+iterations:
+  iteration_1:
+    - python_module: {'ebaysdk': '2.1.5'}
+    - error_type: ImportError
+    - error: |
+        Max loops reached
+end_time: 1772004225.6858757
+total_time: 188.00142788887024

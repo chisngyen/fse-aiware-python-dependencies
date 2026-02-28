@@ -1,0 +1,11 @@
+---
+python_version: 3.7
+start_time: 1772016844.0417728
+iterations:
+  iteration_1:
+    - python_module: {'tornado': '6.3.3', 'mysqlclient': '2.2.8', 'your': '0.6.6'}
+    - error_type: ImportError
+    - error: |
+        Max loops reached
+end_time: 1772017241.579976
+total_time: 397.5382032394409

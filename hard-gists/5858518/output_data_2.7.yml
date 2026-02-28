@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1771996434.925775
+iterations:
+  iteration_1:
+    - python_module: {'requests': '2.27.1', 'django': '1.11.29', 'celery': '4.4.7', 'conf': '0.4.1'}
+    - error_type: ImportError
+    - error: |
+        Max loops reached
+end_time: 1771996486.6012661
+total_time: 51.67549109458923

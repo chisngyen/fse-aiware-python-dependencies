@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1772038892.5589046
+iterations:
+  iteration_1:
+    - python_module: {'numpy': '', 'scipy': '', 'dask': '', 'toolz': ''}
+    - error_type: OtherPass
+    - error: |
+        No error
+end_time: 1772038901.9115067
+total_time: 9.352602005004883

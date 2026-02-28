@@ -1,0 +1,11 @@
+---
+python_version: 3.7
+start_time: 1772044704.399478
+iterations:
+  iteration_1:
+    - python_module: {'lx': '', 'modo': ''}
+    - error_type: OtherPass
+    - error: |
+        No error
+end_time: 1772044755.820296
+total_time: 51.42081809043884

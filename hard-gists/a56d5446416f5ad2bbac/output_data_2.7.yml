@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1772039705.4253397
+iterations:
+  iteration_1:
+    - python_module: {'theano': '1.0.4', 'passage': '0.2.4', 'numpy': '1.16.6', 'matplotlib': '2.2.5', 'scipy': '1.2.3', 'foxhound': ''}
+    - error_type: ImportError
+    - error: |
+        Max loops reached
+end_time: 1772039965.865007
+total_time: 260.43966722488403

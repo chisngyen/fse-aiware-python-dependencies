@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1772014865.6819444
+iterations:
+  iteration_1:
+    - python_module: {'numpy': '', 'gensim': '', 'scikit-learn': ''}
+    - error_type: OtherPass
+    - error: |
+        No error
+end_time: 1772014878.8064983
+total_time: 13.124553918838501

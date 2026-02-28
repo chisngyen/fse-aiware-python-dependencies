@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1772009626.905601
+iterations:
+  iteration_1:
+    - python_module: {'paho-mqtt': '1.2.3', 'hal': ''}
+    - error_type: ImportError
+    - error: |
+        Max loops reached
+end_time: 1772009739.1669445
+total_time: 112.2613434791565

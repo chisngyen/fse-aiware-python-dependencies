@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1771996886.6175277
+iterations:
+  iteration_1:
+    - python_module: {'robot': ''}
+    - error_type: OtherPass
+    - error: |
+        No error
+end_time: 1771996893.3275821
+total_time: 6.710054397583008

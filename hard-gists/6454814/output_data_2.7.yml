@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1772001543.1180358
+iterations:
+  iteration_1:
+    - python_module: {'pyspark': '', 'numpy': '', 'scikit-learn': '', 'scipy': ''}
+    - error_type: OtherPass
+    - error: |
+        No error
+end_time: 1772001593.605199
+total_time: 50.48716330528259

@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1772005319.9697945
+iterations:
+  iteration_1:
+    - python_module: {'hyperopt': '0.2.7', 'scikit-learn': '0.20.4', 'pandas': '0.24.2'}
+    - error_type: OtherPass
+    - error: |
+        No error
+end_time: 1772005324.6929362
+total_time: 4.723141670227051

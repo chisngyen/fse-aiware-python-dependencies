@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1772005354.0225945
+iterations:
+  iteration_1:
+    - python_module: {'gensim': '0.13.4', 'MeCab': '0.996.13'}
+    - error_type: ImportError
+    - error: |
+        Max loops reached
+end_time: 1772005507.2358108
+total_time: 153.21321630477905

@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1772026218.2759237
+iterations:
+  iteration_1:
+    - python_module: {'python-twitter': '3.4.2', 'django': '1.11.29'}
+    - error_type: OtherPass
+    - error: |
+        No error
+end_time: 1772026259.6087122
+total_time: 41.33278846740723

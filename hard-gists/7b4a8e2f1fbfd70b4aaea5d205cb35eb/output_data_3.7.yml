@@ -1,0 +1,11 @@
+---
+python_version: 3.7
+start_time: 1772011606.0598235
+iterations:
+  iteration_1:
+    - python_module: {'ibapi': '9.81.1.post1'}
+    - error_type: OtherPass
+    - error: |
+        No error
+end_time: 1772011650.9497585
+total_time: 44.88993501663208

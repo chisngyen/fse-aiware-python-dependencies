@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1771998469.9160578
+iterations:
+  iteration_1:
+    - python_module: {'scrapy': '1.8.2'}
+    - error_type: OtherPass
+    - error: |
+        No error
+end_time: 1771998487.3842528
+total_time: 17.46819496154785

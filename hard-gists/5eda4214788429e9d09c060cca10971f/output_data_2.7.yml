@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1771998631.147293
+iterations:
+  iteration_1:
+    - python_module: {'paho-mqtt': '1.2.3'}
+    - error_type: OtherPass
+    - error: |
+        No error
+end_time: 1771998634.9481938
+total_time: 3.80090069770813

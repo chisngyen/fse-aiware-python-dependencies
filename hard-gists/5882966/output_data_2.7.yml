@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1771996720.8791518
+iterations:
+  iteration_1:
+    - python_module: {'netifaces': '0.10.9', 'pcapy': '0.10.10', 'netaddr': '0.7.16'}
+    - error_type: ImportError
+    - error: |
+        Max loops reached
+end_time: 1771996771.9169497
+total_time: 51.037797927856445

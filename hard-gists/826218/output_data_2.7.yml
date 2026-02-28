@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1772014903.848528
+iterations:
+  iteration_1:
+    - python_module: {'paste': '3.4.6', 'wphp': ''}
+    - error_type: ImportError
+    - error: |
+        Max loops reached
+end_time: 1772014915.0783956
+total_time: 11.229867696762085

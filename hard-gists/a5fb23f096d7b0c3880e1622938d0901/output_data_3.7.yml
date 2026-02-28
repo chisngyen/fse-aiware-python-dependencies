@@ -1,0 +1,11 @@
+---
+python_version: 3.7
+start_time: 1772039409.478181
+iterations:
+  iteration_1:
+    - python_module: {'torch': ''}
+    - error_type: None
+    - error: |
+        No error
+end_time: 1772039705.4081094
+total_time: 295.9299285411835

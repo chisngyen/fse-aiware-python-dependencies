@@ -1,0 +1,11 @@
+---
+python_version: 2.7
+start_time: 1772015115.7668529
+iterations:
+  iteration_1:
+    - python_module: {'django': '', 'pillow': ''}
+    - error_type: None
+    - error: |
+        No error
+end_time: 1772015120.8345873
+total_time: 5.067734479904175
