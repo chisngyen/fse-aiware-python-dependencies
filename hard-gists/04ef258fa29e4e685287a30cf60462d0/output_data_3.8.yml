@@ -1,11 +1,11 @@
 ---
 python_version: 3.8
-start_time: 1771927829.1508408
+start_time: 1772258318.836889
 iterations:
   iteration_1:
-    - python_module: {'flotilla': '0.3.2'}
+    - python_module: {'flotilla': ''}
     - error_type: ImportError
     - error: |
         Max loops reached
-end_time: 1771927984.583904
-total_time: 155.4330632686615
+end_time: 1772258329.2110379
+total_time: 10.374148845672607

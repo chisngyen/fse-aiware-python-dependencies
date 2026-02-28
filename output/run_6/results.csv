@@ -2561,3 +2561,13 @@ ffd436e0a7897c9e872d,output_data_2.7.yml,OtherPass,twisted;txamqp,17.552,True
 18e6b6ed5d69b057e773,output_data_3.8.yml,ImportError,workflow,37.412,False
 1911238,output_data_3.8.yml,ImportError,eyeD3,36.296,False
 1705235,output_data_3.7.yml,ImportError,IPython;numpy;scikit-learn,9.768,False
+1935808,output_data_2.7.yml,ImportError,IPython,88.301,False
+1950267,output_data_3.8.yml,ImportError,Eratosthenes,39.982,False
+1aefa4509e066690b892,output_data_3.7.yml,ImportError,keras,155.897,False
+19154831c2049a69e8d53dea8cf3e744,output_data_2.7.yml,OtherPass,torch,6.432,True
+1da13f548200d9fb2b06,output_data_2.7.yml,ImportError,Pillow;praw,66.985,False
+1c160c9eee91fd44c587,output_data_2.7.yml,ImportError,moviepy;pymba;scikit-image,28.413,False
+1ed9763ab4aa98516a7d,output_data_2.7.yml,ImportError,django,72.158,False
+1f140573b37939e78eb5,output_data_2.7.yml,ImportError,pycryptodome,29.678,False
+2038329,output_data_2.7.yml,ImportError,bigfloat;sympy,77.279,False
+2152643,output_data_2.7.yml,ImportError,matplotlib;numpy;pyaudio,75.508,False

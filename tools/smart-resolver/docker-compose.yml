@@ -9,7 +9,7 @@ services:
     container_name: smart-resolver
     privileged: true
     volumes:
-      - ../../hard-gists:/gists:ro
+      - ../../hard-gists:/gists
       - /var/run/docker.sock:/var/run/docker.sock
       - ../../pllm_results:/results:ro
       - ../../output:/output

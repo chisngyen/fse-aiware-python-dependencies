@@ -1,0 +1,11 @@
+---
+python_version: 3.8
+start_time: 1772258376.2782528
+iterations:
+  iteration_1:
+    - python_module: {'airflow': ''}
+    - error_type: ImportError
+    - error: |
+        Max loops reached
+end_time: 1772258383.0378013
+total_time: 6.7595484256744385
