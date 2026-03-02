@@ -233,7 +233,8 @@ class EnhancedResolver:
     def __init__(self, base_url: str = "http://localhost:11434",
                  model: str = "gemma2", temp: float = 0.7,
                  results_dir: str = None, logging: bool = True,
-                 use_llm: bool = True, build_timeout: int = 180):
+                 use_llm: bool = True, use_level1: bool = True,
+                 build_timeout: int = 180):
         self.version_detector = PythonVersionDetector()
         self.pypi_validator = PyPIValidator()
         self.module_mapper = ModuleMapper()
@@ -254,10 +255,13 @@ class EnhancedResolver:
         self.temp = temp
         self.logging = logging
         self.use_llm = use_llm
+        self.use_level1 = use_level1
         self.build_timeout = build_timeout
         self.start_time = time.time()
         self.code = ""
         self._tls = threading.local()
+        if not use_level1:
+            print("[ABLATION] Level 1 (Session Memory) is DISABLED", flush=True)
 
     def log(self, msg: str):
         if self.logging:
@@ -314,36 +318,37 @@ class EnhancedResolver:
 
         # === Novel: Self-Evolving Shortcut Check (FSE 2026) ===
         # Check if we've seen a similar snippet before and can reuse solution
-        try:
-            static_imports = list(self.module_mapper.extract_imports(code))
-            shortcut = self.evolving_memory.find_shortcut(static_imports)
-            if shortcut:
-                self.log(f"  Shortcut found! Trying cached solution...")
-                sc_packages = shortcut.get('packages', {})
-                sc_py_ver = shortcut.get('python_version', '3.7')
-                # Validate shortcut with a quick build
-                success, error_output, error_phase = self._build_and_test(
-                    snippet_path, sc_py_ver, sc_packages, code,
-                    build_timeout_override=180
-                )
-                if success or (error_phase == 'run' and error_output == 'RunTimeout'):
-                    duration = time.time() - self.start_time
-                    rt = 'None' if success else 'OtherPass'
-                    self.log(f"SHORTCUT SUCCESS! Python {sc_py_ver} in {duration:.1f}s")
-                    return self._result(True, python_version=sc_py_ver,
-                                       modules=sc_packages, duration=duration,
-                                       result_type=rt)
-                elif error_phase == 'run':
-                    et = self._classify_error(error_output)
-                    if et in self.RUNTIME_PASS_ERRORS:
+        if self.use_level1:
+            try:
+                static_imports = list(self.module_mapper.extract_imports(code))
+                shortcut = self.evolving_memory.find_shortcut(static_imports)
+                if shortcut:
+                    self.log(f"  Shortcut found! Trying cached solution...")
+                    sc_packages = shortcut.get('packages', {})
+                    sc_py_ver = shortcut.get('python_version', '3.7')
+                    # Validate shortcut with a quick build
+                    success, error_output, error_phase = self._build_and_test(
+                        snippet_path, sc_py_ver, sc_packages, code,
+                        build_timeout_override=180
+                    )
+                    if success or (error_phase == 'run' and error_output == 'RunTimeout'):
                         duration = time.time() - self.start_time
-                        self.log(f"SHORTCUT RUNTIME PASS ({et})! Python {sc_py_ver}")
+                        rt = 'None' if success else 'OtherPass'
+                        self.log(f"SHORTCUT SUCCESS! Python {sc_py_ver} in {duration:.1f}s")
                         return self._result(True, python_version=sc_py_ver,
                                            modules=sc_packages, duration=duration,
-                                           result_type=self._map_result_type(et, True))
-                self.log(f"  Shortcut didn't work, continuing pipeline")
-        except Exception as e:
-            self.log(f"  Shortcut check error: {e}")
+                                           result_type=rt)
+                    elif error_phase == 'run':
+                        et = self._classify_error(error_output)
+                        if et in self.RUNTIME_PASS_ERRORS:
+                            duration = time.time() - self.start_time
+                            self.log(f"SHORTCUT RUNTIME PASS ({et})! Python {sc_py_ver}")
+                            return self._result(True, python_version=sc_py_ver,
+                                               modules=sc_packages, duration=duration,
+                                               result_type=self._map_result_type(et, True))
+                    self.log(f"  Shortcut didn't work, continuing pipeline")
+            except Exception as e:
+                self.log(f"  Shortcut check error: {e}")
 
         # === STAGE 1: Initial Evaluation (Static + LLM + few-shot) ===
         python_version, modules = self._stage1_evaluate(code)
@@ -691,13 +696,14 @@ class EnhancedResolver:
             self.log(f"  Semantic analysis error: {e}")
 
         # === Novel: Self-Evolving Memory - version recommendation ===
-        try:
-            mem_py_ver = self.evolving_memory.get_recommended_python_version(list(static_imports))
-            if mem_py_ver and confidence == 'low':
-                self.log(f"  Memory recommends Python {mem_py_ver}")
-                static_version = mem_py_ver
-        except Exception:
-            pass
+        if self.use_level1:
+            try:
+                mem_py_ver = self.evolving_memory.get_recommended_python_version(list(static_imports))
+                if mem_py_ver and confidence == 'low':
+                    self.log(f"  Memory recommends Python {mem_py_ver}")
+                    static_version = mem_py_ver
+            except Exception:
+                pass
 
         # Get few-shot examples from oracle for these imports
         few_shot = ''
@@ -884,7 +890,7 @@ class EnhancedResolver:
                 pass
 
             # === Novel: Self-Evolving Memory import resolution ===
-            if not pip_name:
+            if not pip_name and self.use_level1:
                 try:
                     mem_name = self.evolving_memory.resolve_import(module)
                     if mem_name:
@@ -974,14 +980,15 @@ class EnhancedResolver:
 
         for module in modules:
             # === Novel: Self-Evolving Memory - session-learned version ===
-            try:
-                mem_ver = self.evolving_memory.get_best_version(module, python_version)
-                if mem_ver:
-                    packages[module] = mem_ver
-                    self.log(f"  {module}: {mem_ver} (from session memory)")
-                    continue
-            except Exception:
-                pass
+            if getattr(self, 'use_level1', True):
+                try:
+                    mem_ver = self.evolving_memory.get_best_version(module, python_version)
+                    if mem_ver:
+                        packages[module] = mem_ver
+                        self.log(f"  {module}: {mem_ver} (from session memory)")
+                        continue
+                except Exception:
+                    pass
 
             # Step 1: Static compat map (highest priority - trusted, no ceiling)
             static_ver = self.version_resolver.get_compat_version(module, python_version)
@@ -1055,20 +1062,21 @@ class EnhancedResolver:
                     self.log(f"  {module}: LLM couldn't pick, using latest")
 
         # === Novel: Self-Evolving Memory - avoid known-bad versions ===
-        for module, version in list(packages.items()):
-            if version:
-                try:
-                    if self.evolving_memory.should_avoid_version(module, version):
-                        self.log(f"  Memory: avoiding {module}=={version} (known-bad)")
-                        # Try to find alternative
-                        alt = self.evolving_memory.get_best_version(module, python_version)
-                        if alt and alt != version:
-                            packages[module] = alt
-                            self.log(f"  Memory: using {module}=={alt} instead")
-                        else:
-                            packages[module] = ''  # let pip pick latest
-                except Exception:
-                    pass
+        if getattr(self, 'use_level1', True):
+            for module, version in list(packages.items()):
+                if version:
+                    try:
+                        if self.evolving_memory.should_avoid_version(module, version):
+                            self.log(f"  Memory: avoiding {module}=={version} (known-bad)")
+                            # Try to find alternative
+                            alt = self.evolving_memory.get_best_version(module, python_version)
+                            if alt and alt != version:
+                                packages[module] = alt
+                                self.log(f"  Memory: using {module}=={alt} instead")
+                            else:
+                                packages[module] = ''  # let pip pick latest
+                    except Exception:
+                        pass
 
         return packages
 
@@ -1158,18 +1166,19 @@ class EnhancedResolver:
                     duration = time.time() - self.start_time
                     self.log(f"SUCCESS! Python {py_ver}, resolved in {duration:.1f}s")
                     # === Novel: Learn from success (FSE 2026) ===
-                    try:
-                        imports = list(self.module_mapper.extract_imports(code))
-                        self.evolving_memory.learn_from_success(
-                            imports, active_packages, py_ver
-                        )
-                        # Teach KB about successful import resolutions
-                        for imp in imports:
-                            for pkg in active_packages:
-                                if imp.lower() in pkg.lower() or pkg.lower() in imp.lower():
-                                    self.error_kb.learn_import_resolution(imp, pkg)
-                    except Exception:
-                        pass
+                    if self.use_level1:
+                        try:
+                            imports = list(self.module_mapper.extract_imports(code))
+                            self.evolving_memory.learn_from_success(
+                                imports, active_packages, py_ver
+                            )
+                            # Teach KB about successful import resolutions
+                            for imp in imports:
+                                for pkg in active_packages:
+                                    if imp.lower() in pkg.lower() or pkg.lower() in imp.lower():
+                                        self.error_kb.learn_import_resolution(imp, pkg)
+                        except Exception:
+                            pass
                     return self._result(
                         True, python_version=py_ver,
                         modules=active_packages, duration=duration,
@@ -1401,15 +1410,16 @@ class EnhancedResolver:
         duration = time.time() - self.start_time
         self.log(f"FAILED after all attempts ({duration:.1f}s)")
         # === Novel: Learn from failure (FSE 2026) ===
-        try:
-            imports = list(self.module_mapper.extract_imports(code))
-            self.evolving_memory.learn_from_failure(
-                imports, initial_packages,
-                versions_to_try[0] if versions_to_try else '3.7',
-                'max_loops_reached'
-            )
-        except Exception:
-            pass
+        if self.use_level1:
+            try:
+                imports = list(self.module_mapper.extract_imports(code))
+                self.evolving_memory.learn_from_failure(
+                    imports, initial_packages,
+                    versions_to_try[0] if versions_to_try else '3.7',
+                    'max_loops_reached'
+                )
+            except Exception:
+                pass
         return self._result(
             False, python_version=versions_to_try[0] if versions_to_try else '',
             modules=initial_packages, duration=duration,
@@ -2212,6 +2222,8 @@ class EnhancedResolver:
 
     def _learn_success(self, gist_id: str, code: str, packages: Dict[str, str], py_ver: str, duration: float):
         """Record successful resolution for novel self-evolving memory."""
+        if not self.use_level1:
+            return
         try:
             imports = list(self.module_mapper.extract_imports(code))
             error_hist = self.reflexion.get_history() if hasattr(self, 'reflexion') and hasattr(self.reflexion, 'get_history') else []

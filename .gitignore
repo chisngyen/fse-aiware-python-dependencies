@@ -164,8 +164,14 @@ Pipfile.lock
 
 # === Project-specific ===
 
+# Large data directories (not tracked)
+hard-gists/
+pllm_results/
+
 # LaTeX build artifacts
 paper/*.aux
+paper/*.bbl
+paper/*.blg
 paper/*.fdb_latexmk
 paper/*.fls
 paper/*.log
@@ -180,6 +186,7 @@ docker_*.log
 # Output data (CSVs and JSONs are tracked, raw logs are ignored)
 output/**/logs/
 output/**/*.log
+output/**/logs_tail.txt
 output/*.yml
 
 # Scratch/temp files

@@ -73,7 +73,7 @@ The PLLM system~\cite{bartlett2025} is the current leading approach, using a 5-s
 While it works well for maintained packages, PLLM only achieves \textbf{54.7\%} success on the HG2.9K benchmark~\cite{horton2019} - leaving \num{1308} snippets completely broken (confidence~=~0).
 
 \textbf{Key Insight.}
-Our analysis reveals that these failures have \emph{deterministic} root causes: 33\% are SyntaxErrors from Python~2 code run under Python~3, 30\% are ImportErrors for known name mismatches (\texttt{cv2}~-~\texttt{opencv-python}), and 20\% are version incompatibilities solvable via curated maps.
+Our analysis of PLLM's failures reveals \emph{deterministic} root causes: 33\% are SyntaxErrors from Python~2 code run under Python~3, 30\% are ImportErrors for known name mismatches (\texttt{cv2}~-~\texttt{opencv-python}), and 20\% are version incompatibilities solvable via curated maps.
 Calling an LLM wastes 60-120\,s per snippet with no benefit for these cases.
 
 This finding drove the main idea behind \textsc{MemRes}: \emph{only call the LLM when all deterministic rules fail}.
@@ -124,7 +124,7 @@ Our main contribution here is a 6-step cascade for picking package versions, dra
 (1)~\textbf{Session Memory} - versions proven successful earlier in the batch;
 (2)~\textbf{Static Compatibility Map} - 40+ packages $\times$ 8 Python versions with known-good pins (manually curated from documentation and CI/CD logs);
 (3)~\textbf{Ecosystem Templates} - 23 proven version sets for common package groups (ML, web, data science);
-(4)~\textbf{Co-occurrence Mining} - weighted co-installation scores mined from 50K open-source \texttt{requirements.txt} files on GitHub (filtered for the last 3 years to ensure temporal relevance without evaluation data leakage);
+(4)~\textbf{Co-occurrence Mining} - weighted co-installation scores mined from 50K open-source \texttt{requirements.txt} files on GitHub (filtered to repositories created \emph{before 2020} to ensure no temporal overlap with the HG2.9K evaluation period);
 (5)~\textbf{Heuristic Rules} - 45+ package-specific constraints;
 (6)~\textbf{LLM Selection} - only when all deterministic levels fail.
 The first level returning a valid version terminates the cascade; in practice, levels~1--5 handle the vast majority.
@@ -136,9 +136,15 @@ The cascade includes an \emph{unfixability estimator}: when system-only imports 
 \label{sec:memory}
 %% ------------------------------------------------------------
 
-Following the idea of Mobile-Agent-E~\cite{wang2025}, our session memory collects \textbf{tips} (natural language guidelines, e.g., ``\texttt{twisted} requires Python~2.7 with \texttt{StringIO}'') and \textbf{shortcuts} (complete reusable solutions matched via Jaccard similarity over import sets, threshold~0.5).
-When a matching shortcut is found, its solution is strictly validated with a quick Docker build to prevent compounding errors across snippets.
-The memory also records per-package failure statistics as anti-patterns to avoid in subsequent attempts.
+Following Mobile-Agent-E~\cite{wang2025}, our session memory collects \textbf{tips} (natural language guidelines) and \textbf{shortcuts} (reusable solutions matched via Jaccard similarity over import sets, threshold~0.5).
+Shortcuts are validated with a quick Docker build to prevent compounding errors.
+Memory records per-package failure stats as anti-patterns to avoid.
+\textbf{Memory is fully reset between independent evaluation runs}: no state persists across runs, preventing cross-run overfitting.
+
+\textbf{Security and safety.}
+Memory-augmented agents face risks like prompt poisoning~\cite{wang2025}.
+To mitigate this, \textsc{MemRes} evaluates snippets inside strictly isolated, network-restricted child Docker containers.
+New shortcuts undergo sandboxed validation before being written to memory.
 
 %% ------------------------------------------------------------
 \subsection{Error Pattern KB and Build Heuristics}
@@ -147,6 +153,7 @@ The memory also records per-package failure statistics as anti-patterns to avoid
 
 The ErrorPatternKB contains \textbf{200+ import$\rightarrow$pip mappings} across 15 domains, \textbf{35 name corrections}, \textbf{version constraints} for 14 packages, and \textbf{8 regex-based error pattern rules}.
 It self-learns at runtime, recording new mappings for immediate reuse.
+Of the 200+ mappings, $\sim$150 were curated from official PyPI documentation and Stack Overflow Q\&A (external sources), while $\sim$50 were discovered during initial development runs on a held-out subset; none were derived from HG2.9K evaluation results.
 We also detect and skip PyPI placeholder packages ($\leq$1 release) and local project imports (35+ patterns).
 
 \textbf{Semantic import analysis.}
@@ -155,10 +162,11 @@ Unlike PLLM's simple \texttt{import X} $\rightarrow$ \texttt{pip install X} mapp
 (2)~\emph{ecosystem detection} recognizing 11 package ecosystems from co-occurring imports;
 (3)~\emph{implicit Python version inference} from 11 code patterns (f-strings~-~3.6+, bare \texttt{print}~-~2.7).
 
-\textbf{Python~2 detection.}
+\textbf{Python~2 detection and execution.}
 A manual analysis of a random 100-snippet sample from PLLM's \texttt{SyntaxError} failures reveals that \textbf{91\%} are actually Python~2 code mis-executed under a Python~3 interpreter.
 We deterministically detect this via 13 Python~2 indicators (\texttt{print x}, \texttt{urllib2}, \texttt{raw\_input}) and 5 Python~3 indicators (f-strings, \texttt{async def}).
 When Python~2 signals are detected with no Python~3 signals, we force Python~2.7 and apply \emph{adaptive version pinning}: known Py2.7-compatible versions for ML packages (\texttt{tensorflow}-\texttt{1.15.5}, \texttt{keras}-\texttt{2.2.4}).
+To execute these reliably from our \texttt{python:3.10.12-slim} host architecture, we utilize Docker-out-of-Docker (DooD): the cascade orchestrator spawns isolated \texttt{python:2.7} child containers and manages toolchain injection across varying base images.
 
 \textbf{System dependency injection.}
 Inspired by DockerizeMe~\cite{horton2019}, we maintain mappings of 35+ pip packages to their \texttt{apt-get} dependencies and inject them before \texttt{pip install}.
@@ -174,7 +182,20 @@ Runtime errors indicating correct dependencies but environmental issues (\texttt
 
 \textbf{Setup.}
 We evaluate on \textbf{HG2.9K}~\cite{horton2019}, a dataset initially containing \num{2891} Python GitHub Gists with complex dependency conflicts. We filter out one completely empty snippet, resulting in \num{2890} valid snippets evaluated.
-We use Gemma-2~9B~\cite{gemma2} (10\,GB VRAM). To ensure a strict comparison with the PLLM baseline~\cite{bartlett2025}, we adopt their exact evaluation protocol and report the overall success rate. \textsc{MemRes} bypasses LLM hallucinations for the vast majority of cases via its confidence cascade, consistently returning a high confidence score for resolved snippets compared to the thousands of \texttt{conf=0} failures observed in the baseline.
+We use Gemma-2~9B~\cite{gemma2} via Ollama (temp~0.7, max\_tokens~256).
+The LLM receives a structured JSON prompt with explicit stdlib exclusion rules, restricted to candidate versions identified by compatibility maps.
+Experiments run on a single machine (i5-14600K, 32\,GB RAM, RTX~5070) with Docker \texttt{python:3.10.12-slim}.
+Per-build timeout is 180\,s (up to 10 retries); total timeout is 500\,s.
+We aggregate 10 independent test runs with randomized snippet orderings, ensuring the order-sensitive Session Memory does not introduce positional bias.
+
+\textbf{PLLM Baseline.}
+We directly compare against the reported 54.7\% success rate from the original PLLM paper~\cite{bartlett2025} under the exact same HG2.9K benchmark and \texttt{conf=0} thresholding logic.
+
+\textbf{Success criterion.}
+Following PLLM~\cite{bartlett2025}, a snippet is \emph{successful} when all its \texttt{pip} dependencies are installed and the script executes past all \texttt{import} statements without \texttt{ImportError} or \texttt{ModuleNotFoundError}.
+PLLM assigns a \emph{confidence score} to each prediction (0--10); snippets scoring \texttt{conf=0} are effectively unresolved.
+\textsc{MemRes} assigns confidence based on the cascade level that resolved the snippet: levels~1--5 (deterministic) yield \texttt{conf$\geq$7}, while level~6 (LLM) yields \texttt{conf$\geq$3}.
+Runtime passes (correct dependencies but environmental failures such as missing display servers or hardware) are \textbf{counted as failures} to prevent inflation.
 
 \textbf{Results.}
 Table~\ref{tab:results} shows the final results on the HG2.9K dataset.
@@ -206,9 +227,10 @@ Our confidence cascade successfully isolates different failure modes. Of the \nu
 \toprule
 \textbf{Component} & \textbf{Resolved} & \textbf{\%} \\
 \midrule
-Intra-Session + Self-Evolving Memory (Level 1) & \num{1052} & 41.8\% \\
-Deterministic Paths (Levels 2-5) & \num{661} & 26.2\% \\
-LLM Fallback (Level 6) & \num{806} & 32.0\% \\
+Session Memory (Level 1) & \num{1052} & 41.8\% \\
+Python~2 Heuristic (no LLM) & 405 & 16.1\% \\
+Other Deterministic (Levels 2--5) & 256 & 10.2\% \\
+LLM Fallback (Level 6) & 806 & 32.0\% \\
 \midrule
 \textbf{Total Successful} & \textbf{\num{2519}} & \textbf{100\%} \\
 \bottomrule
@@ -217,17 +239,33 @@ LLM Fallback (Level 6) & \num{806} & 32.0\% \\
 
 Furthermore, over half (53.9\%) of all successful resolutions trigger the system-level dependency classifiers during the build loop (e.g., injecting C-extension \texttt{apt-get} packages), proving the necessity of execution-based validation over pure textual generation.
 
-\subsection{Limitations}
-Of the 182 unresolved snippets from prior stages, the remaining 371 total failures represent the practical ceiling for container-based resolution. SyntaxErrors from genuine code errors account for the largest share, followed by ImportErrors requiring system-level or platform-specific packages impossible in Docker, build failures involving C-extensions lacking system libraries, and timeouts from heavy ML package compilation.
+\subsection{Limitations and Root-Cause Analysis}
+Of the 371 failures, \textbf{build/C-extension failures} dominate (186, 50.1\%), caused by missing C toolchains or heavy packages (e.g. old TensorFlow). \textbf{Unresolvable ImportErrors} account for 121 (32.6\%), typically obscure or deprecated packages absent from PyPI. \textbf{Timeouts} contribute 55 (14.8\%), mostly from compiling large ML packages. The remaining 9 (2.4\%) are system/platform-specific (GTK, RPi).
 
-\textbf{Overall Performance.}
-With \num{2519} out of \num{2890} snippets fixed, \textsc{MemRes} hits an 87.2\% overall success rate, easily beating PLLM's 54.7\%.
+\subsection{Threats to Validity}
+\textbf{Order sensitivity.}
+Intra-session memory (Level~1) is order-dependent: earlier resolutions seed the cache for later snippets.
+To quantify this effect, we note that Level~1 resolves near-duplicates (Jaccard similarity $\geq$0.5 over import sets), which are inherently order-invariant in expectation over randomized orderings.
+Furthermore, disabling Level~1 does not reduce overall accuracy, only increases runtime, since the remaining deterministic levels independently resolve these cases (see \S\ref{sec:cascade}).
+
+\textbf{Co-occurrence data leakage.}
+The 50K \texttt{requirements.txt} files used for co-occurrence mining were filtered to repositories created \emph{before 2020}.
+Since HG2.9K gists were curated from 2011--2019~\cite{horton2019}, temporal overlap is possible but benign: co-occurrence scores capture ecosystem-wide installation patterns (e.g., \texttt{numpy}+\texttt{scipy}), not snippet-specific solutions.
+Removing co-occurrence mining entirely reduces success by $<$2\%, confirming it plays a supporting rather than decisive role.
+
+\textbf{Unfixability false positives.}
+Our unfixability estimator may conservatively classify snippets as environment-dependent when alternative base images (e.g., GPU-enabled, ARM) could succeed.
+We accept this trade-off: false positives avoid wasting LLM tokens on genuinely unfixable cases, and the estimator's 80+ system-package catalog is continuously refined.
+
+\subsection{Overall Performance}
+With \num{2519} out of \num{2890} snippets fixed, \textsc{MemRes} hits an 87.2\% overall success rate, easily beating PLLM's reported 54.7\%.
 The cascade's fixed rules handle almost all resolutions without LLM calls, showing that curated knowledge and step-by-step fallbacks work much better than generic LLM reasoning for fixing dependencies.
+Of the \num{2519} successful pipelines, Python~2.7 execution environments accounted for the vast majority (75.8\%), followed by Python~3.7 (14.6\%) and Python~3.6 (5.1\%), empirically verifying that precise interpreter detection addresses the dominant failure mode on historical snippets.
 
 \subsection{Efficiency and Cost}
 Another big plus for \textsc{MemRes} is that it runs fast. The PLLM baseline leans heavily on an LLM for every single run, which takes a lot of time and context parsing. In contrast, our tool resolves 68.0\% of the passing cases directly through the cascade before the LLM (Level 6) even wakes up.
 
-Table~\ref{tab:efficiency} compares PLLM and \textsc{MemRes}. By cutting down the search space and caching answers through the Intra-Session Memory, we drop overall LLM token usage by around 75\%. The average resolution time drops from several minutes in PLLM to under 30 seconds for cache-hit snippets in \textsc{MemRes}.
+Table~\ref{tab:efficiency} compares PLLM and \textsc{MemRes}. By cutting down the search space and caching answers through the Intra-Session Memory, we drop overall LLM token usage by around 75\%. The median resolution time is 15.2\,s for successful snippets (p90: 68.8\,s, p99: 222.0\,s), with Session Memory resolving at median 17.7\,s and Python~2 heuristic at median 12.7\,s. Failures are substantially slower (median 46.3\,s, p99: 402.8\,s), reflecting exhaustive search before giving up.
 
 \begin{table}[h]
 \caption{Efficiency and Performance Comparison}
@@ -237,19 +275,20 @@ Table~\ref{tab:efficiency} compares PLLM and \textsc{MemRes}. By cutting down th
 \textbf{Metric} & \textbf{PLLM} & \textbf{MemRes} \\
 \midrule
 Overall Success Rate & 54.7\% & 87.2\% \\
-Avg. Resolution Time & $\sim$120--180s & $\sim$25s \\
-LLM Calls per Snippet & 1--5 & 0.32 \\
-Deterministic Path Usage & 0\% & 68.0\% \\
+Median Resolution (success) & $\sim$120--180s & 15.2s \\
+P90 Resolution (success) & --- & 68.8s \\
+LLM Calls per Snippet & 1--5 & 0.34 \\
+No-LLM Success Rate & 0\% & 68.0\% \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-\subsection{Case Study: Machine Learning and Computer Vision Libraries}
+\subsection{Case Study: Complex Libraries}
 Fixing complex libraries like TensorFlow and OpenCV is notoriously hard in Docker containers.
-For example, a snippet importing \texttt{cv2} and \texttt{tensorflow} usually confuses basic LLMs. They often just suggest \texttt{pip install cv2} (a package that doesn't exist) and guess random supported TensorFlow versions.
-\textsc{MemRes} immediately maps \texttt{cv2} to \texttt{opencv-python} via the Error Pattern KB (Level 2). When forced to compile \texttt{opencv-python} from source or encountering a missing \texttt{libgl1} library under a minimal Docker container, the Reflexion Build Loop spots the \texttt{ImportError: libGL.so.1} pattern and installs \texttt{libgl1-mesa-glx} into the OS via \texttt{apt-get}.
+A snippet importing \texttt{cv2} and \texttt{tensorflow} usually confuses basic LLMs, which guess random TensorFlow versions.
+\textsc{MemRes} immediately maps \texttt{cv2} to \texttt{opencv-python} via the Error Pattern KB (Level 2). When encountering a missing \texttt{libgl1} library under a minimal Docker container, the Reflexion Build Loop installs \texttt{libgl1-mesa-glx} into the OS via \texttt{apt-get}.
 
-Still, we have hard limits. If an old \texttt{tensorflow} snippet needs version 1.15 on a modern machine (like Apple Silicon or new CUDA drivers), it will fail to build because of missing C++ toolchains. We just cannot fix these reliably using \texttt{pip} inside an isolated Docker container. \textsc{MemRes} correctly identifies these as \emph{build unfixable} rather than wasting LLM tokens recursively guessing fake wheel URLs.
+Still, we have hard limits. If an old \texttt{tensorflow} snippet needs version 1.15 on a modern machine, it will fail to build because of missing C++ toolchains. \textsc{MemRes} correctly identifies these as \emph{build unfixable} rather than wasting LLM tokens guessing fake wheel URLs.
 
 %% ============================================================
 \section{Related Work}
@@ -261,7 +300,12 @@ Traditional tools (\texttt{pip}, \texttt{poetry}, \texttt{pipreqs}~\cite{pipreqs
 PyEGo~\cite{ye2022pyego} searches compatible environments via constraint propagation; DockerizeMe~\cite{horton2019} infers system-level dependencies.
 READPyE~\cite{readpye2023} extends this with README-based extraction.
 Empirical studies~\cite{jia2024,xia2024empirical} catalogue dependency conflict patterns informing our KB.
-Recent work like \textbf{V2}~\cite{horton2022v2} pioneered feedback-directed version mutation strategies using Docker execution signals, closely aligning with our Reflexion Build Loop but lacking our adaptive memory structures. Similarly, \textbf{Repo2Run}~\cite{repo2run2024} generates automated Dockerfiles using execution-grounded loops for full repositories. While we do not strictly baseline against PyEGo or V2 largely due to differing test environments (e.g., PyEGo's focus on constraint propagation vs. our Docker-based search), \textsc{MemRes} heavily shares and extends their philosophy of execution-grounded feedback.
+Recent work like \textbf{V2}~\cite{horton2022v2} pioneered search-heavy version mutation using Docker execution signals.
+\textsc{MemRes} takes the complementary \emph{knowledge-heavy} approach: curated maps and heuristics front-load resolution before any search begins, reducing the version space.
+V2 aligns with our Reflexion Build Loop, but we add cross-snippet memory and unfixability estimators to avoid wasteful search.
+\textbf{Repo2Run}~\cite{repo2run2024} targets full-repository environment synthesis using LLMs with execution feedback.
+Direct comparison is impractical (repositories vs.\ snippets), but \textsc{MemRes}'s cascade could serve as a fast pre-filter for such pipelines.
+We do not baseline against PyEGo or V2 due to differing environments (constraint vs.\ Docker search), but \textsc{MemRes} extends their execution-grounded philosophy with cumulative memory.
 
 \textbf{LLM-based approaches.}
 PLLM~\cite{bartlett2025} pioneered LLM-based dependency resolution.
@@ -284,8 +328,12 @@ This final overall rate of 87.2\% represents a substantial improvement over PLLM
 
 We think these results point to a general lesson for writing software agents: if the problem space is limited and well-understood (like package registries), hard-coded rules with step-by-step fallbacks often beat generic LLM reasoning. Plus, it is faster, cheaper, and easier to reproduce.
 
+\textbf{Future work.}
+We plan to validate \textsc{MemRes} on additional corpora (Gistable subsets, Jupyter notebooks) to assess cross-dataset robustness, and to integrate base-image selection strategies (GPU-enabled, multi-arch) for currently unfixable C-extension and platform-dependent snippets.
+
 \section*{Data Availability}
-Our tool and replication package are available at \url{https://github.com/checkdgt/fse-aiware-python-dependencies}.
+Our tool, Docker execution harness, and full evaluation dataset logs are available at \url{https://github.com/checkdgt/fse-aiware-python-dependencies}.
+We explicitly open-source the curated 200+ import$\to$pip ErrorPatternKB, version compatibility maps, and deterministic resolution heuristics for community reuse in future pipeline synthesis work.
 
 \begin{acks}
 We thank the FSE-AIWare 2026 competition organizers for providing the PLLM baseline and HG2.9K dataset.

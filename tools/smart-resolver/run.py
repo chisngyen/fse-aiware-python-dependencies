@@ -69,6 +69,7 @@ def resolve_single(args):
         results_dir=args.data,
         logging=True,
         use_llm=not args.no_llm,
+        use_level1=not getattr(args, 'no_level1', False),
         build_timeout=args.timeout,
     )
 
@@ -157,7 +158,11 @@ def resolve_folder(args):
     output_dir.mkdir(parents=True, exist_ok=True)
 
     # Determine run directory
-    run_dir = _get_run_dir(output_dir, args.resume or args.retry_failed)
+    if getattr(args, 'exact_output', False):
+        run_dir = output_dir
+        print(f"Using exact output directory: {run_dir}", flush=True)
+    else:
+        run_dir = _get_run_dir(output_dir, args.resume or args.retry_failed)
 
     resolver = EnhancedResolver(
         base_url=args.base,
@@ -166,6 +171,7 @@ def resolve_folder(args):
         results_dir=args.data,
         logging=True,
         use_llm=not args.no_llm,
+        use_level1=not getattr(args, 'no_level1', False),
         build_timeout=args.timeout,
     )
 
@@ -392,8 +398,11 @@ def main():
                        help='Path to historical results directory (contains pllm_results/)')
     parser.add_argument('-o', '--output', default='/output',
                        help='Output directory for results')
+    parser.add_argument('--exact-output', action='store_true',
+                       help='Use the exact output directory without creating run_N subdirectories')
     parser.add_argument('-v', '--verbose', action='store_true', help='Verbose logging')
     parser.add_argument('--no-llm', action='store_true', help='Disable LLM calls (faster)')
+    parser.add_argument('--no-level1', action='store_true', help='Disable Level 1 Session Memory (Ablation)')
     parser.add_argument('--timeout', type=int, default=180, help='Docker build timeout (seconds)')
     parser.add_argument('-n', '--max-snippets', type=int, default=0,
                        help='Max snippets to process (0=all)')

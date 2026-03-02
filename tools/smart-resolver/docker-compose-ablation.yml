@@ -12,11 +12,11 @@ services:
       - ../../hard-gists:/gists
       - /var/run/docker.sock:/var/run/docker.sock
       - ../../pllm_results:/results:ro
-      - ../../output/run_6:/output
+      - ../../output/ablation_no_level1:/output
     extra_hosts:
       - "host.docker.internal:host-gateway"
     command: >
       python run.py --folder /gists
-      -d /results -o /output --exact-output
+      -d /results -o /output --exact-output --no-level1
       -m gemma2 -b http://host.docker.internal:11434
       -l 10 -r 0 -w 2 --timeout 180 --resume
