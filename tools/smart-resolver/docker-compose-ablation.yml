@@ -19,4 +19,4 @@ services:
       python run.py --folder /gists
       -d /results -o /output --exact-output --no-level1
       -m gemma2 -b http://host.docker.internal:11434
-      -l 10 -r 0 -w 2 --timeout 180 --resume
+      -l 10 -r 0 -w 1 --timeout 180 --resume

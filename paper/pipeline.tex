@@ -1,0 +1,167 @@
+% ============================================================
+%  MEMRES Pipeline — Standalone TikZ  (paper figure)
+%  Style: Navy/White/Gold/Orange corporate palette
+% ============================================================
+\documentclass[border=3pt]{standalone}
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric, arrows.meta, positioning, fit,
+  backgrounds, calc, decorations.pathreplacing}
+\usepackage[T1]{fontenc}
+\usepackage{helvet}
+\renewcommand{\familydefault}{\sfdefault}
+\usepackage{fontawesome5}
+
+% --- Palette ---
+\definecolor{navydark}{RGB}{10,25,49}
+\definecolor{navymid}{RGB}{22,48,85}
+\definecolor{navylight}{RGB}{42,75,120}
+\definecolor{warnorange}{RGB}{235,137,33}
+\definecolor{successgreen}{RGB}{46,174,86}
+\definecolor{goldaccent}{RGB}{255,193,7}
+\definecolor{mempur}{RGB}{120,80,170}
+\definecolor{kbamber}{RGB}{180,110,30}
+
+\begin{document}
+\begin{tikzpicture}[
+    node distance=0.55cm and 1cm,
+    >=Stealth,
+    every node/.style={font=\footnotesize},
+    % Main stage boxes
+    stage/.style={draw=navydark, very thick, rounded corners=4pt,
+      minimum height=0.8cm, minimum width=2.3cm, align=center,
+      font=\footnotesize\bfseries, text=white},
+    % Sub-component boxes
+    sub/.style={draw=#1!60, thick, rounded corners=3pt,
+      fill=#1!8, minimum height=0.45cm, minimum width=1.4cm,
+      align=center, font=\scriptsize, text=#1!85!black},
+    % Memory / KB boxes
+    store/.style={draw=#1, very thick, rounded corners=5pt,
+      fill=#1!8, minimum height=0.55cm, align=center,
+      font=\scriptsize\bfseries, text=#1!85!black},
+    % Arrows
+    mainflow/.style={->, very thick, navymid},
+    fastpath/.style={->, very thick, successgreen!80!black},
+    dashedlink/.style={->, thick, dashed},
+    retryloop/.style={->, thick, dashed, warnorange},
+  ]
+
+  % ===== INPUT =====
+  \node[draw=navylight, very thick, rounded corners=4pt,
+        fill=navylight!8, minimum height=0.75cm, minimum width=2cm,
+        font=\footnotesize\bfseries, text=navydark]
+    (input) {\faPython\ Snippet};
+
+  % ===== STAGE 1 =====
+  \node[stage, fill=navymid, right=1.2cm of input] (s1)
+    {\faMemory\ Stage 1\\Intra-Session\\Memory};
+
+  % ===== STAGE 2 =====
+  \node[stage, fill=navylight, right=1.2cm of s1] (s2)
+    {\faSearch\ Stage 2\\Hybrid\\Evaluation};
+
+  \node[sub=navylight, above=0.35cm of s2, xshift=-0.8cm] (py2)
+    {\scriptsize \faPython\ Py2};
+  \node[sub=navylight, above=0.35cm of s2, xshift=0.8cm] (sem)
+    {\scriptsize \faProjectDiagram\ Semantic};
+
+  % ===== STAGE 3 =====
+  \node[stage, fill=warnorange!85!black, right=1.2cm of s2] (s3)
+    {\faLayerGroup\ Stage 3\\Version\\Selection};
+
+  \node[sub=warnorange, above=0.35cm of s3, xshift=-0.6cm, minimum width=1cm]
+    (cl15) {\scriptsize \faCogs\ L1--L5};
+  \node[sub=red, above=0.35cm of s3, xshift=0.6cm, minimum width=1cm]
+    (cl6) {\scriptsize \faRobot\ L6};
+
+  % ===== STAGE 4 =====
+  \node[stage, fill=red!50!navydark, right=1.2cm of s3] (s4)
+    {\faServer\ Stage 4\\Build Loop\\+ Reflexion};
+
+  \node[sub=red, above=0.35cm of s4, xshift=-0.8cm] (docker)
+    {\scriptsize \faDocker\ Docker};
+  \node[sub=red, above=0.35cm of s4, xshift=0.8cm] (sysdep)
+    {\scriptsize \faCog\ Sys-Dep};
+
+  % ===== SUB-COMPONENT TO STAGE LINKS =====
+  \draw[dashedlink, navylight!70] (py2.south) -- ([xshift=-0.45cm]s2.north);
+  \draw[dashedlink, navylight!70] (sem.south) -- ([xshift=0.45cm]s2.north);
+  \draw[dashedlink, warnorange!75!black] (cl15.south) -- ([xshift=-0.35cm]s3.north);
+  \draw[dashedlink, red!75!black] (cl6.south) -- ([xshift=0.35cm]s3.north);
+  \draw[dashedlink, red!75!black] (docker.south) -- ([xshift=-0.45cm]s4.north);
+  \draw[dashedlink, red!75!black] (sysdep.south) -- ([xshift=0.45cm]s4.north);
+
+  % ===== OUTPUT =====
+  \node[fill=successgreen, rounded corners=4pt, very thick,
+        draw=successgreen!70!black,
+        minimum height=0.6cm, minimum width=1.4cm,
+        font=\footnotesize\bfseries, text=white,
+        right=1.2cm of s4, yshift=0.3cm]
+    (succ) {\faCheckCircle\ Pass};
+  \node[fill=red!60, rounded corners=4pt, very thick,
+        draw=red!50!black,
+        minimum height=0.6cm, minimum width=1.4cm,
+        font=\footnotesize\bfseries, text=white,
+        right=1.2cm of s4, yshift=-0.3cm]
+    (fail) {\faTimesCircle\ Fail};
+
+  % ===== MAIN FLOW =====
+  \draw[mainflow] (input) -- (s1);
+  \draw[mainflow] (s1) -- (s2);
+  \draw[mainflow] (s2) -- (s3);
+  \draw[mainflow] (s3) -- (s4);
+  \draw[mainflow] (s4) -- (succ);
+  \draw[mainflow] (s4) -- (fail);
+
+  % ===== FAST PATH 1: cache hit (topmost) =====
+  \draw[fastpath, rounded corners=5pt] (s1.north) -- ++(0,2.3)
+    node[above right=-1pt and 2pt, font=\tiny\bfseries, text=successgreen!70!black]
+      {\faForward\ cache hit}
+    -| ([xshift=0.3cm]succ.north);
+
+  % ===== FAST PATH 2: Py2 fast (slightly lower) =====
+  \draw[fastpath, successgreen!55!black, rounded corners=5pt]
+    (py2.north) -- ++(0,0.8)
+    node[above right=-1pt and 2pt, font=\tiny\bfseries, text=successgreen!55!black]
+      {\faForward\ Py2 fast}
+    -| ([xshift=-0.12cm]succ.north);
+
+  % ===== RETRY LOOP =====
+  \draw[retryloop, rounded corners=4pt] (s4.south) -- ++(0,-0.45) -| (s3.south)
+    node[midway, below, font=\tiny\bfseries, text=warnorange]
+    {\faRedo\ retry ($\leq$10$\times$)};
+
+  % ===== CASCADE BRACE (drawn before memory/KB so brace is on top) =====
+  \draw[decorate, decoration={brace, amplitude=3pt, mirror},
+        very thick, navydark]
+    ([xshift=1.40cm,yshift=-1.05cm]s2.south west) -- ([xshift=-1.40cm,yshift=-1.05cm]s3.south east)
+    node[midway, below=3pt, font=\tiny\bfseries, text=navydark]
+    {Confidence Cascade};
+
+  % ===== MEMORY =====
+  \node[store=mempur, below=1.9cm of s2, minimum width=2.8cm]
+    (mem) {\faBrain\ Self-Evolving Memory\\[-1pt]{\tiny Tips + Shortcuts (Jaccard $\geq$0.5)}};
+
+  \draw[dashedlink, mempur!60] (mem.north) -- (s2.south)
+    node[midway, left, font=\tiny, text=mempur!70] {read};
+  \draw[dashedlink, mempur!60] (s4.south) |- ([yshift=0.15cm]mem.east)
+    node[near end, above, font=\tiny, text=mempur!70] {write};
+  \draw[dashedlink, mempur!60] (mem.west) -| ([xshift=0.2cm]s1.south)
+    node[near start, below, font=\tiny, text=mempur!70] {lookup};
+
+  % ===== ERROR PATTERN KB =====
+  \node[store=kbamber, below=1.9cm of s3, minimum width=2.4cm]
+    (kb) {\faBook\ Error Pattern KB\\[-1pt]{\tiny 200+ mappings, 35 corrections}};
+
+  \draw[dashedlink, kbamber!70] (kb.north) -- (s3.south)
+    node[midway, right, font=\tiny, text=kbamber!70] {query};
+  \draw[dashedlink, kbamber!70] (s4.south east) |- ([yshift=-0.15cm]kb.east)
+    node[near end, below, font=\tiny, text=kbamber!70] {learn};
+
+  % ===== STAGE LABELS =====
+  \node[font=\tiny, text=navydark] at ([yshift=-0.05cm]s1.south) {};
+  \node[font=\tiny, text=navydark, below=0.06cm of s4] {Docker + apt};
+
+
+
+\end{tikzpicture}
+\end{document}

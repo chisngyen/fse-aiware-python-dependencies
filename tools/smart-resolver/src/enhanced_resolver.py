@@ -367,7 +367,7 @@ class EnhancedResolver:
         self.log(f"Python versions to try: {versions_to_try}")
 
         result = self._stage4_build_loop(
-            snippet_path, code, packages, versions_to_try, max_loops
+            snippet_path, code, packages, versions_to_try, max_loops, gist_id=gist_id
         )
 
         # Record result for cross-snippet transfer
@@ -1088,6 +1088,7 @@ class EnhancedResolver:
                             initial_packages: Dict[str, str],
                             versions_to_try: List[str],
                             max_loops: int,
+                            gist_id: str = None,
                             snippet_path_override: str = 'USE_DEFAULT') -> Dict:
         """
         Enhanced build/test loop with Reflexion memory.
@@ -1212,7 +1213,7 @@ class EnhancedResolver:
                             if has_pillow:
                                 duration = time.time() - self.start_time
                                 self.log(f"  Old PIL import '{fail_mod}' with Pillow installed → RUNTIME PASS")
-                                self._learn_success(code, active_packages, py_ver)
+                                self._learn_success(gist_id, code, active_packages, py_ver, duration)
                                 return self._result(
                                     True, python_version=py_ver,
                                     modules=active_packages, duration=duration,
@@ -1224,7 +1225,7 @@ class EnhancedResolver:
                             # script just needs system environment (macOS/Linux/etc)
                             duration = time.time() - self.start_time
                             self.log(f"  {fail_mod} is system-only → RUNTIME PASS (deps OK)")
-                            self._learn_success(code, active_packages, py_ver)
+                            self._learn_success(gist_id, code, active_packages, py_ver, duration)
                             return self._result(
                                 True, python_version=py_ver,
                                 modules=active_packages, duration=duration,
@@ -1259,7 +1260,7 @@ class EnhancedResolver:
                         if is_local:
                             duration = time.time() - self.start_time
                             self.log(f"  {full_mod_name} is local/project import → RUNTIME PASS")
-                            self._learn_success(code, active_packages, py_ver)
+                            self._learn_success(gist_id, code, active_packages, py_ver, duration)
                             return self._result(
                                 True, python_version=py_ver,
                                 modules=active_packages, duration=duration,
@@ -1277,7 +1278,7 @@ class EnhancedResolver:
                 if error_type == 'DjangoSettings':
                     duration = time.time() - self.start_time
                     self.log(f"DJANGO PASS! Python {py_ver}, resolved in {duration:.1f}s")
-                    self._learn_success(code, active_packages, py_ver)
+                    self._learn_success(gist_id, code, active_packages, py_ver, duration)
                     return self._result(
                         True, python_version=py_ver,
                         modules=active_packages, duration=duration,
@@ -1288,7 +1289,7 @@ class EnhancedResolver:
                     duration = time.time() - self.start_time
                     rt = self._map_result_type(error_type, True)
                     self.log(f"RUNTIME PASS ({error_type})! Python {py_ver}, deps OK in {duration:.1f}s")
-                    self._learn_success(code, active_packages, py_ver)
+                    self._learn_success(gist_id, code, active_packages, py_ver, duration)
                     return self._result(
                         True, python_version=py_ver,
                         modules=active_packages, duration=duration,
@@ -1299,7 +1300,7 @@ class EnhancedResolver:
                 if error_phase == 'run' and error_output == 'RunTimeout':
                     duration = time.time() - self.start_time
                     self.log(f"RUNTIME PASS (RunTimeout)! Python {py_ver}, deps OK in {duration:.1f}s")
-                    self._learn_success(code, active_packages, py_ver)
+                    self._learn_success(gist_id, code, active_packages, py_ver, duration)
                     return self._result(
                         True, python_version=py_ver,
                         modules=active_packages, duration=duration,

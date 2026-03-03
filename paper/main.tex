@@ -98,7 +98,7 @@ Figure~\ref{fig:arch} illustrates the pipeline.
 
 \begin{figure}[t]
 \centering
-\includegraphics[width=\linewidth]{pipeline.jpg}
+\includegraphics[width=\linewidth]{pipeline.pdf}
 \caption{\textsc{MemRes} pipeline. Each stage has deterministic fast paths that bypass the LLM.}
 \Description{MemRes's 5-stage pipeline architecture.}
 \label{fig:arch}
@@ -205,34 +205,32 @@ Table~\ref{tab:results} shows the final results on the HG2.9K dataset.
 \label{tab:results}
 \begin{tabular}{lrr}
 \toprule
-\textbf{Metric} & \textbf{PLLM} & \textbf{MemRes} \\
+\textbf{Metric} & \textbf{PLLM} & \textbf{MemRes (10-run avg)} \\
 \midrule
-Resolved & \num{1583} (54.7\%) & \num{2519} (87.2\%) \\
-Failed & \num{1308} (45.3\%) & 371 (12.8\%) \\
+Resolved & \num{1583} (54.7\%) & \num{2503} $\pm$ 9.3 (86.6\%) \\
+Failed & \num{1308} (45.3\%) & 387 $\pm$ 9.3 (13.4\%) \\
 Snippets processed & \num{2891} & \num{2890} \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-Of the \num{2890} snippets processed, \num{2519} (87.2\%) were successfully resolved and 371 (12.8\%) failed.
+Of the \num{2890} snippets processed, an average of \num{2503} (86.6\%) were successfully resolved across 10 independent runs (standard deviation: $\pm 9.3$), while 387 (13.4\%) failed.
 The intra-session memory handles highly similar package patterns directly, while the confidence cascade resolves the remaining snippets - including resolving \textbf{over 950} of the snippets where PLLM completely failed (\texttt{conf=0}) - without relying on LLM calls for the vast majority.
 
-Our confidence cascade successfully isolates different failure modes. Of the \num{2519} resolved snippets, Table~\ref{tab:ablation} details the success rate of each pipeline component.
+Our confidence cascade successfully isolates different failure modes. Of the \num{2503} resolved snippets, Table~\ref{tab:ablation} details the success rate of the system when key components are ablated.
 
 \begin{table}[h]
-\caption{Ablation Study: Resolution by Component}
+\caption{Ablation Study: Impact of Intra-Session Memory (Level 1)}
 \label{tab:ablation}
 \centering
 \begin{tabular}{lrr}
 \toprule
-\textbf{Component} & \textbf{Resolved} & \textbf{\%} \\
+\textbf{Configuration} & \textbf{Resolved} & \textbf{Success Rate} \\
 \midrule
-Session Memory (Level 1) & \num{1052} & 41.8\% \\
-Python~2 Heuristic (no LLM) & 405 & 16.1\% \\
-Other Deterministic (Levels 2--5) & 256 & 10.2\% \\
-LLM Fallback (Level 6) & 806 & 32.0\% \\
+Full \textsc{MemRes} Pipeline & \num{2503} & 86.6\% \\
+Ablation (Level 1 OFF) & \num{2357} & 81.6\% \\
 \midrule
-\textbf{Total Successful} & \textbf{\num{2519}} & \textbf{100\%} \\
+\textbf{Contribution ($\Delta$)} & \textbf{+\num{146}} & \textbf{+5.0\%} \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -258,9 +256,9 @@ Our unfixability estimator may conservatively classify snippets as environment-d
 We accept this trade-off: false positives avoid wasting LLM tokens on genuinely unfixable cases, and the estimator's 80+ system-package catalog is continuously refined.
 
 \subsection{Overall Performance}
-With \num{2519} out of \num{2890} snippets fixed, \textsc{MemRes} hits an 87.2\% overall success rate, easily beating PLLM's reported 54.7\%.
+With an average \num{2503} out of \num{2890} snippets fixed ($\sigma = 9.3$), \textsc{MemRes} hits an 86.6\% overall success rate, easily beating PLLM's reported 54.7\%.
 The cascade's fixed rules handle almost all resolutions without LLM calls, showing that curated knowledge and step-by-step fallbacks work much better than generic LLM reasoning for fixing dependencies.
-Of the \num{2519} successful pipelines, Python~2.7 execution environments accounted for the vast majority (75.8\%), followed by Python~3.7 (14.6\%) and Python~3.6 (5.1\%), empirically verifying that precise interpreter detection addresses the dominant failure mode on historical snippets.
+Of the \num{2503} successful pipelines, Python~2.7 execution environments accounted for the vast majority (75.8\%), followed by Python~3.7 (14.6\%) and Python~3.6 (5.1\%), empirically verifying that precise interpreter detection addresses the dominant failure mode on historical snippets.
 
 \subsection{Efficiency and Cost}
 Another big plus for \textsc{MemRes} is that it runs fast. The PLLM baseline leans heavily on an LLM for every single run, which takes a lot of time and context parsing. In contrast, our tool resolves 68.0\% of the passing cases directly through the cascade before the LLM (Level 6) even wakes up.
@@ -274,7 +272,7 @@ Table~\ref{tab:efficiency} compares PLLM and \textsc{MemRes}. By cutting down th
 \toprule
 \textbf{Metric} & \textbf{PLLM} & \textbf{MemRes} \\
 \midrule
-Overall Success Rate & 54.7\% & 87.2\% \\
+Overall Success Rate & 54.7\% & 86.6\% $\pm$ 0.3\% \\
 Median Resolution (success) & $\sim$120--180s & 15.2s \\
 P90 Resolution (success) & --- & 68.8s \\
 LLM Calls per Snippet & 1--5 & 0.34 \\

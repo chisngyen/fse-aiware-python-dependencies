@@ -5,7 +5,7 @@ from pathlib import Path
 
 # Support: python clean_csv.py [run_number]
 # Default: latest run folder
-output_dir = Path(r'd:\fse-aiware-python-dependencies\output')
+output_dir = Path(r'D:\fse-aiware-python-dependencies\output\ablation_no_level1')
 if len(sys.argv) > 1:
     run_dir = output_dir / f'run_{sys.argv[1]}'
 else:
