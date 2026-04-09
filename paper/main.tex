@@ -9,10 +9,12 @@
   \providecommand\BibTeX{{Bib\TeX}}}
 
 \setcopyright{acmlicensed}
-\copyrightyear{2026}
-\acmYear{2026}
-\acmDOI{XXXXXXX.XXXXXXX}
-\acmConference[FSE-AIWare '26]{FSE-AIWare 2026: Agentic Based Python Dependency Resolution Competition}{July 5--9, 2026}{Montreal, Canada}
+%% Camera-ready metadata from HotCRP (after e-Rights); must match PDF copyright block.
+\acmYear{2026}\copyrightyear{2026}
+\acmConference[FSE Companion '26]{34th ACM Joint European Software Engineering Conference and Symposium on the Foundations of Software Engineering}{July 5--9, 2026}{Montreal, QC, Canada}
+\acmBooktitle{34th ACM Joint European Software Engineering Conference and Symposium on the Foundations of Software Engineering (FSE Companion '26), July 5--9, 2026, Montreal, QC, Canada}
+\acmDOI{10.1145/3803437.3808242}
+\acmISBN{979-8-4007-2636-1/26/07}
 \usepackage{booktabs}
 \usepackage{graphicx}
 \usepackage{siunitx}
@@ -24,7 +26,7 @@
 
 \title{MEMRES: A Memory-Augmented Resolver with Confidence Cascade for Agentic Python Dependency Resolution}
 
-\author{Chi-Nguyen Tran}
+\author{Tran Chi Nguyen}
 \authornote{Equal contribution (first authors).}
 \orcid{0009-0007-6716-7269}
 \affiliation{%
@@ -38,7 +40,7 @@
 
 \author{Dao Sy Duy Minh}
 \authornotemark[1]
-\orcid{0009-0001-5471-2578}
+\orcid{0009-0002-4501-2788}
 \affiliation{%
   \department{Faculty of Information Technology}
   \institution{University of Science}
@@ -48,7 +50,7 @@
 }
 \email{23122041@student.hcmus.edu.vn}
 
-\author{Huynh Trung Kiet}
+\author{Trung Kiet Huynh}
 \authornotemark[1]
 \orcid{0009-0000-5463-754X}
 \affiliation{%
@@ -60,7 +62,7 @@
 }
 \email{23122039@student.hcmus.edu.vn}
 
-\author{Phu-Hoa Pham}
+\author{Pham Phu Hoa}
 \orcid{0009-0001-5471-2578}
 \affiliation{%
   \department{Faculty of Information Technology}
@@ -94,7 +96,7 @@
 }
 \email{nvu@fit.hcmus.edu.vn}
 
-\renewcommand{\shortauthors}{C.-N.\ Tran, S.D.M.\ Dao, T.K.\ Huynh, P.H.\ Pham, L.P.Q.\ Nguyen, V.\ Nguyen}
+\renewcommand{\shortauthors}{C.~N.~Tran, S.~D.~M.~Dao, T.~K.~Huynh, P.~H.~Pham, L.~P.~Q.~Nguyen, and V.~Nguyen}
 
 %%
 %% Abstract
@@ -109,19 +111,19 @@ This already exceeds PLLM's 54.7\% overall success rate by a wide margin.
 \begin{CCSXML}
 <ccs2012>
  <concept>
+  <concept_id>10011007.10011006.10011071</concept_id>
+  <concept_desc>Software and its engineering~Software configuration management and version control systems</concept_desc>
+  <concept_significance>500</concept_significance>
+ </concept>
+ <concept>
   <concept_id>10011007.10011006.10011008.10011024</concept_id>
   <concept_desc>Software and its engineering~Language features</concept_desc>
   <concept_significance>500</concept_significance>
  </concept>
- <concept>
-  <concept_id>10011007.10011006.10011039</concept_id>
-  <concept_desc>Software and its engineering~Software configuration management and version control systems</concept_desc>
-  <concept_significance>500</concept_significance>
- </concept>
 </ccs2012>
 \end{CCSXML}
-\ccsdesc[500]{Software and its engineering~Language features}
 \ccsdesc[500]{Software and its engineering~Software configuration management and version control systems}
+\ccsdesc[500]{Software and its engineering~Language features}
 \keywords{dependency resolution, Python, LLM, agentic systems, package management}
 
 \maketitle
@@ -185,7 +187,7 @@ To address fairness, disabling Level 1 simply forces snippets through the remain
 \label{sec:cascade}
 %% ------------------------------------------------------------
 
-Our main contribution here is a 6-step cascade for picking package versions, drawing from adaptive reasoning ideas~\cite{pandey2025}:
+Our main contribution here is a 6-step cascade for picking package versions, motivated by adaptive test-time reasoning over structured decision paths:
 (1)~Session Memory, versions proven successful earlier in the batch;
 (2)~Static Compatibility Map, 40+ packages $\times$ 8 Python versions with known-good pins (manually curated from documentation and CI/CD logs);
 (3)~Ecosystem Templates, 23 proven version sets for common package groups (ML, web, data science);
@@ -302,10 +304,6 @@ Ablation (Level 1 OFF) & \num{2357} & 81.6\% \\
 
 Over half (53.9\%) of successful resolutions trigger system-level dependency injection, proving execution-based validation's necessity.
 
-\subsection{Limitations and Root-Cause Analysis}
-Across 10 runs, an average of $387 \pm 9.3$ snippets fail.
-Root-cause analysis reveals build/C-extension failures dominate (\textasciitilde50\%), caused by missing C toolchains or heavy packages (e.g.\ old TensorFlow). Unresolvable ImportErrors account for \textasciitilde33\%, typically obscure or deprecated packages absent from PyPI. Timeouts contribute \textasciitilde15\%, mostly from compiling large ML packages. The remaining \textasciitilde2\% are system/platform-specific (GTK, RPi).
-
 \subsection{Threats to Validity}
 \textbf{Order sensitivity.}
 Level~1 is order-dependent, but resolves near-duplicates (Jaccard $\geq$0.5), which are order-invariant in expectation. Disabling it only increases runtime (\S\ref{sec:cascade}).
@@ -320,7 +318,7 @@ The $\sim$150 externally sourced KB mappings (PyPI docs, Stack Overflow) and the
 No HG2.9K result was used to add or tune KB entries; the 50-entry held-out subset is disjoint from HG2.9K.
 \textbf{Unfixability false positives.}
 The estimator may conservatively classify snippets as environment-dependent; we accept this to avoid wasting LLM tokens on genuinely unfixable cases.
-
+ 
 \subsection{Efficiency}
 \textsc{MemRes} resolves 68.0\% of passing cases without any LLM call, reducing token usage by $\sim$75\% (Table~\ref{tab:efficiency}). Median resolution is 15.2\,s for successes.
 
@@ -340,8 +338,11 @@ No-LLM Success Rate & 0\% & 68.0\% \\
 \end{tabular}
 \end{table}
 
-\subsection{Case Study}
 For a snippet importing \texttt{cv2} and \texttt{tensorflow}, \textsc{MemRes} maps \texttt{cv2} to \texttt{opencv-python} via the KB, injects \texttt{libgl1-mesa-glx} via \texttt{apt-get}, and applies version pins. Old TensorFlow~1.15 snippets are correctly classified as \emph{build unfixable}.
+
+\subsection{Root-Cause Analysis}
+Across 10 runs, an average of $387 \pm 9.3$ snippets fail.
+Root-cause analysis reveals build/C-extension failures dominate (\textasciitilde50\%), caused by missing C toolchains or heavy packages (e.g.\ old TensorFlow). Unresolvable ImportErrors account for \textasciitilde33\%, typically obscure or deprecated packages absent from PyPI. Timeouts contribute \textasciitilde15\%, mostly from compiling large ML packages. The remaining \textasciitilde2\% are system/platform-specific (GTK, RPi).
 
 %% ============================================================
 \section{Related Work}
@@ -351,123 +352,107 @@ For a snippet importing \texttt{cv2} and \texttt{tensorflow}, \textsc{MemRes} ma
 \textbf{Dependency resolution.}
 Traditional tools (\texttt{pip}, \texttt{poetry}, \texttt{pipreqs}~\cite{pipreqs}) extract imports or require explicit specifications but cannot resolve version conflicts.
 PyEGo~\cite{ye2022pyego} searches compatible environments via constraint propagation; DockerizeMe~\cite{horton2019} infers system-level dependencies.
-READPyE~\cite{readpye2023} extends this with README-based extraction.
-Empirical studies~\cite{jia2024,xia2024empirical} catalogue dependency conflict patterns informing our KB.
-Recent work like V2~\cite{horton2022v2} pioneered search-heavy version mutation using Docker execution signals.
+READPyE~\cite{readpye2024} extends this with README-based extraction.
+Empirical studies~\cite{jia2024,jia2024qrs} catalogue dependency conflict patterns informing our KB.
+Recent work like V2~\cite{horton2022v2} pioneers search-heavy version mutation using Docker execution signals.
 \textsc{MemRes} takes the complementary \emph{knowledge-heavy} approach: curated maps and heuristics front-load resolution before any search begins, reducing the version space.
 V2 aligns with our Reflexion Build Loop, but we add cross-snippet memory and unfixability estimators to avoid wasteful search.
-Repo2Run~\cite{repo2run2024} targets full-repository environment synthesis; \textsc{MemRes}'s cascade could serve as a fast pre-filter for such pipelines.
+Repo2Run~\cite{repo2run2025} targets full-repository environment synthesis; \textsc{MemRes}'s cascade could serve as a fast pre-filter for such pipelines.
 
 \textbf{LLM-based approaches.}
-PLLM~\cite{bartlett2025} pioneered LLM-based dependency resolution.
+PLLM~\cite{bartlett2025} pioneers LLM-based dependency resolution.
 DepsRAG~\cite{depsrag2024} uses graph-based reasoning; DependEval~\cite{dependeval2025} shows LLMs struggle with transitive dependencies.
-Recent reproducibility studies~\cite{vangala2025reproducibility} show LLM agents produce code with missing dependencies.
+Recent work on LLM-based coding agents highlights frequent gaps between generated code and reproducible dependency sets.
 We extend PLLM with deterministic fast paths achieving 86.6\% resolution rate (vs.\ 54.7\%).
 
 \textbf{Self-evolving agents.}
-Mobile-Agent-E~\cite{wang2025} introduced tips/shortcuts for GUI agents; Reflexion~\cite{shinn2023} proposed verbal reinforcement learning; CASCADE~\cite{cascade2025} demonstrated cumulative skill creation.
-We adapt these to dependency resolution.
+Mobile-Agent-E~\cite{wang2025} introduces tips/shortcuts for GUI agents; Reflexion~\cite{shinn2023} proposes verbal reinforcement learning for language agents.
+MemRes adapts both paradigms to dependency resolution, where tips encode generalizable guidelines and shortcuts capture validated solutions for rapid knowledge reuse without repeated LLM inference.
 
 %% ============================================================
 \section{Conclusion}
 \label{sec:conclusion}
 %% ============================================================
 
-\textsc{MemRes} resolves 86.6\% of HG2.9K snippets (vs.\ PLLM's 54.7\%), demonstrating that curated deterministic rules with step-by-step fallbacks outperform generic LLM reasoning for dependency resolution while being faster and cheaper.
-Future work includes validation on additional corpora and base-image selection for unfixable C-extension snippets.
-Our tool and all evaluation artifacts are available at \small\url{https://github.com/checkdgt/fse-aiware-python-dependencies}\normalsize.
+This paper has presented \textsc{MemRes}, an agentic system for Python dependency resolution that positions the LLM as a last resort within a multi-level confidence cascade. By combining intra-session memory, a curated error pattern knowledge base, semantic import analysis, and Python 2 heuristic detection, \textsc{MemRes} resolves 86.6\% of HG2.9K snippets compared to PLLM's 54.7\%, while reducing LLM calls by over 60\% and cutting median resolution time to 15.2~s. The central insight is that most dependency failures have deterministic root causes addressable without model inference. Future work will focus on broader corpus validation and improved handling of C-extension failures. All artifacts are available at \small\url{https://github.com/chisngyen/fse-aiware-python-dependencies}\normalsize.
 
 \begin{acks}
-We thank the FSE-AIWare 2026 competition organizers for providing the PLLM baseline and HG2.9K dataset.
+This research is funded by Vietnam National University, Ho Chi Minh City (VNU-HCM) under grant number B2026-18-23.
+
 \end{acks}
 
 \bibliographystyle{ACM-Reference-Format}
-\begin{thebibliography}{15}
+\begin{thebibliography}{99}
 
 \bibitem{bartlett2025}
 A.~Bartlett, C.~Liem, and A.~Panichella.
-\newblock {The Last Dependency Crusade: Solving Python Dependency Conflicts with LLMs}.
-\newblock In \emph{IEEE/ACM ASEW}, pp.\ 66--73, 2025.
+\newblock ``The Last Dependency Crusade: Solving Python Dependency Conflicts with LLMs.''
+\newblock In Proc.\ of the IEEE/ACM Automated Software Engineering Workshop (ASEW), pp.~66--73, 2025.
 
 \bibitem{horton2019}
 E.~Horton and C.~Parnin.
-\newblock {DockerizeMe: Automatic Inference of Environment Dependencies for Python Code Snippets}.
-\newblock In \emph{ICSE}, pp.\ 328--338, 2019.
+\newblock ``DockerizeMe: Automatic Inference of Environment Dependencies for Python Code Snippets.''
+\newblock In Proc.\ of the ACM/IEEE International Conference on Software Engineering (ICSE), pp.~328--338, 2019.
 
 \bibitem{jia2024}
 Y.~Jia, J.~Han, J.~Cao, Y.~Zhou, and B.~Xu.
-\newblock {An Empirical Study of Dependency Conflicts in the Python Ecosystem}.
-\newblock \emph{IEEE TSE}, 50(8):2125--2140, 2024.
+\newblock ``An Empirical Study of Dependency Conflicts in the Python Ecosystem.''
+\newblock \emph{IEEE Trans.\ Softw.\ Eng.}, vol.~50, no.~8, pp.~2125--2140, 2024.
 
 \bibitem{wang2025}
 Z.~Wang, H.~Xu, J.~Wang, X.~Zhang, M.~Yan, J.~Zhang, F.~Huang, and H.~Ji.
-\newblock {Mobile-Agent-E: Self-Evolving Mobile Assistant for Complex Tasks}.
-\newblock \emph{arXiv preprint arXiv:2501.11733}, 2025.
+\newblock ``Mobile-Agent-E: Self-Evolving Mobile Assistant for Complex Tasks.''
+\newblock In Proc.\ of the NeurIPS Workshop on Scaling Environments for Agents (SEA), 2025.
 
 \bibitem{shinn2023}
 N.~Shinn, F.~Cassano, E.~Berman, A.~Gopinath, K.~Narasimhan, and S.~Yao.
-\newblock {Reflexion: Language Agents with Verbal Reinforcement Learning}.
-\newblock In \emph{NeurIPS}, 2023.
-
-\bibitem{pandey2025}
-T.~Pandey, A.~Ghukasyan, O.~Goktas, and S.K.~Radha.
-\newblock {Adaptive Graph of Thoughts: Test-Time Adaptive Reasoning Unifying Chain, Tree, and Graph Structures}.
-\newblock \emph{arXiv preprint arXiv:2502.05078}, 2025.
+\newblock ``Reflexion: Language Agents with Verbal Reinforcement Learning.''
+\newblock In Proc.\ of the Conference on Neural Information Processing Systems (NeurIPS), 2023.
 
 \bibitem{gemma2}
 Google DeepMind.
-\newblock {Gemma 2: Improving Open Language Models at a Practical Size}.
-\newblock Technical Report, 2024.
+\newblock ``Gemma 2: Improving Open Language Models at a Practical Size.''
+\newblock Tech.\ Rep., Google DeepMind, 2024.
 
 \bibitem{pipreqs}
 V.~Kravcenko.
-\newblock pipreqs: Generate pip requirements.txt based on imports.
-\newblock \url{https://github.com/bndr/pipreqs}, 2015.
+\newblock ``pipreqs: Generate pip requirements.txt based on imports,'' 2015.
+\newblock [Online]. Available: \url{https://github.com/bndr/pipreqs}
 
 \bibitem{depsrag2024}
 M.~Alhanahnah, Y.~Boshmaf, and B.~Baudry.
-\newblock {DepsRAG: Towards Managing Software Dependencies using LLMs}.
-\newblock In \emph{NeurIPS 2024 Workshop}, 2024.
+\newblock ``DepsRAG: Towards Managing Software Dependencies using LLMs.''
+\newblock In Proc.\ of the NeurIPS 2024 Workshop, 2024.
 
 \bibitem{ye2022pyego}
 H.~Ye, W.~Chen, W.~Dou, G.~Wu, and J.~Wei.
-\newblock {Knowledge-Based Environment Dependency Inference for Python Programs}.
-\newblock In \emph{ICSE}, pp.\ 1245--1256, 2022.
+\newblock ``Knowledge-Based Environment Dependency Inference for Python Programs.''
+\newblock In Proc.\ of the ACM/IEEE International Conference on Software Engineering (ICSE), pp.~1245--1256, 2022.
 
-\bibitem{readpye2023}
+\bibitem{readpye2024}
 W.~Cheng, W.~Hu, and X.~Ma.
-\newblock {ReadPyE: Revisiting Knowledge-Based Inference of Python Runtime Environments}.
-\newblock \emph{IEEE TSE}, 50(2):258--279, 2024.
+\newblock ``ReadPyE: Revisiting Knowledge-Based Inference of Python Runtime Environments.''
+\newblock \emph{IEEE Trans.\ Softw.\ Eng.}, vol.~50, no.~2, pp.~258--279, 2024.
 
-\bibitem{xia2024empirical}
-X.~Jia, J.~Han, J.~Cao, Y.~Zhou, and B.~Xu.
-\newblock {An empirical study on Python library dependency and conflict issues}.
-\newblock In \emph{ICSME}, pp.\ 330--338, 2024.
+\bibitem{jia2024qrs}
+X.~Jia, Y.~Zhou, Y.~Hussain, and W.~Yang.
+\newblock ``An Empirical Study on Python Library Dependency and Conflict Issues.''
+\newblock In Proc.\ of the IEEE International Conference on Software Quality, Reliability and Security (QRS), 2024.
 
 \bibitem{dependeval2025}
 J.~Du, Y.~Liu, H.~Guo, et~al.
-\newblock {DependEval: Benchmarking LLMs for Repository Dependency Understanding}.
-\newblock In \emph{Findings of ACL}, 2025.
-
-\bibitem{vangala2025reproducibility}
-B.P.~Vangala, A.~Adibifar, A.~Gehani, and T.~Malik.
-\newblock {AI-Generated Code Is Not Reproducible (Yet)}.
-\newblock \emph{arXiv preprint arXiv:2512.22387}, 2025.
-
-\bibitem{cascade2025}
-X.~Huang, J.~Chen, Y.~Fei, Z.~Li, P.~Schwaller, and G.~Ceder.
-\newblock {CASCADE: Cumulative Agentic Skill Creation through Autonomous Development and Evolution}.
-\newblock \emph{arXiv preprint arXiv:2512.23880}, 2025.
+\newblock ``DependEval: Benchmarking LLMs for Repository Dependency Understanding.''
+\newblock In Proc.\ of Findings of ACL, 2025.
 
 \bibitem{horton2022v2}
 E.~Horton and C.~Parnin.
-\newblock {V2: Fast Detection of Configuration Drift in Python}.
-\newblock In \emph{ASE}, pp.\ 814--819, 2019.
+\newblock ``V2: Fast Detection of Configuration Drift in Python.''
+\newblock In Proc.\ of the IEEE/ACM International Conference on Automated Software Engineering (ASE), pp.~814--819, 2019.
 
-\bibitem{repo2run2024}
+\bibitem{repo2run2025}
 R.~Hu, C.~Peng, X.~Wang, J.~Xu, and C.~Gao.
-\newblock {Repo2Run: Automated Building Executable Environment for Code Repository at Scale}.
-\newblock \emph{arXiv preprint arXiv:2502.13681}, 2025.
+\newblock ``Repo2Run: Automated Building Executable Environment for Code Repository at Scale.''
+\newblock In Proc.\ of the Conference on Neural Information Processing Systems (NeurIPS), 2025.
 
 \end{thebibliography}
 

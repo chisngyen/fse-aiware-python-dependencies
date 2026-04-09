@@ -167,6 +167,11 @@ Pipfile.lock
 # Large data directories (not tracked)
 hard-gists/
 pllm_results/
+results/
+output/
+pyego-results/
+readpy-results/
+slide/
 
 # LaTeX build artifacts
 paper/*.aux
@@ -178,6 +183,10 @@ paper/*.log
 paper/*.out
 paper/*.synctex.gz
 paper/comment.cut
+paper/%OUTDIR%/
+
+# Submission artifacts (camera-ready bundles)
+submission/
 
 # Docker temp files
 docker_*.txt

@@ -1,7 +1,7 @@
 # Agentic Based Python Dependency Resolution
 ![Static Badge](https://img.shields.io/badge/Python-3.11-blue)
-![GitHub Discussions](https://img.shields.io/github/discussions/checkdgt/fse-aiware-python-dependencies)
-![GitHub Issues or Pull Requests](https://img.shields.io/github/issues/checkdgt/fse-aiware-python-dependencies)
+![GitHub Discussions](https://img.shields.io/github/discussions/chisngyen/fse-aiware-python-dependencies)
+![GitHub Issues or Pull Requests](https://img.shields.io/github/issues/chisngyen/fse-aiware-python-dependencies)
 
 ## Abstract
 The first annual Agentic-based Python Dependency Resolution challenge, to be held at FSE 2026, invites researchers and practitioners to develop innovative agentic-based systems for automatically resolving complex Python dependency conflicts.
@@ -124,7 +124,7 @@ The docker compose should bring up the 'pllm-test' docker container. To use the 
 - **-v | Verbose** logging of information.
 
 ## Q&A
-Use [GitHub Discussions](https://github.com/checkdgt/fse-aiware-python-dependencies/discussions) for any kind of questions related to the tool competition.
+Use [GitHub Discussions](https://github.com/chisngyen/fse-aiware-python-dependencies/discussions) for any kind of questions related to the tool competition.
 
 > Do not hesitate to ask questions.
 > If something is unclear then it is likely it is unclear for others as well.

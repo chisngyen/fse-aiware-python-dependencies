@@ -1,4 +1,4 @@
-# Paper: SmartResolver (FSE 2026 AIWare Competition)
+# Paper: MEMRES (FSE 2026 AIWare Competition)
 
 ## Format
 - **Max 4 pages** including references  
@@ -58,8 +58,8 @@ Fill in Resolved count and Rate for each error type:
 After the full run completes:
 ```powershell
 # Count results
-cd e:\FSE\fse-aiware-python-dependencies\tools\smart-resolver
-docker compose exec smart-resolver python -c "
+cd e:\FSE\fse-aiware-python-dependencies\tools\memres
+docker compose exec memres python -c "
 import csv
 with open('/output/results.csv') as f:
     rows = list(csv.DictReader(f))
