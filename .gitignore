@@ -171,7 +171,10 @@ results/
 output/
 pyego-results/
 readpy-results/
+
+# Slides/paper sources are kept locally only
 slide/
+paper/
 
 # LaTeX build artifacts
 paper/*.aux
@@ -186,7 +189,11 @@ paper/comment.cut
 paper/%OUTDIR%/
 
 # Submission artifacts (camera-ready bundles)
-submission/
+# Keep submission folder untracked by default, but allow the two files
+# required by HotCRP for camera-ready upload.
+submission/*
+!submission/MEMRES-FSE-Companion26-camera-ready.pdf
+!submission/MEMRES-FSE-Companion26-source.zip
 
 # Docker temp files
 docker_*.txt
