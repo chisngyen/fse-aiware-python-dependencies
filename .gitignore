@@ -189,11 +189,7 @@ paper/comment.cut
 paper/%OUTDIR%/
 
 # Submission artifacts (camera-ready bundles)
-# Keep submission folder untracked by default, but allow the two files
-# required by HotCRP for camera-ready upload.
-submission/*
-!submission/MEMRES-FSE-Companion26-camera-ready.pdf
-!submission/MEMRES-FSE-Companion26-source.zip
+submission/
 
 # Docker temp files
 docker_*.txt
