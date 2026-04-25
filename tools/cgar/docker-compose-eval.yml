@@ -1,0 +1,20 @@
+version: "3.8"
+services:
+  cgar-eval:
+    image: cgar:latest
+    container_name: cgar-eval
+    privileged: true
+    volumes:
+      - ../../hard-gists:/gists
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ../../pllm_results:/results:ro
+      - ../../output/cgar_eval:/output
+      - ../memres/src:/memres_src:ro
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    command: >
+      python run.py --folder /gists
+      -d /results -o /output --exact-output
+      -m gemma2 -b http://host.docker.internal:11434
+      -l 10 -r 0 -w 2 --timeout 180
+      --gist-list /output/failure_ids.txt
