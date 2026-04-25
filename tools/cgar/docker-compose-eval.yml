@@ -2,6 +2,9 @@ version: "3.8"
 services:
   cgar-eval:
     image: cgar:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: cgar-eval
     privileged: true
     volumes:
