@@ -10,8 +10,8 @@ services:
     volumes:
       - ../../hard-gists:/gists
       - /var/run/docker.sock:/var/run/docker.sock
-      - ../../pllm_results:/results:ro
-      - ../../output/cgar_eval:/output
+      - ../../results/pllm_results:/results:ro
+      - ../../results/cgar_results:/output
       - ../memres/src:/memres_src:ro
     extra_hosts:
       - "host.docker.internal:host-gateway"
