@@ -1530,7 +1530,7 @@ class EnhancedResolver:
         if batch_install and packages:
             # Single pip install command — lets pip resolve all deps together
             pip_cmd = ["pip", "install", "--trusted-host", "pypi.python.org",
-                       "--default-timeout=100", "--no-cache-dir"]
+                       "--default-timeout=300", "--no-cache-dir"]
             has_torch_cpu = False
             for pkg, version in packages.items():
                 if version and version != 'latest':
@@ -1550,7 +1550,7 @@ class EnhancedResolver:
                 else:
                     pip_spec = pkg
                 pip_cmd = ["pip", "install", "--trusted-host", "pypi.python.org",
-                           "--default-timeout=100", "--no-cache-dir", pip_spec]
+                           "--default-timeout=300", "--no-cache-dir", pip_spec]
                 if pkg.lower() in ('torch', 'torchvision', 'torchaudio') and '+cpu' in (version or ''):
                     pip_cmd.extend(["--extra-index-url", "https://download.pytorch.org/whl/cpu"])
                 dockerfile_lines.append(f'RUN {json.dumps(pip_cmd)}')

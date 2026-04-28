@@ -42,6 +42,9 @@ class ConstraintStore:
         self._records: Dict[Tuple[str, str, str], InfeasibleRecord] = {}
         # frozenset of (pkg, ver) pairs + python_version → error_signature
         self._combo_records: Dict[Tuple[FrozenSet, str], str] = {}
+        # (package, python_version) → exclusive upper bound version string
+        # e.g. keras 2.3.0 removed TimeDistributedDense → upper_bound = "2.3.0"
+        self._upper_bounds: Dict[Tuple[str, str], str] = {}
 
     def add(self, package: str, version: str, python_version: str,
             error_type: ConstraintType, error_signature: str,
@@ -75,6 +78,33 @@ class ConstraintStore:
         key_set = frozenset((k.lower(), v) for k, v in packages.items() if v)
         return (key_set, python_version) in self._combo_records
 
+    def add_upper_bound(self, package: str, python_version: str, exclusive_upper: str) -> None:
+        """Record that `package >= exclusive_upper` is infeasible (API removed)."""
+        key = (package.lower(), python_version)
+        existing = self._upper_bounds.get(key)
+        if existing is None or self._version_lt(exclusive_upper, existing):
+            self._upper_bounds[key] = exclusive_upper
+
+    def get_upper_bound(self, package: str, python_version: str) -> Optional[str]:
+        """Return the exclusive upper bound for this package, or None."""
+        return self._upper_bounds.get((package.lower(), python_version))
+
+    def is_above_upper_bound(self, package: str, version: str, python_version: str) -> bool:
+        """Return True if version >= upper_bound (i.e., API already removed)."""
+        ub = self.get_upper_bound(package, python_version)
+        if not ub or not version:
+            return False
+        return not self._version_lt(version, ub)
+
+    @staticmethod
+    def _version_lt(a: str, b: str) -> bool:
+        """Return True if version a < b."""
+        try:
+            from packaging.version import Version
+            return Version(a) < Version(b)
+        except Exception:
+            return a < b
+
     def get_infeasible_versions(self, package: str, python_version: str) -> Set[str]:
         return {
             rec.version
@@ -86,4 +116,4 @@ class ConstraintStore:
     def stats(self) -> Dict:
         hard = sum(1 for r in self._records.values() if r.error_type == ConstraintType.HARD)
         soft = sum(1 for r in self._records.values() if r.error_type == ConstraintType.SOFT)
-        return {'hard': hard, 'soft': soft, 'combos': len(self._combo_records)}
+        return {'hard': hard, 'soft': soft, 'combos': len(self._combo_records), 'upper_bounds': len(self._upper_bounds)}

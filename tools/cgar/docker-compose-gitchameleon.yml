@@ -1,17 +1,16 @@
-version: "3.8"
 services:
-  cgar-eval:
+  cgar-gitchameleon:
     image: cgar:latest
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: cgar-eval
+    container_name: cgar-gitchameleon
     privileged: true
     volumes:
-      - ../../hard-gists:/gists
+      - ../../benchmarks/gitchameleon-snippets:/gists
       - /var/run/docker.sock:/var/run/docker.sock
       - ../../results/pllm_results:/results:ro
-      - ../../results/cgar_results:/output
+      - ../../results/cgar_gitchameleon:/output
       - ../memres/src:/memres_src:ro
     extra_hosts:
       - "host.docker.internal:host-gateway"
@@ -20,4 +19,3 @@ services:
       -d /results -o /output --exact-output
       -m gemma2 -b http://host.docker.internal:11434
       -l 5 -r 0 -w 2 --timeout 400 --resume
-      --gist-list /output/sample100_ids.txt

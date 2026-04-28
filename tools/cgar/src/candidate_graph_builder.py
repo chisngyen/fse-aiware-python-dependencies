@@ -73,13 +73,52 @@ class CandidateGraphBuilder:
         except Exception:
             return True
 
+    def _has_linux_wheel(self, release_files: list, python_version: str) -> bool:
+        """
+        Check if a release has a pre-built wheel usable on linux/x86_64
+        for the given Python version. Falls back to True if only sdist exists
+        (pip may still build it) but returns False if the release is empty.
+        """
+        if not release_files:
+            return False
+
+        py_tag = "cp" + python_version.replace(".", "")   # e.g. cp36, cp38
+        has_wheel = False
+        has_sdist = False
+
+        for f in release_files:
+            filename = f.get("filename", "")
+            if filename.endswith(".whl"):
+                has_wheel = True
+                # Accept if: any=any, linux x86_64, or manylinux, or pure python
+                fn = filename.lower()
+                if (
+                    "-none-any.whl" in fn               # pure python wheel
+                    or "manylinux" in fn                 # manylinux (most common)
+                    or "linux_x86_64" in fn
+                    or f"-{py_tag}-" in fn               # version-specific
+                    or "-py3-" in fn
+                    or "-py2.py3-" in fn
+                ):
+                    return True
+            elif filename.endswith((".tar.gz", ".zip")):
+                has_sdist = True
+
+        # Has wheel(s) but none matched → likely Windows/macOS only
+        if has_wheel:
+            return False
+        # Only sdist → pip will try to build from source; allow but mark
+        return has_sdist
+
     def get_candidates(self, package: str, python_version: str,
                        max_candidates: int = 8) -> List[Dict]:
         """
         Return candidate versions for `package` on `python_version`.
 
-        Each candidate: {'version': str, 'requires_python': str, 'requires_dist': list}
-        Sorted newest-first. Returns [] if package not found on PyPI.
+        Each candidate: {'version': str, 'requires_python': str, 'requires_dist': list,
+                         'has_wheel': bool}
+        Sorted by: wheel-available first, then newest-first.
+        Returns [] if package not found on PyPI.
         """
         data = self._fetch_pypi(package)
         if not data:
@@ -110,20 +149,23 @@ class CandidateGraphBuilder:
             if not self._python_compat(rp, python_version):
                 continue
 
+            has_wheel = self._has_linux_wheel(release_files, python_version)
+
             candidates.append({
                 'version': ver_str,
                 'requires_python': rp,
                 'requires_dist': [],
+                'has_wheel': has_wheel,
             })
 
-        # Sort newest-first using packaging.version
-        try:
-            candidates.sort(
-                key=lambda c: Version(c['version']),
-                reverse=True
-            )
-        except Exception:
-            pass
+        # Sort: wheel-available first, then newest-first within each group
+        def sort_key(c):
+            try:
+                v = Version(c['version'])
+                return (0 if c['has_wheel'] else 1, -v.major, -v.minor, -v.micro)
+            except Exception:
+                return (1, 0, 0, 0)
+        candidates.sort(key=sort_key)
 
         return candidates[:max_candidates]
 

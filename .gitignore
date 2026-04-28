@@ -171,7 +171,14 @@ results/
 output/
 pyego-results/
 readpy-results/
-
+Gitchamelon/
+benchmarks/
+CLAUDE.md
+CLAUDE_2704.md
+docs/
+.claude/
+.logs_2704.md
+CLAUDE_2704_2.md
 # Slides/paper sources are kept locally only
 slide/
 paper/

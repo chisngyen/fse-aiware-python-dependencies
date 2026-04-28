@@ -1,0 +1,33 @@
+services:
+  pllm-gitchameleon:
+    image: pllm:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        UNAME: ${USER:-appuser}
+        UID: ${UID:-1000}
+        GID: ${GID:-1000}
+        DOCKER_GID: ${DOCKER_GID:-999}
+      platforms:
+        - linux/amd64
+    container_name: pllm-gitchameleon
+    platform: linux/amd64
+    privileged: true
+    user: root
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:rw
+      - ../../benchmarks/gitchameleon-snippets:/gists
+      - ../../results/pllm_gitchameleon:/output
+      - ./run_batch.sh:/app/run_batch.sh:ro
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    working_dir: /app
+    environment:
+      - GISTS_DIR=/gists
+      - OUTPUT_DIR=/output
+      - MODEL=gemma2
+      - BASE=http://host.docker.internal:11434
+      - LOOP=5
+      - RANGE=0
+    entrypoint: ["bash", "/app/run_batch.sh"]

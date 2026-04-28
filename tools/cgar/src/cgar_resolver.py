@@ -125,10 +125,15 @@ class CGARResolver:
         """
         Hook called after each failed Docker attempt.
         Injects constraint so next solve skips this assignment.
+        Also detects API-removed errors and adds upper bound constraints.
         """
         if not self._cgar_fallback and self._cgar_current_assignment:
             self.cgar_inject_failure(
                 self._cgar_current_assignment, python_version, error_log, error_type
+            )
+            # Detect API-removed errors → inject upper bound for that package/version
+            self.injector.inject_api_removed(
+                self._cgar_current_assignment, python_version, error_log
             )
 
     def cgar_on_success(self) -> None:

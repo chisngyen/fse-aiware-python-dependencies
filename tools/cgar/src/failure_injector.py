@@ -20,6 +20,12 @@ from typing import Dict, Optional, Tuple
 
 from .constraint_store import ConstraintStore, ConstraintType
 
+# Pattern: cannot import name 'X' from 'pkg'  OR  cannot import name X
+_API_REMOVED_RE = re.compile(
+    r"cannot import name ['\"]?(\w+)['\"]?(?: from ['\"]?([\w.]+)['\"]?)?",
+    re.IGNORECASE
+)
+
 
 # Patterns that indicate Python version incompatibility (HARD)
 _HARD_PATTERNS = [
@@ -76,6 +82,42 @@ class FailureInjector:
 
     def __init__(self, store: ConstraintStore):
         self.store = store
+
+    def inject_api_removed(self, assignment: Dict[str, str], python_version: str,
+                           error_log: str) -> None:
+        """
+        Detect 'cannot import name X from pkg' errors and inject an upper bound:
+        the current version of that package removed the API, so solver must pick
+        a version strictly below it.
+        """
+        match = _API_REMOVED_RE.search(error_log)
+        if not match:
+            return
+
+        from_pkg = match.group(2)  # may be None
+
+        # Identify which assigned package the error refers to
+        culprit_pkg = None
+        culprit_ver = None
+
+        if from_pkg:
+            # Match from_pkg against assignment keys (case-insensitive prefix)
+            from_pkg_lower = from_pkg.lower().split('.')[0]  # top-level module
+            for pkg, ver in assignment.items():
+                if pkg.lower() == from_pkg_lower or pkg.lower().replace('-', '_') == from_pkg_lower:
+                    culprit_pkg, culprit_ver = pkg, ver
+                    break
+
+        if not culprit_pkg:
+            # Fallback: search assignment for a package whose name appears near the error
+            for pkg, ver in assignment.items():
+                if re.search(re.escape(pkg), error_log[:300], re.IGNORECASE):
+                    culprit_pkg, culprit_ver = pkg, ver
+                    break
+
+        if culprit_pkg and culprit_ver:
+            # Current version removed the API → upper bound = current version
+            self.store.add_upper_bound(culprit_pkg, python_version, culprit_ver)
 
     def inject(self, assignment: Dict[str, str], python_version: str,
                error_log: str, error_type: str) -> None:

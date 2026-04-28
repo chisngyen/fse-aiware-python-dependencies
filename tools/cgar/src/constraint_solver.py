@@ -36,8 +36,14 @@ class ConstraintSolver:
         result = []
         for c in candidates:
             ver = c['version']
-            if ver and not self.store.is_infeasible(package, ver, python_version):
-                result.append(ver)
+            if not ver:
+                continue
+            if self.store.is_infeasible(package, ver, python_version):
+                continue
+            # Skip versions above upper bound (API was removed in that version)
+            if self.store.is_above_upper_bound(package, ver, python_version):
+                continue
+            result.append(ver)
         # Always include empty string as final fallback (unversioned install)
         result.append('')
         return result
