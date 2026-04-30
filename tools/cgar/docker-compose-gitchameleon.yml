@@ -9,8 +9,8 @@ services:
     volumes:
       - ../../benchmarks/gitchameleon-snippets:/gists
       - /var/run/docker.sock:/var/run/docker.sock
-      - ../../results/pllm_results:/results:ro
-      - ../../results/cgar_gitchameleon:/output
+      - ../../results/hg2k/pllm:/results:ro
+      - ../../results/gitchameleon/cgar:/output
       - ../memres/src:/memres_src:ro
     extra_hosts:
       - "host.docker.internal:host-gateway"

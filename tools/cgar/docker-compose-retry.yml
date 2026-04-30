@@ -1,22 +1,21 @@
-version: "3.8"
-
 services:
-  memres:
-    image: memres:latest
+  cgar-retry:
+    image: cgar:latest
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: memres
+    container_name: cgar-retry
     privileged: true
     volumes:
       - ../../hard-gists:/gists
       - /var/run/docker.sock:/var/run/docker.sock
       - ../../results/hg2k/pllm:/results:ro
-      - ../../output/ablation_no_level1:/output
+      - ../../results/hg2k/cgar:/output
+      - ../memres/src:/memres_src:ro
     extra_hosts:
       - "host.docker.internal:host-gateway"
     command: >
       python run.py --folder /gists
-      -d /results -o /output --exact-output --no-level1
+      -d /results -o /output --exact-output
       -m gemma2 -b http://host.docker.internal:11434
-      -l 10 -r 0 -w 1 --timeout 180 --resume
+      -l 5 -r 0 -w 2 --timeout 400 --resume

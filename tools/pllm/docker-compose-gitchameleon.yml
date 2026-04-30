@@ -18,7 +18,7 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:rw
       - ../../benchmarks/gitchameleon-snippets:/gists
-      - ../../results/pllm_gitchameleon:/output
+      - ../../results/gitchameleon/pllm:/output
       - ./run_batch.sh:/app/run_batch.sh:ro
     extra_hosts:
       - "host.docker.internal:host-gateway"

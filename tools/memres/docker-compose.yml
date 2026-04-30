@@ -11,7 +11,7 @@ services:
     volumes:
       - ../../hard-gists:/gists
       - /var/run/docker.sock:/var/run/docker.sock
-      - ../../pllm_results:/results:ro
+      - ../../results/hg2k/pllm:/results:ro
       - ../../output/run_6:/output
     extra_hosts:
       - "host.docker.internal:host-gateway"
