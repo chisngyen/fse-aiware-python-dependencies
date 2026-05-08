@@ -9,8 +9,7 @@ This is the **FSE-AIWare 2026 competition platform** for agentic Python dependen
 - **MEMRES** — first competition entry (multi-level confidence cascade with self-evolving memory)
 - **CGAR** — second/improved entry built on MEMRES (Constraint-Guided Agentic Resolution)
 - **hard-gists** — the HG2.9K dataset (2,900+ Python snippets with hard dependency conflicts)
-- **benchmarks/gitchameleon** — original GitChameleon repo (source dataset)
-- **benchmarks/gitchameleon-snippets** — adapted GitChameleon dataset (328 snippets, converted for CGAR/MEMRES/PLLM)
+- **benchmarks/gitchameleon-snippets** — adapted GitChameleon dataset (328 snippets, converted for CGAR/MEMRES/PLLM; original repo not stored in this repo, re-fetch from arXiv 2507.12367 if regeneration needed)
 - **results/** — output from experiment runs, organized by benchmark then tool:
   - `results/hg2k/{cgar,memres,pllm,pyego,readpy}/` — HG2.9K results per tool
   - `results/gitchameleon/{cgar,memres,pllm}/` — GitChameleon results per tool
