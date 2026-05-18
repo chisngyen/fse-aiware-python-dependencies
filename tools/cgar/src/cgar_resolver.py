@@ -1,118 +1,152 @@
 """
-CGARResolver — Main orchestrator for CGAR tool.
+CGARResolver — Multi-Agent Coordinator for CGAR.
 
-Wraps MEMRES EnhancedResolver, inserting Stages 2.5 and 2.6 between
-MEMRES's module cleaning (Stage 2) and its version-selection cascade (Stage 3).
+Orchestrates four cooperating agents around a shared, session-scoped
+ConstraintStore (matches the architecture diagram in the slide):
 
-On each Docker failure, FailureInjector converts the error into a constraint,
-and the solver is re-run to find the next viable assignment (counterfactual
-backtracking) before falling back to the original MEMRES cascade.
+       ┌──────────┐  query_pypi     ┌──────────┐
+       │ Planner  │ ──────────────> │ Executor │
+       └────┬─────┘  wheel_filter   └────┬─────┘
+            │  solve                     │ build_docker
+            │                            │ run_import
+            │                            ▼
+            │                       ┌─────────┐
+            │                       │ Docker  │
+            │                       └────┬────┘
+            │            ┌───────────────┘
+            │            ▼ (fail)
+            │       ┌──────────┐  parse_error      ┌──────────┐
+            │       │ Analyzer │ ────────────────> │  Critic  │
+            │       └────┬─────┘  gen_constraint   └────┬─────┘
+            │            │                              │
+            │            │ HARD / SOFT / UPPER          │ analyze_failures
+            │            ▼                              │ suggest_strategy
+            │     ┌──────────────┐                      │
+            └─────│ Session Store│ ◀────────────────────┘
+                  └──────────────┘
+
+Communication is loose-coupled: each agent reads/writes the shared
+ConstraintStore; no direct method calls between agents. The coordinator
+(this class) handles the build loop and consults the Critic when stuck.
+
+Backward-compatible hooks (cgar_select_packages_for_build,
+cgar_on_build_failure, cgar_on_success, cgar_reset_snippet) are preserved
+for integration with the MEMRES EnhancedResolver in
+enhanced_resolver_patched.py.
 """
 
 import os
 import sys
-import time
-from typing import Dict, List, Optional
+from typing import Any, Dict, List, Optional
 
 # Resolve memres src path: mounted at /memres_src in Docker,
-# relative path locally for development
-_MEMRES_SRC = os.environ.get('MEMRES_SRC_PATH',
-    os.path.join(os.path.dirname(__file__), '..', '..', 'memres', 'src'))
+# relative path locally for development.
+_MEMRES_SRC = os.environ.get(
+    "MEMRES_SRC_PATH",
+    os.path.join(os.path.dirname(__file__), "..", "..", "memres", "src"),
+)
 if os.path.exists(_MEMRES_SRC) and _MEMRES_SRC not in sys.path:
     sys.path.insert(0, os.path.abspath(_MEMRES_SRC))
 
-from .constraint_store import ConstraintStore, ConstraintType
-from .candidate_graph_builder import CandidateGraphBuilder
-from .constraint_solver import ConstraintSolver
-from .failure_injector import FailureInjector
+from .constraint_store import ConstraintStore
+from .agents import (
+    PlannerAgent,
+    ExecutorAgent,
+    AnalyzerAgent,
+    CriticAgent,
+)
 
 
 class CGARResolver:
-    """
-    CGAR-enhanced resolver.
+    """Multi-Agent coordinator for Constraint-Guided Agentic Resolution.
 
-    Adds to EnhancedResolver:
-    - Stage 2.5: CandidateGraphBuilder (live PyPI metadata)
-    - Stage 2.6: ConstraintSolver (backtracking with learned constraints)
-    - Stage 2.7: FailureInjector (Docker failure → constraint)
-    - Stage 2.8: Counterfactual backtracking (re-solve before LLM fallback)
-
-    The session-scoped ConstraintStore is shared across all snippets resolved
-    by this instance, enabling cross-snippet transfer learning.
-
-    NOTE: This class is a mixin/wrapper. The full orchestration (MEMRES pipeline
-    integration) is done in enhanced_resolver_patched.py (Task 7). This class
-    exposes the CGAR-specific stages and hooks as a standalone unit that can
-    be tested and used independently.
+    Composes four agents (Planner / Executor / Analyzer / Critic) over a
+    shared ConstraintStore. Designed to be mixed into MEMRES
+    ``EnhancedResolver`` via multiple inheritance (see
+    ``enhanced_resolver_patched.py``); the resolver's existing Docker
+    pipeline drives the actual build, while the agents take care of
+    candidate selection and failure-to-constraint conversion.
     """
 
     def __init__(self, *args, **kwargs):
+        # ── Shared session memory ─────────────────────────────────────
         self.constraint_store = ConstraintStore(soft_threshold=2)
-        self.graph_builder = CandidateGraphBuilder(timeout=8)
-        self.solver = ConstraintSolver(self.constraint_store)
-        self.injector = FailureInjector(self.constraint_store)
+
+        # ── Four agents ───────────────────────────────────────────────
+        self.planner = PlannerAgent(self.constraint_store, logger=self._cgar_log)
+        self.executor = ExecutorAgent(self.constraint_store, logger=self._cgar_log)
+        self.analyzer = AnalyzerAgent(self.constraint_store, logger=self._cgar_log)
+        self.critic = CriticAgent(self.constraint_store, logger=self._cgar_log)
+
+        # ── Backwards-compat aliases (used by enhanced_resolver_patched
+        #    and any external tooling that referenced the old attributes). ─
+        self.graph_builder = self.planner.graph_builder
+        self.solver = self.planner.solver
+        self.injector = self.analyzer.injector
+
+        # ── Per-session bookkeeping ───────────────────────────────────
         self._cgar_attempts = 0
         self._cgar_rescues = 0
         self._cgar_current_assignment: Optional[Dict[str, str]] = None
         self._cgar_fallback = False
+        self._cgar_last_critic_suggestion: Optional[Dict[str, Any]] = None
+
+    # ── Logging ──────────────────────────────────────────────────────
 
     def _cgar_log(self, msg: str) -> None:
-        """Log a CGAR-stage message. Uses parent log() if available."""
-        if hasattr(self, 'log'):
-            self.log(msg)
+        """Log via parent ``log`` if mixed into a resolver; else stdout."""
+        parent_log = getattr(self, "log", None)
+        if callable(parent_log) and parent_log is not self._cgar_log:
+            parent_log(msg)
         else:
             print(msg, flush=True)
 
-    def cgar_select_versions(self, packages: List[str],
-                              python_version: str,
-                              exclude_combo: Optional[Dict] = None) -> Optional[Dict[str, str]]:
-        """
-        Stage 2.5 + 2.6: Build candidate graph and solve for best assignment.
-        Returns {package: version} or None if solver finds nothing viable.
-        """
-        self._cgar_log(f"  [CGAR] Building candidate graph for {packages} on Python {python_version}")
-        graph = self.graph_builder.build_graph(packages, python_version)
+    # ── Multi-Agent API (matches slide vocabulary) ───────────────────
 
-        for pkg, candidates in graph.items():
-            self._cgar_log(f"  [CGAR]   {pkg}: {len(candidates)} candidates from PyPI")
-
-        assignment = self.solver.solve(graph, python_version, exclude_combo=exclude_combo)
-        if assignment:
-            self._cgar_log(f"  [CGAR] Solver assignment: {assignment}")
-        else:
-            self._cgar_log(f"  [CGAR] Solver exhausted — falling back to MEMRES cascade")
-        return assignment
+    def cgar_select_versions(self, packages: List[str], python_version: str,
+                              exclude_combo: Optional[Dict[str, str]] = None
+                              ) -> Optional[Dict[str, str]]:
+        """Run the Planner agent to pick a version assignment."""
+        return self.planner.step(
+            packages, python_version, exclude_combo=exclude_combo
+        )
 
     def cgar_inject_failure(self, assignment: Dict[str, str], python_version: str,
                              error_log: str, error_type: str) -> None:
-        """Stage 2.7: Convert Docker failure into ConstraintStore record."""
-        self.injector.inject(assignment, python_version, error_log, error_type)
-        self._cgar_log(f"  [CGAR] Constraint injected. Store stats: {self.constraint_store.stats()}")
+        """Run the Analyzer agent on a Docker failure, then notify Critic."""
+        self.analyzer.step(assignment, python_version, error_log, error_type)
+        # Critic observes the failure (it decides for itself whether to fire)
+        self.critic.record_failure(assignment, python_version, error_type)
+
+    def cgar_consult_critic(self) -> Dict[str, Any]:
+        """Run one Critic step. Fires only if stuck (≥3 same-type fails)."""
+        suggestion = self.critic.step()
+        self._cgar_last_critic_suggestion = suggestion
+        return suggestion
+
+    # ── Backwards-compat hooks (used by EnhancedResolver patches) ────
 
     def cgar_select_packages_for_build(self, packages: Dict[str, str],
                                         python_version: str) -> Dict[str, str]:
-        """
-        Hook called before each Docker build attempt.
-        CGAR overrides version selection for unversioned packages if solver
-        finds a better assignment. Falls back to original packages if solver
-        is exhausted.
+        """Hook called by EnhancedResolver before each Docker build.
+
+        Routes through the Planner agent. If the Planner returns no
+        assignment, CGAR falls back to MEMRES' original cascade and
+        marks subsequent calls as fallback (no further intervention).
         """
         if self._cgar_fallback:
             return packages
 
-        # Only intervene for packages without pinned versions
-        pkg_names = [p for p, v in packages.items() if not v]
+        unversioned = [p for p, v in packages.items() if not v]
         versioned = {p: v for p, v in packages.items() if v}
-
-        if not pkg_names:
-            return packages  # All already versioned — CGAR not needed
+        if not unversioned:
+            return packages
 
         self._cgar_attempts += 1
         cgar_assignment = self.cgar_select_versions(
-            pkg_names, python_version,
+            unversioned, python_version,
             exclude_combo=self._cgar_current_assignment,
         )
-
         if cgar_assignment is None:
             self._cgar_fallback = True
             return packages
@@ -122,31 +156,48 @@ class CGARResolver:
 
     def cgar_on_build_failure(self, assignment: Dict[str, str], python_version: str,
                                error_log: str, error_type: str) -> None:
+        """Hook called by EnhancedResolver after each failed build.
+
+        Drives the Analyzer (extracts constraint) and optionally the
+        Critic (if Planner appears stuck). The Critic's suggestion is
+        stored on the resolver but acting on it (e.g. switching Python)
+        is the responsibility of the outer build loop.
+
+        Uses the caller-supplied ``assignment`` when CGAR has not yet
+        picked one for this attempt (fallback path); otherwise prefers
+        the Planner's own assignment so constraints stay attributed to
+        the version combo the agent actually proposed.
         """
-        Hook called after each failed Docker attempt.
-        Injects constraint so next solve skips this assignment.
-        Also detects API-removed errors and adds upper bound constraints.
-        """
-        if not self._cgar_fallback and self._cgar_current_assignment:
-            self.cgar_inject_failure(
-                self._cgar_current_assignment, python_version, error_log, error_type
-            )
-            # Detect API-removed errors → inject upper bound for that package/version
-            self.injector.inject_api_removed(
-                self._cgar_current_assignment, python_version, error_log
-            )
+        effective = self._cgar_current_assignment or assignment
+        if self._cgar_fallback or not effective:
+            return
+
+        self.cgar_inject_failure(
+            effective, python_version, error_log, error_type
+        )
+        suggestion = self.cgar_consult_critic()
+        if suggestion.get("action") != "continue":
+            self._cgar_log(f"  [Critic] suggestion: {suggestion}")
 
     def cgar_on_success(self) -> None:
-        """Hook called on successful resolution."""
+        """Hook called by EnhancedResolver when a snippet resolves."""
         self._cgar_rescues += 1
         self._cgar_log(
-            f"  [CGAR] Session stats: "
+            "  [CGAR] session stats: "
             f"attempts={self._cgar_attempts}, "
             f"rescues={self._cgar_rescues}, "
-            f"store={self.constraint_store.stats()}"
+            f"store={self.constraint_store.stats()}, "
+            f"critic_activations={self.critic.state.get('activations', 0)}"
         )
 
     def cgar_reset_snippet(self) -> None:
-        """Reset per-snippet state (call at start of each new snippet)."""
+        """Hook called by EnhancedResolver at the start of each new snippet.
+
+        Resets per-snippet state in the coordinator and in the Critic
+        (its failure history is per-snippet). The ConstraintStore is
+        NOT reset — it persists across snippets in the same session.
+        """
         self._cgar_current_assignment = None
         self._cgar_fallback = False
+        self._cgar_last_critic_suggestion = None
+        self.critic.reset()

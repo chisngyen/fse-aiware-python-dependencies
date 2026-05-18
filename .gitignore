@@ -165,6 +165,7 @@ Pipfile.lock
 # === Project-specific ===
 
 # Large data directories (not tracked)
+manuscripts/assets/26_05_15_icse_journal_submission/
 hard-gists/
 pllm_results/
 results/
