@@ -34,8 +34,15 @@ class FullCGARResolver(CGARResolver, EnhancedResolver):
     """
 
     def __init__(self, *args, **kwargs):
+        # Pull CGAR-specific kwargs (LLM agent config) before MEMRES init
+        cgar_kwargs = {
+            "llm_enabled": kwargs.pop("cgar_llm_enabled", True),
+            "llm_base_url": kwargs.get("base_url", "http://localhost:11434"),
+            "llm_model": kwargs.get("model", "gemma2"),
+            "llm_temp": kwargs.get("temp", 0.3),
+        }
         # Initialize CGAR components first
-        CGARResolver.__init__(self)
+        CGARResolver.__init__(self, **cgar_kwargs)
         # Initialize MEMRES pipeline
         EnhancedResolver.__init__(self, *args, **kwargs)
 
@@ -80,6 +87,7 @@ def _make_resolver(args) -> FullCGARResolver:
         use_llm=not args.no_llm,
         use_level1=not getattr(args, 'no_level1', False),
         build_timeout=args.timeout,
+        cgar_llm_enabled=not getattr(args, 'no_agent_llm', False),
     )
 
 
@@ -255,7 +263,10 @@ def main():
     parser.add_argument('-o', '--output', default='/output')
     parser.add_argument('--exact-output', action='store_true')
     parser.add_argument('-v', '--verbose', action='store_true')
-    parser.add_argument('--no-llm', action='store_true')
+    parser.add_argument('--no-llm', action='store_true',
+                        help='Disable MEMRES Stage-3 cascade LLM fallback')
+    parser.add_argument('--no-agent-llm', action='store_true',
+                        help='Disable LLM in CGAR agents (Planner/Analyzer/Critic)')
     parser.add_argument('--no-level1', action='store_true')
     parser.add_argument('--timeout', type=int, default=180)
     parser.add_argument('-n', '--max-snippets', type=int, default=0)

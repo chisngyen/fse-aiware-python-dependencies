@@ -151,7 +151,7 @@ Khôi phục tự động môi trường Python từ mã nguồn cũ bằng \tex
 
 \vspace{1em}
 \centering\scriptsize\color{gray}
-\textit{($+$ Backup slides cho Q\&A: Why Gemma-2 9B, MEMRES Stage Details, GitChameleon Re-framing)}
+\textit{($+$ 10 Backup slides cho Q\&A: MEMRES Stages, GitChameleon, Filter \& CSP I/O, Agent Comm., Session Store, LLM Call, Build Loop, 3 Agent Prompts)}
 \end{frame}
 
 % ============================================================
@@ -251,9 +251,10 @@ Khôi phục tự động môi trường Python từ mã nguồn cũ bằng \tex
 \scriptsize
 \textbf{\color{alert}Evaluation budget}
 \begin{itemize}\setlength{\itemsep}{0pt}\scriptsize
-  \item $\le$\textbf{10} retries / snippet
-  \item \textbf{180s} / build · \textbf{500s} total
-  \item Sequential (1 worker)
+  \item $K_{\text{build}}\le$\textbf{10} Docker retries · 180s/build
+  \item $K_{\text{solve}}\le$\textbf{50} CSP attempts \tiny\color{gray}(logic-only, no Docker)
+  \item Sequential, 1 worker
+  \item \tiny\color{alert!70!black}\textit{CGAR HG2.9K: $K_{\text{build}}\!=\!5$ (half of MEMRES/PLLM) --- vẫn thắng accuracy}
 \end{itemize}
 
 \column{0.30\textwidth}
@@ -262,7 +263,6 @@ Khôi phục tự động môi trường Python từ mã nguồn cũ bằng \tex
 \begin{itemize}\setlength{\itemsep}{0pt}\scriptsize
   \item \textbf{Pass rate} (primary)
   \item Avg time / snippet
-  \item LLM calls / snippet
 \end{itemize}
 \end{columns}
 \end{frame}
@@ -455,7 +455,7 @@ import cv2                          # PyPI name: opencv-python
 \includegraphics[width=\linewidth]{memres-pipeline.png}
 
 \vspace{0.3em}
-{\tiny\color{gray}\textit{4 stages + 2 fast paths (cache hit, Py2 fast) bypass LLM; 2 memory stores feed back vào pipeline.}}
+{\tiny\color{gray}\textit{4 stages + 2 fast paths (cache hit, Py2 fast); 2 memory stores feed back vào pipeline.}}
 
 \column{0.32\textwidth}
 \centering
@@ -464,8 +464,8 @@ import cv2                          # PyPI name: opencv-python
   \def\R{2.0}
   \foreach \ang/\lbl/\anch in {90/Pass HG2.9K/south,
                                  0/Pass GitCh./west,
-                               270/No-LLM success/north,
-                               180/Token reduction/east} {
+                               270/Rescue PLLM/north,
+                               180/Cross-bench/east} {
     \draw[gray!50] (0,0) -- (\ang:\R);
     \node[font=\tiny, anchor=\anch] at (\ang:\R+0.12) {\lbl};
   }
@@ -475,7 +475,7 @@ import cv2                          # PyPI name: opencv-python
   \draw[fill=alert!15, draw=alert, line width=0.9pt, opacity=0.9]
     (90:{2.0*0.448}) -- (0:{2.0*0.655}) -- (270:{2.0*0.0}) -- (180:{2.0*0.0}) -- cycle;
   \draw[fill=success!20, draw=success!60!black, line width=0.9pt, opacity=0.85]
-    (90:{2.0*0.863}) -- (0:{2.0*0.817}) -- (270:{2.0*0.68}) -- (180:{2.0*0.75}) -- cycle;
+    (90:{2.0*0.863}) -- (0:{2.0*0.817}) -- (270:{2.0*0.752}) -- (180:{2.0*0.95}) -- cycle;
 \end{tikzpicture}
 
 \vspace{0.1em}
@@ -552,12 +552,14 @@ Mỗi lỗ hổng MEMRES $\to$ 1 thành phần CGAR --- vá có chủ đích, kh
 \section{CGAR: Multi-Agent Architecture}
 % ============================================================
 
-\begin{frame}{CGAR --- Overview}
+\begin{frame}{CGAR --- Paradigm Shift}
     \begin{figure}
         \centering
-        \includegraphics[width=0.85\textwidth]{multi-agents.png}
-        \caption{CGAR architecture: automated constraint induction and resolution pipeline.}
+        \includegraphics[width=0.78\textwidth]{paradigm_shift.png}
     \end{figure}
+    \vspace{-0.5em}
+    \centering\footnotesize\color{mDarkTeal}
+    Từ \textcolor{alert}{\textbf{thử-sai mù}} (PLLM/MEMRES) $\to$ \textcolor{success!50!black}{\textbf{học ràng buộc từ thất bại}} (CGAR): mỗi build fail biến thành 1 constraint tỉa không gian.
 \end{frame}
 
 \begin{frame}{CGAR --- Multi-Agent Loop}
@@ -598,10 +600,10 @@ Mỗi lỗ hổng MEMRES $\to$ 1 thành phần CGAR --- vá có chủ đích, kh
   \node[llmnode]  (crit)    at (0.5, -2.5) {\textbf{4. Critic} \tiny(LLM)};
 
   % Tool annotations
-  \node[toolslabel, anchor=west] at (2.1, 2.4)  {query\_pypi()\\wheel\_filter()};
+  \node[toolslabel, anchor=west] at (2.1, 2.4)  {query\_pypi()\\wheel\_filter()\\\textbf{consult\_llm()}\\solve()};
   \node[toolslabel, anchor=west] at (2.1, 1.2)  {build\_docker()\\run\_import()};
-  \node[toolslabel, anchor=west] at (2.1, -1.3) {parse\_error()\\gen\_constraint()};
-  \node[toolslabel, anchor=west] at (2.1, -2.5) {analyze\_failures()\\suggest\_strategy()};
+  \node[toolslabel, anchor=west] at (2.1, -1.3) {parse\_error()\\\textbf{consult\_llm()}\\gen\_constraint()};
+  \node[toolslabel, anchor=west] at (2.1, -2.5) {analyze\_failures()\\\textbf{consult\_llm()}\\suggest\_strategy()};
 
   % Main flow
   \draw[arrline] (planner) -- (exec);
@@ -667,8 +669,8 @@ Sắp xếp \textit{wheel-first}, semver giảm dần.
 \column{0.48\textwidth}
 \begin{figure}
     \centering
-    \includegraphics[width=\linewidth]{csp_logic.png}
-    \caption{Thuật toán tìm kiếm thỏa mãn ràng buộc (CSP)}
+    \includegraphics[width=\linewidth]{cgar_pruning.png}
+    \caption{HARD / SOFT / UPPER tỉa cây tìm kiếm $\to$ 1 path khả thi.}
 \end{figure}
 \end{columns}
 \end{frame}
@@ -750,11 +752,12 @@ Lưu trữ và chia sẻ ràng buộc học được giữa các snippets trong 
 \end{tabular}
 
 \vspace{0.5em}
-\tiny PLLM 44.8\% = reproduction single-run (paper headline 54.7\% là 10-run union). \textbf{Time} = avg tất cả snippet (pass+fail) trên HG2.9K. $^{\dagger}$SMT-LLM 23.9s là \emph{median} (paper không báo avg/snippet). SMT-LLM cũng dùng Gemma-2 9B + Docker, đồng venue FSE'26 với MEMRES.
+\tiny PLLM 44.8\% = reproduction single-run (paper headline 54.7\% là 10-run union). \textbf{Time} = avg tất cả snippet (pass+fail) trên HG2.9K. $^{\dagger}$SMT-LLM 23.9s là \emph{median} (paper không báo avg/snippet). SMT-LLM cũng dùng Gemma-2 9B + Docker, đồng venue FSE'26 với MEMRES.\\
+\textcolor{alert!70!black}{\textbf{Fairness}: CGAR HG2.9K chạy $K_{\text{build}}\!=\!5$ (PLLM/MEMRES $=\!10$) --- accuracy fair (CGAR thắng với half budget); speed primary so sánh trên \textbf{GitChameleon} ($K_{\text{build}}\!=\!5$ cho cả 3 tool).}
 
 \vspace{0.3em}
 \scriptsize
-\textbf{Highlights}: CGAR \#1 cả 2 benchmark · vượt o1 (closed) \textbf{+32.0pp} GitCham · vượt SMT-LLM (cùng FSE'26 venue) \textbf{+3.5pp} HG2.9K với \textbf{7$\times$} ít LLM calls.
+\textbf{Highlights}: CGAR \#1 cả 2 benchmark · vượt o1 (closed) \textbf{+32.0pp} GitCham · vượt SMT-LLM (cùng FSE'26 venue) \textbf{+3.5pp} HG2.9K.
 \end{frame}
 
 % ─── R2. HG2.9K — In-Distribution Detailed ──────────────────
@@ -1006,9 +1009,9 @@ Total fails: PLLM \textbf{1596} $\to$ CGAR \textbf{373} \quad\textcolor{success!
 
 \vspace{1.0em}
 \centering\footnotesize\color{mDarkTeal}
-\emph{``The best LLM call is the one you never make.''}\\[0.2em]
+\emph{``The best build is the one you never run.''}\\[0.2em]
 \scriptsize\color{black}
-CGAR cắt cả LLM calls và Docker builds vô ích --- \textbf{upper bound} là component quan trọng nhất ($-68\%$ khi bỏ).
+CGAR cắt Docker builds vô ích --- \textbf{upper bound} là component quan trọng nhất ($-68\%$ khi bỏ).
 \end{frame}
 
 % ============================================================
@@ -1171,60 +1174,6 @@ University of Science, VNU-HCM
 % ============================================================
 \appendix
 
-\begin{frame}{Backup --- Why Gemma-2 9B?}
-\vspace{0.3em}
-\begin{columns}[c,onlytextwidth]
-\column{0.66\textwidth}
-\centering
-\tiny
-\setlength{\tabcolsep}{5pt}
-\renewcommand{\arraystretch}{1.18}
-\begin{tabular}{@{}l c c r r r r r@{}}
-  \toprule
-  \multirow{2}{*}{\textbf{Model}} & \multirow{2}{*}{\textbf{RAG}} & \textbf{Total} & \multicolumn{5}{c}{\textbf{Distribution: pass $k$/5 runs}} \\
-  \cmidrule(lr){4-8}
-                       &        & \textbf{fixes} & \textbf{5} & \textbf{4} & \textbf{3} & \textbf{2} & \textbf{1} \\
-  \midrule
-  Gemma-2 2B           & \cmark & 86           & 33          & 31 & 21 & 22 & 38 \\
-  \rowcolor{accent!22}
-  \textbf{Gemma-2 9B}  & \cmark & \textbf{203} & \textbf{166}& 22 & 12 & 19 & 25 \\
-  Gemma-2 27B          & \cmark & 187          & 146         & 28 & 17 & 10 & 23 \\
-  DeepSeek-R1 8B       & \cmark & 166          & 80          & 55 & 36 & 36 & 30 \\
-  Llama 3.1 8B         & \cmark & 197          & 103         & 53 & 38 & 39 & 35 \\
-  MistralAI            & \cmark & 194          & 122         & 49 & 23 & 31 & 35 \\
-  \midrule
-  Gemma-2 2B           & \xmark & --           & --          & -- & -- & -- & -- \\
-  Gemma-2 9B           & \xmark & 171          & 119         & 33 & 18 & 23 & 27 \\
-  Gemma-2 27B          & \xmark & \textcolor{alert!80!black}{\textbf{207}} & 165 & 21 & 19 & 25 & 21 \\
-  DeepSeek-R1 8B       & \xmark & 164          & 75          & 53 & 43 & 36 & 33 \\
-  Llama 3.1 8B         & \xmark & 111          & 49          & 25 & 35 & 23 & 61 \\
-  MistralAI            & \xmark & 106          & 53          & 24 & 25 & 31 & 33 \\
-  \bottomrule
-\end{tabular}
-
-\hspace{0.04\textwidth}
-\column{0.32\textwidth}
-\scriptsize
-
-\textit{\color{gray}PLLM (ASEW'25) so sánh 6 LLM open-source qua Ollama, HG2.9K-422 subset, 5 runs.}
-
-\vspace{0.8em}
-\textbf{\color{mDarkTeal}3 lý do chọn Gemma-2 9B:}
-\vspace{0.3em}
-\begin{itemize}\setlength{\itemsep}{0.4em}\scriptsize
-  \item \textbf{Accuracy top}: 203 fixes (RAG on)
-  \item \textbf{Consistency vô đối}: \textbf{166} pass 5/5
-        \tiny\\\textcolor{gray}{vs G2-27B 146, Llama 103}
-  \item \textbf{Fit budget}: $<$10\,GB VRAM
-        \tiny\\\textcolor{gray}{27B vượt budget competition}
-\end{itemize}
-
-\vspace{0.5em}
-\tiny\color{alert!80!black}
-\textit{Note: G2-27B no-RAG đạt \textbf{207} fixes nhưng vượt 10\,GB VRAM.}
-\end{columns}
-\end{frame}
-
 \begin{frame}{Backup --- MEMRES Stage Details}
 \vspace{0.3em}
 
@@ -1294,7 +1243,7 @@ University of Science, VNU-HCM
 
 \vspace{0.4em}
 \centering\scriptsize\color{success!55!black}
-\textbf{Hiệu quả:} 68\% snippets resolve KHÔNG cần LLM · median 15.2s · 0.34 LLM calls/snippet
+\textbf{Hiệu quả:} median resolution 15.2s · self-learning at runtime, no HG2.9K leakage
 \end{frame}
 
 \begin{frame}[fragile]{Backup --- GitChameleon Re-framing}
@@ -1357,6 +1306,429 @@ Version \textbf{giấu} $\to$ lưu riêng \texttt{ground\_truth.csv}.
 \scriptsize\color{black}
 Success = \textbf{pass unit test} (semantic correctness), không phải chỉ \texttt{import} chạy được.
 Cài \texttt{torch==2.0} thay vì \texttt{1.9} vẫn import OK nhưng \texttt{assert} fail $\to$ tool bắt buộc pick đúng version.
+\end{frame}
+
+% ============================================================
+% ─── Backup: Filter & CSP I/O ───────────────────────────────
+% ============================================================
+\begin{frame}[fragile]{Backup --- Filter \& CSP (I/O)}
+\vspace{0.2em}
+\scriptsize
+\begin{columns}[T,onlytextwidth]
+\column{0.49\textwidth}
+\textbf{\color{navydeep}Filter --- CandidateGraphBuilder}\\[0.2em]
+\textit{candidate\_graph\_builder.py}
+\begin{lstlisting}[basicstyle=\tiny\ttfamily, language=Python]
+Input : packages = ["scipy", "numpy"]
+        python_version = "3.7"
+
+# Per package:
+#   GET https://pypi.org/pypi/<pkg>/json
+#   filter requires_python by SpecifierSet
+#   wheel filter (linux/x86_64 only):
+#     "-none-any.whl"   | "manylinux"
+#     | "linux_x86_64"  | "-cp37-" | "-py3-"
+#   sort: wheel-first, newest-first
+#   take top 8
+
+Output: {
+  "scipy": [
+    {v:"1.7.3", requires_python:">=3.7",
+     has_wheel:True},
+    {v:"1.7.2", ..., has_wheel:True},
+    ... up to 8 candidates
+  ],
+  "numpy": [...]
+}
+\end{lstlisting}
+
+\column{0.49\textwidth}
+\textbf{\color{navydeep}CSP --- ConstraintSolver}\\[0.2em]
+\textit{constraint\_solver.py:51-123}
+\begin{lstlisting}[basicstyle=\tiny\ttfamily, language=Python]
+Input : graph (from Filter)
+        python_version
+        exclude_combo  # last failed pick
+
+# 1. viable = filter graph by store
+#    (HARD/SOFT/UpperBound pruning)
+# 2. greedy: pick newest viable per pkg
+# 3. if combo in exclude or infeasible:
+#      _next_assignment(): odometer-style
+#      enumeration, skip known-bad combos
+#      max_attempts = 50 (safety cap)
+#                     ^^^ logic-only,
+#                         no Docker calls
+
+Output: {"scipy":"1.7.3","numpy":"1.21.6"}
+        or None if exhausted
+\end{lstlisting}
+\end{columns}
+
+\vspace{0.3em}
+\centering\tiny\color{gray}
+\textbf{Two Ks:} $K_{\text{solve}}\!=\!50$ logical attempts/solve call (dict-lookup, $\mu$s) ·
+$K_{\text{build}}\!\le\!10$ Docker retries/snippet (180s/build, expensive).
+\end{frame}
+
+% ============================================================
+% ─── Backup: Agent ↔ Agent Communication ────────────────────
+% ============================================================
+\begin{frame}[fragile]{Backup --- Agent Communication (Message I/O)}
+\vspace{0.1em}
+{\tiny\color{gray}\textit{cgar\_resolver.py · loose-coupled via shared ConstraintStore (no direct calls between agents)}}
+\vspace{0.3em}
+\scriptsize
+\begin{columns}[T,onlytextwidth]
+\column{0.50\textwidth}
+\textbf{\color{navydeep}1. Planner $\to$ Executor}\\[0.1em]
+\textit{assignment dict}
+\begin{lstlisting}[basicstyle=\tiny\ttfamily, language=Python]
+{"scipy": "1.7.3", "numpy": "1.21.6",
+ "matplotlib": "3.5.3"}
+\end{lstlisting}
+
+\vspace{0.3em}
+\textbf{\color{navydeep}2. Executor $\to$ Analyzer}\\[0.1em]
+\textit{build result + error log}
+\begin{lstlisting}[basicstyle=\tiny\ttfamily, language=Python]
+{"success": False,
+ "error_type": "ImportError",
+ "error_log": "ImportError: cannot
+   import name 'imread' from 'scipy.misc'",
+ "assignment": {"scipy":"1.7.3",...}}
+\end{lstlisting}
+
+\vspace{0.3em}
+\textbf{\color{navydeep}3. Analyzer $\to$ Store (write)}\\[0.1em]
+\textit{store.add\_upper\_bound() / inject()}
+\begin{lstlisting}[basicstyle=\tiny\ttfamily, language=Python]
+add_upper_bound("scipy", "3.7", "1.2")
+# scipy >= 1.2 infeasible on py3.7
+# (imread removed in scipy 1.2)
+\end{lstlisting}
+
+\column{0.50\textwidth}
+\textbf{\color{navydeep}4. Store $\to$ Planner (read)}\\[0.1em]
+\textit{next round, planner queries store}
+\begin{lstlisting}[basicstyle=\tiny\ttfamily, language=Python]
+store.get_upper_bound("scipy", "3.7")
+# -> "1.2"
+store.get_infeasible_versions("scipy","3.7")
+# -> {"1.7.3", "1.6.0", ...}
+# Planner's solver prunes these
+\end{lstlisting}
+
+\vspace{0.3em}
+\textbf{\color{navydeep}5. Analyzer $\to$ Critic}\\[0.1em]
+\textit{critic.record\_failure() per build}
+\begin{lstlisting}[basicstyle=\tiny\ttfamily, language=Python]
+{"assignment": {"scipy":"1.7.3",...},
+ "python_version": "3.7",
+ "error_type": "ImportError"}
+\end{lstlisting}
+
+\vspace{0.3em}
+\textbf{\color{navydeep}6. Critic $\to$ Orchestrator}\\[0.1em]
+\textit{strategic action (fires when stuck)}
+\begin{lstlisting}[basicstyle=\tiny\ttfamily, language=Python]
+{"action": "switch_python",
+ "target": "2.7",
+ "reason": "repeated SyntaxError
+            -> likely Python 2 code",
+ "source": "llm"}
+\end{lstlisting}
+\end{columns}
+
+\vspace{0.3em}
+\centering\tiny\color{gray}
+\textbf{Coupling:} agents never call each other directly --- coordinator (\texttt{CGARResolver}) drives the loop;
+shared \texttt{ConstraintStore} carries cross-snippet knowledge within a session.
+\end{frame}
+
+% ============================================================
+% ─── Backup: ConstraintStore Data Structures ────────────────
+% ============================================================
+\begin{frame}[fragile]{Backup --- Session Store Data Structures}
+\vspace{-0.2em}
+{\tiny\color{gray}\textit{constraint\_store.py · failure\_injector.py · shared across all agents in 1 session}}
+\vspace{0.1em}
+\begin{columns}[T,onlytextwidth]
+\column{0.50\textwidth}
+{\scriptsize\textbf{\color{navydeep}1. InfeasibleRecord + 3 stores}}
+\begin{lstlisting}[basicstyle=\tiny\ttfamily, language=Python]
+@dataclass
+class InfeasibleRecord:
+  package, version, python_version: str
+  error_type:      ConstraintType  # HARD|SOFT
+  error_signature: str   # normalized log
+  confidence:      float # 1.0 HARD, 0.8 SOFT
+  count:           int   # ++ on re-observation
+
+_records:       Dict[(pkg,ver,py) ->
+                     InfeasibleRecord]
+_combo_records: Dict[(FrozenSet,py) -> sig]
+_upper_bounds:  Dict[(pkg,py) -> version_str]
+\end{lstlisting}
+
+{\scriptsize\textbf{\color{navydeep}2. Regex classifiers}}
+\begin{lstlisting}[basicstyle=\tiny\ttfamily, language=Python]
+_HARD = ["requires a different Python",
+  "No matching distribution found", ...]
+_SOFT = ["ImportError","ModuleNotFoundError",
+  "cannot import name", ...]
+_API_REMOVED_RE =
+  r"cannot import name '(\w+)' from '([\w.]+)'"
+\end{lstlisting}
+
+\column{0.50\textwidth}
+{\scriptsize\textbf{\color{navydeep}Flow --- error log $\to$ stored record}}
+\begin{lstlisting}[basicstyle=\tiny\ttfamily, language=Python]
+# Input: Docker stderr
+log = "ImportError: cannot import name
+       'imread' from 'scipy.misc'"
+
+# 1. normalize_error_signature(log)
+#    -> strip line-N, 0xADDR, paths
+
+# 2. classify_error(log, assignment)
+#    -> (SOFT, sig)   # _SOFT match
+
+# 3. _API_REMOVED_RE.search(log)
+#    -> ("imread", "scipy.misc")
+add_upper_bound("scipy","3.7","1.2")
+
+# 4. Analyzer LLM may confirm/add UB
+consult_llm() -> {"type":"UPPER",
+  "package":"scipy","upper_bound":"1.2"}
+
+# Resulting store state:
+_records[("scipy","1.7.3","3.7")] =
+  InfeasibleRecord(SOFT, count=1, 0.8)
+_upper_bounds[("scipy","3.7")] = "1.2"
+\end{lstlisting}
+\end{columns}
+
+\end{frame}
+
+% ============================================================
+% ─── Backup: LLM Call Mechanics & Build Loop ────────────────
+% ============================================================
+% ─── Frame A: LLM Call Mechanics ───────────────────────────
+\begin{frame}[fragile]{Backup --- LLM Call Mechanics}
+\vspace{0.1em}
+{\tiny\color{gray}\textit{HTTP $\to$ Ollama Gemma-2 9B (localhost:11434/api/generate)}}
+
+\vspace{0.5em}
+\begin{columns}[T,onlytextwidth]
+\column{0.42\textwidth}
+\scriptsize\textbf{\color{navydeep}1. Request payload}
+\vspace{0.2em}
+\begin{lstlisting}[basicstyle=\tiny\ttfamily, language=]
+{
+ "model": "gemma2",
+ "prompt": "<agent>",
+ "stream": false,
+ "format": "json",
+ "options": {
+  "temperature": 0.3,
+  "num_predict": 128
+ }
+}
+\end{lstlisting}
+
+\column{0.55\textwidth}
+\scriptsize\textbf{\color{navydeep}2. Response (Planner)}
+\vspace{0.2em}
+\begin{lstlisting}[basicstyle=\tiny\ttfamily, language=]
+{
+ "assignment": {
+   "scipy": "1.1.0",
+   "numpy": "1.16.6"
+ },
+ "reason":
+   "imread requires scipy<1.2"
+}
+\end{lstlisting}
+\end{columns}
+
+\vspace{1.2em}
+
+\begin{columns}[T,onlytextwidth]
+\column{0.48\textwidth}
+\scriptsize\textbf{\color{navydeep}3. Per-agent budget \& trigger}\\[0.4em]
+\scriptsize
+\begin{tabular}{@{}l c l@{}}
+\toprule
+\textbf{Agent} & \textbf{tok} & \textbf{Khi nào call} \\
+\midrule
+Planner   & 128 & mỗi plan step \\
+Analyzer  & 128 & mỗi Docker fail \\
+Critic    & 96  & $\ge\!3$ same-type fails \\
+\bottomrule
+\end{tabular}
+
+\column{0.52\textwidth}
+\scriptsize\textbf{\color{navydeep}4. Hard limits}\\[0.4em]
+\scriptsize
+\begin{tabular}{@{}l l@{}}
+HTTP timeout / call         & \textbf{60\,s} \\
+Retry on timeout            & \textbf{1$\times$} \\
+Docker build timeout        & \textbf{180\,s} \\
+Max retries / snippet       & $K_{\text{build}}\!\le\!\textbf{10}$ \\
+Empty / parse-fail response & $\to$ rule fallback \\
+\end{tabular}
+\end{columns}
+\end{frame}
+
+% ─── Frame B: Build Loop + Validation ──────────────────────
+\begin{frame}{Backup --- Build Loop \& Anti-Hallucination}
+\vspace{0.1em}
+{\tiny\color{gray}\textit{outer orchestration · response validation tại mỗi agent}}
+
+\vspace{0.5em}
+\begin{columns}[T,onlytextwidth]
+
+\column{0.50\textwidth}
+\scriptsize\textbf{\color{navydeep}1. Build loop (per snippet)}
+
+\vspace{0.4em}
+\footnotesize
+\textbf{reset} per-snippet state\\[0.4em]
+\textbf{loop} $\le\!\mathbf{10}$ Docker attempts:
+\begin{itemize}\setlength{\itemsep}{0.15em}\scriptsize
+  \item \textbf{Planner} $\to$ PyPI + CSP + LLM
+  \item \textbf{Executor} Docker (180\,s)
+  \item pass? \texttt{on\_success()}; \textbf{break}
+  \item else \textbf{Analyzer} writes HARD\\/SOFT\\/UPPER
+  \item \textbf{Critic} fires nếu $\ge\!3$ same-fails
+\end{itemize}
+
+\vspace{0.4em}
+\scriptsize\textbf{Store persists} qua snippet kế cùng session.
+
+\column{0.50\textwidth}
+\scriptsize\textbf{\color{navydeep}2. Anti-hallucination check}
+
+\vspace{0.4em}
+\begin{itemize}\setlength{\itemsep}{0.25em}\scriptsize
+  \item \textbf{Planner}: \texttt{version} $\in$ candidate graph $\to$ else solver
+  \item \textbf{Analyzer}: \texttt{type} $\in$ \{HARD, SOFT, UPPER\} $\to$ else discard
+  \item \textbf{Critic}: \texttt{action} $\in$ \{continue, switch\_python, mark\_unfixable\}
+  \item \textbf{JSON parse fail} $\to$ regex salvage
+  \item \textbf{Empty / timeout} $\to$ rule-only path
+\end{itemize}
+\end{columns}
+
+\vspace{0.8em}
+\centering{\scriptsize\color{gray}\textbf{Telemetry per agent} (logged):\\
+\texttt{llm\_consultations} · \texttt{llm\_accepted} (P) · \texttt{llm\_upper\_bounds} (A) · \texttt{llm\_overrides} (C)}
+\end{frame}
+
+% ============================================================
+% ─── Backup: Planner Prompt ─────────────────────────────────
+% ============================================================
+\begin{frame}[fragile]{Backup --- Planner Agent Prompt}
+\vspace{0.1em}
+{\tiny\color{gray}\textit{prompts.py · PLANNER\_PROMPT · consulted in PlannerAgent.step()}}
+\vspace{0.2em}
+\begin{lstlisting}[basicstyle=\tiny\ttfamily, breaklines=true, breakatwhitespace=true]
+You are the Planner agent in a dependency-resolution system.
+
+Goal: choose one version per package that is most likely to install AND
+import successfully on Python {python_version}, taking into account
+constraints learned from previous failures in this session.
+
+Candidate versions per package (newest first, wheel-available marked *):
+{candidate_block}
+
+Past failures observed for these packages (do NOT repeat them):
+{constraint_block}
+
+Rule-based solver's current pick (your default if you cannot improve it):
+{rule_pick}
+
+Rules:
+- Pick ONE version per package from the candidates list above.
+- Prefer wheel-available (*) versions to avoid source builds.
+- Avoid versions appearing in past failures.
+- If the rule-based pick looks safe, return it unchanged.
+
+Output ONLY valid JSON: {"assignment": {"pkg1": "X.Y.Z", "pkg2": "X.Y.Z"}, "reason": "<short>"}
+
+JSON output:
+\end{lstlisting}
+\end{frame}
+
+% ============================================================
+% ─── Backup: Analyzer Prompt ────────────────────────────────
+% ============================================================
+\begin{frame}[fragile]{Backup --- Analyzer Agent Prompt}
+\vspace{0.1em}
+{\tiny\color{gray}\textit{prompts.py · ANALYZER\_PROMPT · consulted after regex classification}}
+\vspace{0.2em}
+\begin{lstlisting}[basicstyle=\tiny\ttfamily, breaklines=true, breakatwhitespace=true]
+You are the Analyzer agent. A Docker build just failed.
+
+Assignment tried:
+{assignment_block}
+Python version: {python_version}
+
+Regex classifier's initial guess: type={regex_type}, signature={regex_sig}
+
+Error log (truncated):
+{error_log}
+
+Rules:
+- type in {HARD, SOFT, UPPER}.
+  HARD  = deterministic incompat (Python version mismatch, no matching dist).
+  SOFT  = runtime error needing >= 2 observations (ImportError, generic build fail).
+  UPPER = API was removed in current version -> infer an upper bound version.
+- If you see "cannot import name X from PKG", set type=UPPER and fill upper_bound.
+- upper_bound version should be the LAST known-good version before X was removed
+  (your best guess from common-knowledge of the library; null if unsure).
+
+Output ONLY valid JSON:
+{"type": "HARD|SOFT|UPPER", "package": "<pkg>", "upper_bound": "X.Y.Z|null", "reason": "<short>"}
+
+JSON output:
+\end{lstlisting}
+\end{frame}
+
+% ============================================================
+% ─── Backup: Critic Prompt ──────────────────────────────────
+% ============================================================
+\begin{frame}[fragile]{Backup --- Critic Agent Prompt}
+\vspace{0.1em}
+{\tiny\color{gray}\textit{prompts.py · CRITIC\_PROMPT · fires when $\ge\!3$ consecutive same-type fails}}
+\vspace{0.2em}
+\begin{lstlisting}[basicstyle=\tiny\ttfamily, breaklines=true, breakatwhitespace=true]
+You are the Critic agent. The Planner has failed several attempts on the
+current snippet and you must propose a strategic pivot.
+
+Failure pattern summary:
+- pattern: {pattern}
+- total failures: {total_failures}
+- recent error types: {last_error_types}
+- python versions already tried: {python_versions_tried}
+
+Available actions (pick exactly one):
+- "continue"       : keep retrying, no strong signal of structural problem
+- "switch_python"  : likely Python 2/3 mismatch; try a different Python version
+- "mark_unfixable" : structurally infeasible (private package, deprecated API,
+                     Py2-only with no Py2 wheel), stop wasting budget
+
+Rules:
+- Repeated SyntaxError under Python 3+ and 2.7 not tried -> switch_python target=2.7.
+- Repeated ImportError with > 4 failures -> mark_unfixable (likely private/deprecated).
+- > 8 attempts and still mixed errors -> mark_unfixable (budget exhausted soon).
+- Otherwise -> continue.
+
+Output ONLY valid JSON:
+{"action": "continue|switch_python|mark_unfixable", "target": "<py_version or null>", "reason": "<short>"}
+
+JSON output:
+\end{lstlisting}
 \end{frame}
 
 \end{document}

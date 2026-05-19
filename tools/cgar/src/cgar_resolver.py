@@ -72,11 +72,29 @@ class CGARResolver:
         # ── Shared session memory ─────────────────────────────────────
         self.constraint_store = ConstraintStore(soft_threshold=2)
 
+        # ── Shared LLM client (Planner / Analyzer / Critic) ───────────
+        # Optional kwargs: llm_base_url, llm_model, llm_temp, llm_enabled
+        self._cgar_llm = None
+        if kwargs.get("llm_enabled", True):
+            try:
+                from llm_client import LLMClient  # type: ignore
+                self._cgar_llm = LLMClient(
+                    base_url=kwargs.get("llm_base_url", "http://localhost:11434"),
+                    model=kwargs.get("llm_model", "gemma2"),
+                    temp=kwargs.get("llm_temp", 0.3),
+                )
+            except Exception as e:
+                print(f"[CGAR] LLM client init failed: {e}", flush=True)
+                self._cgar_llm = None
+
         # ── Four agents ───────────────────────────────────────────────
-        self.planner = PlannerAgent(self.constraint_store, logger=self._cgar_log)
+        self.planner = PlannerAgent(self.constraint_store, logger=self._cgar_log,
+                                     llm=self._cgar_llm)
         self.executor = ExecutorAgent(self.constraint_store, logger=self._cgar_log)
-        self.analyzer = AnalyzerAgent(self.constraint_store, logger=self._cgar_log)
-        self.critic = CriticAgent(self.constraint_store, logger=self._cgar_log)
+        self.analyzer = AnalyzerAgent(self.constraint_store, logger=self._cgar_log,
+                                       llm=self._cgar_llm)
+        self.critic = CriticAgent(self.constraint_store, logger=self._cgar_log,
+                                   llm=self._cgar_llm)
 
         # ── Backwards-compat aliases (used by enhanced_resolver_patched
         #    and any external tooling that referenced the old attributes). ─
