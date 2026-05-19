@@ -1,0 +1,60 @@
+\frametitle{Backup --- GitChameleon Re-framing}
+\vspace{0.3em}
+\scriptsize
+\textit{GitChameleon gốc là \textbf{code-generation benchmark} cho LLM ``viết code đúng version''. Mình \textbf{re-frame} thành dependency resolution test.}
+
+\vspace{0.5em}
+\begin{columns}[T,onlytextwidth]
+\column{0.48\textwidth}
+\centering
+\textbf{Gốc --- 1 JSON / example}
+\vspace{0.3em}
+
+\begin{lstlisting}[language=, basicstyle=\tiny\ttfamily, keywordstyle=]
+{
+  "example_id": 0,
+  "library": "torch",
+  "version": "1.9",
+  "python_version": "3.6",
+  "starting_code": "import torch\ndef ...",
+  "solution": "    import numpy ...\n    ...",
+  "test": "assert torch.allclose(...)",
+  "extra_dependencies": ["numpy","scipy"]
+}
+\end{lstlisting}
+
+\tiny\color{gray}
+3 phần tách biệt: starting / solution / test\\
+LLM thấy starting + version $\to$ generate body $\to$ chấm bằng test.
+
+\hspace{0.04\textwidth}
+\column{0.48\textwidth}
+\centering
+\textbf{Sau convert --- 1 snippet runnable}
+\vspace{0.3em}
+
+\begin{lstlisting}[basicstyle=\tiny\ttfamily]
+import torch
+def log_ndtr(input_tensor):
+    import numpy as np
+    from scipy.stats import norm
+    output = torch.from_numpy(
+        norm.logcdf(input_tensor.numpy()))
+    return output
+
+# --- test ---
+input_tensor = torch.linspace(-10,10,20)
+assert torch.allclose(log_ndtr(...), ...)
+\end{lstlisting}
+
+\tiny\color{gray}
+Concat starting+solution+test thành 1 file.\\
+Version \textbf{giấu} $\to$ lưu riêng \texttt{ground\_truth.csv}.
+\end{columns}
+
+\vspace{0.5em}
+\centering\footnotesize\color{mDarkTeal}
+\textbf{Tại sao khó hơn HG2.9K:}\\[0.2em]
+\scriptsize\color{black}
+Success = \textbf{pass unit test} (semantic correctness), không phải chỉ \texttt{import} chạy được.
+Cài \texttt{torch==2.0} thay vì \texttt{1.9} vẫn import OK nhưng \texttt{assert} fail $\to$ tool bắt buộc pick đúng version.
