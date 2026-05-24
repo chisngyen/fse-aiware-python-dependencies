@@ -227,3 +227,11 @@ manuscripts/video/*.mp4
 
 # ICSE'27 run artifacts (huge per-snippet trajectories, regenerate by re-running)
 results/icse27/**/heartbeat.json
+
+# Active research workspace — kept local only.
+# Contains in-progress method designs, internal reflections, and
+# paper-prep artifacts. Public repo intentionally does NOT track this
+# to avoid leaking method evolution / scooping risk before publication.
+# Note: this only stops new commits; history before this change still
+# contains research/ — see commit 63b236e.
+research/

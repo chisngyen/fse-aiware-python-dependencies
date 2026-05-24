@@ -1,9 +1,0 @@
-name: qwen2.5-7b
-ollama_model: qwen2.5:7b
-base_url: http://localhost:11434
-temperature: 0.0
-top_p: 1.0
-max_tokens: 512
-timeout_sec: 120
-supports_json_mode: true
-prompt_prefix: ""
