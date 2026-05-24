@@ -2,6 +2,206 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Working Rules (12 rules)
+
+These rules apply to every task in this project unless explicitly overridden.
+Bias: caution over speed on non-trivial work. Use judgment on trivial tasks.
+
+### Rule 1 — Think Before Coding
+State assumptions explicitly. If uncertain, ask rather than guess.
+Present multiple interpretations when ambiguity exists.
+Push back when a simpler approach exists.
+Stop when confused. Name what's unclear.
+
+### Rule 2 — Simplicity First
+Minimum code that solves the problem. Nothing speculative.
+No features beyond what was asked. No abstractions for single-use code.
+Test: would a senior engineer say this is overcomplicated? If yes, simplify.
+
+### Rule 3 — Surgical Changes
+Touch only what you must. Clean up only your own mess.
+Don't "improve" adjacent code, comments, or formatting.
+Don't refactor what isn't broken. Match existing style.
+
+### Rule 4 — Goal-Driven Execution
+Define success criteria. Loop until verified.
+Don't follow steps. Define success and iterate.
+Strong success criteria let you loop independently.
+
+### Rule 5 — Use the model only for judgment calls
+Use me for: classification, drafting, summarization, extraction.
+Do NOT use me for: routing, retries, deterministic transforms.
+If code can answer, code answers.
+
+### Rule 6 — Token budgets are not advisory
+Per-task: 4,000 tokens. Per-session: 30,000 tokens.
+If approaching budget, summarize and start fresh.
+Surface the breach. Do not silently overrun.
+
+### Rule 7 — Surface conflicts, don't average them
+If two patterns contradict, pick one (more recent / more tested).
+Explain why. Flag the other for cleanup.
+Don't blend conflicting patterns.
+
+### Rule 8 — Read before you write
+Before adding code, read exports, immediate callers, shared utilities.
+"Looks orthogonal" is dangerous. If unsure why code is structured a way, ask.
+
+### Rule 9 — Tests verify intent, not just behavior
+Tests must encode WHY behavior matters, not just WHAT it does.
+A test that can't fail when business logic changes is wrong.
+
+### Rule 10 — Checkpoint after every significant step
+Summarize what was done, what's verified, what's left.
+Don't continue from a state you can't describe back.
+If you lose track, stop and restate.
+
+### Rule 11 — Match the codebase's conventions, even if you disagree
+Conformance > taste inside the codebase.
+If you genuinely think a convention is harmful, surface it. Don't fork silently.
+
+### Rule 12 — Fail loud
+"Completed" is wrong if anything was skipped silently.
+"Tests pass" is wrong if any were skipped.
+Default to surfacing uncertainty, not hiding it.
+
+## Research Integrity Guardrails (ICSE 2027)
+
+These guardrails prevent the failure modes A* reviewers reject for.
+They apply to every experiment, ablation, and claim in the paper.
+
+### G1 — Contributions must be claimable, not narrative
+Every claim in the paper must map to ONE of:
+  (a) a measurable metric delta vs a named baseline, OR
+  (b) an ablation showing component X causes effect Y, OR
+  (c) a qualitative finding backed by ≥20 inspected cases.
+If a contribution can't fit (a)/(b)/(c), it's not a contribution — cut it.
+
+### G2 — No method-forcing
+Do NOT add an agent / module / mechanism just because "multi-agent
+papers have it". Every component must answer: what failure mode of
+the simpler baseline does this fix? If no answer, don't build it.
+Specifically forbidden without justification:
+  - Adding RL/DPO just to sound novel
+  - Adding a "Critic agent" if Analyzer already catches the same errors
+  - Adding tools agents never call in practice (check tool-call logs)
+
+### G3 — Baseline parity is non-negotiable
+When comparing a new method vs MEMRES/CGAR-rule/PLLM:
+  - Same LLM backbone, same temperature, same Docker image, same K_build
+  - Same dataset split, same seed where applicable
+  - Same timeout budget (wall-clock, not "LLM calls")
+  - Report ALL three: pass rate, wall-clock, LLM token cost
+If you change ONE thing, document it in a "Setup Differences" table.
+
+### G4 — No cherry-picked snippets in qualitative analysis
+When showing case studies, sample uniformly from:
+  - 5 cases where the new method wins, baseline fails
+  - 5 cases where both win (show the new method isn't slower for free)
+  - 5 cases where the new method fails (honest failure analysis)
+Never show only the wins.
+
+### G5 — Ablation must isolate ONE variable
+Each ablation row removes exactly one component. No "w/o debate AND
+w/o reflexion" combined rows unless explicitly labeled "joint ablation".
+Required ablations before claiming a contribution:
+  - w/o each agent role (one row per role)
+  - w/o blackboard sharing (agents private)
+  - w/o debate protocol (agents non-conflicting merge)
+  - w/o reflexion memory
+  - Single-agent equivalent (1 LLM, all tools)
+
+### G6 — Statistical reporting
+Pass rate alone is not enough. Report:
+  - Mean ± std over ≥3 seeds (LLM has temperature noise)
+  - Wilcoxon signed-rank test for paired comparisons
+  - Bootstrap 95% CI for headline numbers
+Single-run numbers in tables → reviewer rejection risk.
+
+### G7 — No data leakage from prior runs
+Session store, oracle, reflexion memory: ALL must be reset between
+benchmark runs unless the experiment is explicitly "session-scoped
+learning". Cross-snippet learning WITHIN a benchmark = OK and is a
+contribution. Cross-run state bleeding = leakage.
+
+### G8 — Honest negative results stay in
+If the new method loses to a baseline on some metric (e.g., speed),
+report it in the main table, not buried in appendix. The story is
+"agentic trades speed for accuracy/generalization" — that's defensible.
+Hiding it = reviewer finds it = desk reject.
+
+### G9 — Reproducibility from day 1
+Every experiment script committed before the run, not after.
+Every config (prompts, temperatures, model versions, Docker tags)
+in version control. No "I'll clean it up later" — clean it now or
+the result doesn't count. Each run writes a trajectory log
+(JSONL of every agent step) for replay verification.
+
+### G10 — Stop and ask when method drifts
+If during implementation you find yourself adding something not in
+the approved design doc (`docs/superpowers/specs/*-design.md` or
+the active plan file), STOP and surface it. Either update the design
+(with justification) or drop the addition. No silent scope creep.
+Iterations that change the method = NEW method file, not in-place edit.
+
+## ICSE'27 Method Iteration Rules (R1–R5)
+
+The active research workspace is `research/icse27/`. Method search will likely
+span **dozens to hundreds** of candidate methods before one is finalized.
+These rules enforce the iteration loop and prevent premature engineering.
+
+### R1 — One method = one `.py` file
+Every method lives at `research/icse27/methods/mNN_<short_name>.py` and nothing
+else. No per-method config dir, no per-method Docker image, no per-method
+package. Shared infra (Docker harness, LLM client, blackboard, dataset loader,
+results store, trajectory logger) stays under `research/icse27/_shared/` and
+is imported. If a "method" needs more than one file, it's been broken too
+early — keep iterating in one file until the design is stable.
+
+### R2 — No backbone ablation, no formal packaging, no extra Docker setup until a method is CHOSEN
+"Chosen" = explicit user decision to lock the method for paper submission.
+Until then:
+- Run on the **single default backbone** (`gemma2-9b`) only. Do NOT pre-add
+  qwen/phi/llama configs "for later". They go in when ablation starts.
+- Do NOT build a method-specific Dockerfile. Use `_shared/docker_harness`.
+- Do NOT write paper-section snippets, ablation tables, or readme for the
+  method. Tracker row is the only persistent artifact during exploration.
+- Skip cross-bench validation (GitChameleon) until smoke ≥ baseline on HG2.9K.
+
+Reason: most methods will be discarded. Effort spent on backbone ablation,
+packaging, or docs for a method that loses to baseline is wasted. The
+bottleneck is **how many method ideas we test per day**, not how polished
+each one is.
+
+### R3 — Finalization checklist (only when user says "chốt method này")
+Trigger only after the user explicitly chooses a method as the flagship. Then:
+1. Backbone ablation: add `qwen2.5-7b.yaml`, `phi3.5-mini.yaml`,
+   `llama3.1-8b.yaml` to `configs/backbones/` and run the method on each
+   (≥3 seeds per backbone).
+2. Cross-bench validate on GitChameleon.
+3. Package: write a self-contained Dockerfile under `tools/<method>/` mirroring
+   how `tools/cgar/` is set up — for reproducibility by external readers.
+4. Run G6 statistical reporting (Wilcoxon vs MEMRES baseline, bootstrap 95% CI).
+5. Write the method's paper section.
+
+Do NOT do any step above for a method that hasn't been explicitly chosen.
+
+### R4 — No data leakage from prior tools (re-states G7 sharper)
+A method file MUST NOT import from `tools/memres/`, `tools/cgar/`, or
+`tools/pllm/`, MUST NOT read `pllm_results/`, `results/hg2k/{memres,cgar,pllm}/`,
+or any CSV that contains the answer key for the snippets the method is being
+evaluated on. The Oracle / cascade-replay pattern (m0–m2, m10–m14) is
+**exploratory upper-bound reference only**, never a paper headline. Any new
+method (m15+) must resolve dependencies from scratch using only: snippet
+source, live PyPI metadata, LLM, and Docker verifier feedback.
+
+### R5 — Tracker row before scaling up a run
+Before launching anything heavier than `hg2k_smoke`, append a row to
+`research/icse27/tracker.md`:
+`| mNN | one-line method description | bench | backbone | seed | wall-clock budget | hypothesis |`
+This is the audit trail for what was tried. If the run is interrupted, the
+row stays so the next session knows the method has been attempted.
+
 ## What This Project Is
 
 This is the **FSE-AIWare 2026 competition platform** for agentic Python dependency resolution. The repo hosts:
@@ -15,9 +215,19 @@ This is the **FSE-AIWare 2026 competition platform** for agentic Python dependen
   - `results/gitchameleon/{cgar,memres,pllm}/` — GitChameleon results per tool
   - `results/eval-subsets/cgar-rescue/` — CGAR rescue eval on MEMRES failure cases (n=494)
 
-## Current Status (2026-05-01)
+## Current Status (2026-05-22)
 
-**Active focus:** ML class project slides + paper writing — all experiments complete.
+**Active focus:** Agentic extension of MEMRES → **ICSE 2027 submission** (A*, primary target).
+- Fallback venues: ASE 2026 (Tier A, deadline ~May–Jun 2026), FSE 2026 Workshops.
+- Method direction: **Multi-agent + blackboard + Reflexion-style self-critique** (Option B + light C).
+  - Specialized agents: DependencyArchaeologist, VersionNegotiator, BuildDoctor, ConstraintLibrarian, Orchestrator.
+  - Shared blackboard = constraint store + reflexion memory.
+  - Structured debate protocol when agents produce conflicting evidence.
+  - NO policy training (keeps infra cost low); self-improvement via verbal reflection only.
+- Novelty claim: first multi-agent system with explicit debate/arbitration for Python dependency resolution.
+- ML class project slides + experimental results (CGAR vs MEMRES vs PLLM) remain done — preserved as baseline.
+
+**FSE 2026 main track is closed** (paper deadline Sep 11, 2025). Do not aim there.
 
 **Slide deck:** `manuscripts/slide/main.tex` (Metropolis theme, 56 pages, compiled to `main.pdf`).
 Old FSE-only deck preserved at `manuscripts/slide-turn1/`.
