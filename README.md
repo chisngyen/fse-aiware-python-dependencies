@@ -3,7 +3,38 @@
 ![GitHub Discussions](https://img.shields.io/github/discussions/chisngyen/fse-aiware-python-dependencies)
 ![GitHub Issues or Pull Requests](https://img.shields.io/github/issues/chisngyen/fse-aiware-python-dependencies)
 
-## Abstract
+## Active work — ICSE 2027 submission
+
+This repo hosts an **active research line** aiming at ICSE 2027. The current
+direction is a **multi-agent debate** resolver (Archaeologist + Negotiator +
+BuildDoctor + Arbiter + ConstraintLibrarian, sharing a blackboard) that
+operates on live PyPI metadata + Docker verification — no historical-CSV
+oracle, no hand-written constraint rules.
+
+- **[STRUCTURE.md](STRUCTURE.md)** — full repo layout map
+- **[research/icse27/SETUP.md](research/icse27/SETUP.md)** — setup & reproduction
+- **[research/icse27/README.md](research/icse27/README.md)** — submission overview
+- **[research/icse27/tracker.md](research/icse27/tracker.md)** — experiment audit trail
+- **[CLAUDE.md](CLAUDE.md)** — project rules (12 working + G1-G10 research guardrails + R1-R5 iteration rules)
+
+### Method status
+
+- **Frozen FSE'26 baselines** (in `tools/`): PLLM (Wang ASEW'25), MEMRES (ours),
+  CGAR (ours). Numbers reported in the FSE'26 paper.
+- **Exploratory probes** (`research/icse27/methods/m0–m14`): kept as ablation
+  evidence per G10. **m10–m14 are NOT headline candidates** — they compose
+  PLLM/MEMRES/CGAR result CSVs and therefore replay the answer key for the
+  same test set (oracle leakage, violates G3/G7/R4). They are useful as
+  upper-bound references only.
+- **Active flagship** (`m15+`): clean-slate multi-agent methods. No imports
+  from prior tool CSVs. Resolution from snippet source + live PyPI + Docker
+  feedback + LLM reasoning only. See [CLAUDE.md §R4](CLAUDE.md) for the
+  no-leakage rule that gates these methods.
+- **Headline number**: pending m15+ runs on HG2.9K full + GitChameleon.
+
+---
+
+## Original challenge abstract
 The first annual Agentic-based Python Dependency Resolution challenge, to be held at FSE 2026, invites researchers and practitioners to develop innovative agentic-based systems for automatically resolving complex Python dependency conflicts.
 The competition emphasizes open-source innovative memory constrained techniques, such as LLM fine-tuning, retrieval-augmented generation, graph-based databases, error log analysis, and prompt engineering. With open attendance and paper submissions appearing in ACM Digital Library, this event addresses the timely challenge of dependency management in modern Python ecosystems, fostering community collaboration and establishing best practices for LLM-based package management tools.
 
