@@ -6,7 +6,10 @@ __pycache__/
 # C extensions
 *.so
 
-/video/
+# video/ moved to manuscripts/video/ (2026-05-24 restructure)
+/manuscripts/video/renders/
+/manuscripts/video/audio/
+
 # Distribution / packaging
 .Python
 build/
@@ -212,3 +215,15 @@ output/*.yml
 *.sh
 DAY_*.md
 SESSION_SUMMARY.md
+
+# External paper PDFs (reference reading, not our work)
+manuscripts/slide/docs/papers/*.pdf
+
+# Video render artifacts (large; keep sources only)
+manuscripts/video/renders/
+manuscripts/video/audio/*.wav
+manuscripts/video/audio/*.mp3
+manuscripts/video/*.mp4
+
+# ICSE'27 run artifacts (huge per-snippet trajectories, regenerate by re-running)
+results/icse27/**/heartbeat.json
