@@ -178,7 +178,8 @@ pyego-results/
 readpy-results/
 Gitchamelon/
 benchmarks/
-CLAUDE.md
+# NOTE: project CLAUDE.md IS tracked (checked into repo) — do not ignore it.
+# Only the dated local scratch copies below are ignored.
 CLAUDE_2704.md
 .claude/
 .logs_2704.md
@@ -215,6 +216,10 @@ output/*.yml
 *.sh
 DAY_*.md
 SESSION_SUMMARY.md
+
+# Source backup dirs (timestamped snapshots — keep local, never track)
+**/src_backup_*/
+**/*_backup_[0-9]*/
 
 # External paper PDFs (reference reading, not our work)
 manuscripts/slide/docs/papers/*.pdf

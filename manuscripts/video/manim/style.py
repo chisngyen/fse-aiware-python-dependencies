@@ -7,7 +7,7 @@ from manim import *
 import numpy as np
 
 # ---- Palette (cinematic — dark backdrop like 3b1b) ----
-BG          = "#0E1518"   # near-black navy backdrop
+BG          = "#0E1518"   # near-black (spec) — 3blue1brown style, colors pop
 PANEL       = "#162226"   # card surface
 NAVY        = "#23373B"
 ACCENT      = "#EB811B"   # mLightBrown, signature warm
@@ -22,10 +22,22 @@ GHOST       = "#3A4750"
 
 config.background_color = BG
 
+
+# ============================================================
+# Backdrop — 3b1b depth: deep base + soft center-lift vignette
+# ============================================================
+def backdrop(scene: Scene) -> VGroup:
+    """Near-black (#0E1518) 3blue1brown backdrop. (No vignette — colors pop
+    on the solid dark base.) slide_chrome() calls this; scenes without chrome
+    call it first."""
+    scene.camera.background_color = BG
+    return VGroup()
+
+
 # ---- Typography ----
-TITLE_KW = dict(font="DejaVu Sans", weight=BOLD, color=INK)
-BODY_KW  = dict(font="DejaVu Sans", color=INK)
-MONO_KW  = dict(font="DejaVu Sans Mono", color=INK)
+TITLE_KW = dict(font="Segoe UI", weight=BOLD, color=INK)
+BODY_KW  = dict(font="Segoe UI", color=INK)
+MONO_KW  = dict(font="Cascadia Code", color=INK)
 
 
 # ============================================================
@@ -33,6 +45,7 @@ MONO_KW  = dict(font="DejaVu Sans Mono", color=INK)
 # ============================================================
 def slide_chrome(scene: Scene, title: str, section: str | None = None,
                  fixed_in_frame: bool = False):
+    backdrop(scene)
     title_t = Text(title, font_size=28, **TITLE_KW).to_corner(UL, buff=0.45)
     accent_bar = Rectangle(
         width=0.10, height=title_t.height + 0.12,
@@ -41,8 +54,8 @@ def slide_chrome(scene: Scene, title: str, section: str | None = None,
     chrome = VGroup(accent_bar, title_t)
 
     if section:
-        section_t = Text(section, font_size=16, color=DIM, font="DejaVu Sans")
-        section_t.to_corner(DR, buff=0.4)
+        section_t = Text(section, font_size=16, color=DIM, font="Segoe UI")
+        section_t.to_corner(UR, buff=0.45)
         chrome.add(section_t)
 
     if fixed_in_frame and hasattr(scene, "add_fixed_in_frame_mobjects"):
@@ -104,7 +117,7 @@ def card(content: Mobject, fill=PANEL, stroke=GHOST,
 
 
 def kbd(s: str, font_size: int = 20) -> VGroup:
-    t = Text(s, font_size=font_size, font="DejaVu Sans Mono", color=ACCENT_SOFT)
+    t = Text(s, font_size=font_size, font="Cascadia Code", color=ACCENT_SOFT)
     bg = RoundedRectangle(
         corner_radius=0.08,
         width=t.width + 0.22, height=t.height + 0.14,
@@ -187,3 +200,70 @@ def twinkle(scene: Scene, stars: VGroup, duration: float = 2.0):
     for s in stars:
         anims.append(s.animate.set_opacity(s.get_fill_opacity() * 0.4))
     scene.play(*anims, rate_func=there_and_back, run_time=duration)
+
+
+# ============================================================
+# Math + code helpers (3B1B-style reveals)
+# ============================================================
+def math_block(tex: str, font_size: int = 36, color=INK,
+               glow_color=None) -> VGroup:
+    """`MathTex` with optional halo for centerpiece equations."""
+    m = MathTex(tex, font_size=font_size, color=color)
+    if glow_color is None:
+        return VGroup(m)
+    return glow(m, color=glow_color, layers=6, opacity=0.06)
+
+
+def code_panel(code: str, language: str = "python",
+               font_size: int = 22, width: float | None = None,
+               stroke=GHOST, stroke_opacity: float = 0.5,
+               formatter_style: str = "monokai") -> VGroup:
+    """Code mobject wrapped in a card with consistent padding.
+
+    `formatter_style` picks a Pygments theme; default `monokai` keeps comments
+    a readable light gray on the dark panel (the stock theme's comments were
+    too dark to read)."""
+    c = Code(
+        code_string=code, language=language, background="rectangle",
+        formatter_style=formatter_style,
+        paragraph_config={"font_size": font_size, "font": "Cascadia Code",
+                          "line_spacing": 0.55},
+    )
+    if width is not None:
+        c.scale_to_fit_width(width)
+    return card(c, pad=0.30, stroke=stroke, stroke_opacity=stroke_opacity)
+
+
+def flow_arrow(start, end, color=ACCENT, stroke_width: float = 4,
+               label: str | None = None, label_color=DIM):
+    """Arrow with optional label, used in pipeline + agent diagrams."""
+    a = Arrow(start, end, color=color, stroke_width=stroke_width, buff=0.08,
+              max_tip_length_to_length_ratio=0.16)
+    if label is None:
+        return a
+    t = Text(label, font_size=16, color=label_color,
+             font="Segoe UI", slant=ITALIC)
+    t.move_to(a.get_center() + UP * 0.25)
+    return VGroup(a, t)
+
+
+def count_up(scene: Scene, decimal: "DecimalNumber", target: float,
+             duration: float = 1.5, rate=None):
+    """Animate a DecimalNumber from its current value up to target."""
+    if rate is None:
+        rate = rate_functions.ease_out_cubic
+    scene.play(decimal.animate.set_value(target),
+               run_time=duration, rate_func=rate)
+
+
+def chip(text: str, color=ACCENT, font_size: int = 18,
+         fill=NAVY, stroke_opacity: float = 0.7) -> VGroup:
+    """Bare label: small colored dot + text, no rounded-rect pill.
+
+    Designed to look 3blue1brown-style: minimal furniture, color does the work.
+    The `fill`/`stroke_opacity` kwargs are accepted but ignored for back-compat.
+    """
+    dot = Dot(radius=0.08, color=color)
+    t = Text(text, font_size=font_size, color=color, weight=BOLD,
+             font="Cascadia Code")
+    return VGroup(dot, t).arrange(RIGHT, buff=0.18, aligned_edge=DOWN)

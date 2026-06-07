@@ -1,102 +1,82 @@
-# CGAR Presentation Video — Build Guide
+# CGAR presentation video — build guide
 
-Source for a ~10-min presentation video for the MEMRES & CGAR project. Mirrors
-the structure of `../main_v2.tex` slide-by-slide.
+Pure-Manim, 3blue1brown-style video for the MEMRES & CGAR project. Mirrors `../slide/main.tex` slide-by-slide (~15-18 min, 24 scenes).
 
 ## Layout
 
 ```
 video/
-├── STORYBOARD.md       slide → scene → tool mapping (read this first)
+├── STORYBOARD.md       slide → scene mapping (read this first)
 ├── manim/
-│   ├── style.py        shared palette, fonts, helpers
-│   └── scenes.py       all 16 scenes (Title … ThankYou)
-├── blender/
-│   ├── 01_title_intro.py  3D wreckage flythrough for slide 1
-│   └── 11_agents.py       4-agent orbit shot for slide 11
+│   ├── style.py        palette, fonts, helpers
+│   ├── algorithms.py   reusable algorithm mobjects (DFS tree, ledger, agents)
+│   └── scenes.py       24 scene classes (Title … ThankYou)
 ├── renders/            output (gitignored)
-├── audio/              narration mp3s if you record voiceover
+├── audio/              narration mp3s if you record voiceover later
 └── Makefile            render orchestration
 ```
 
 ## Prerequisites
 
-```bash
-pip install manim   # already verified: 0.20.1
-# Blender 4.x on PATH (only needed for slides 1 + 11; everything else is Manim)
-# ffmpeg on PATH (Manim ships with one; system one needed for `make concat`)
+```
+pip install manim         # tested with manim 0.20.x
+ffmpeg                    # in PATH for `make concat`
 ```
 
-## Iterate fast on one scene
+LaTeX is required for `MathTex` / `Tex` (one of: MikTeX, TeX Live). On Windows MikTeX auto-installs missing packages.
 
-```bash
-make preview SCENE=DependencyDomino     # 480p15, ~5s render
+## Iterate on one scene
+
 ```
-
-Browse all scene names:
-
-```bash
-make list
+make preview SCENE=MultiAgentLoop    # 480p15, fast
+make hd      SCENE=MultiAgentLoop    # 1080p60, final
+make list                            # show all scene names
 ```
 
 ## Render the final cut
 
-```bash
-make all          # every Manim scene at 1080p60
-make blender-11   # 4-agent 3D shot (run Blender separately first if you want preview)
-make concat       # ffmpeg-concat → renders/cgar_presentation.mp4
+```
+make all                # every scene at 1080p60 (long — coffee break)
+make concat             # ffmpeg-concat → renders/cgar_presentation.mp4
 ```
 
-## Blender via MCP (interactive)
+## Adding narration (WAV-driven "wait-play")
 
-If you want to iterate the 3D shots inside the Blender GUI while talking to
-Claude:
+The scenes render silent on purpose. Narration is muxed in afterward by
+`build_narrated.py` — no re-render. Each scene plays its animation, then freezes
+the last frame until its narration finishes, then cuts to the next scene.
 
-1. Open Blender.
-2. Install + enable the Blender-MCP addon, click **Start MCP Server**.
-3. Paste the body of `blender/11_agents.py` into a Claude message asking
-   "execute this in Blender" — it goes through `mcp__blender__execute_blender_code`.
+1. Generate **one WAV per scene** (local TTS, no API) from the script in
+   `audio/narration_vi.md`, naming each file `audio/NN_scenename.wav` where
+   `NN` is the scene number and `scenename` is the scene class lowercased:
+   `01_title.wav`, `02_outline.wav`, `03_context.wav`, `04_problemio.wav`, …,
+   `24_thankyou.wav`. (`.mp3` is accepted as a fallback.)
+2. Build the narrated cut:
 
-This rebuilds the scene live so you can adjust framing, lighting, camera path
-without re-rendering.
+   ```
+   make narrate                 # → renders/cgar_presentation_narrated.mp4
+   python build_narrated.py --check   # verify all 24 WAVs exist, build nothing
+   ```
 
-## Recording voiceover (optional)
+`build_narrated.py` freezes the last frame (`tpad`) when narration is longer
+than the animation and pads silence (`apad`) when it is shorter, then concats.
+It uses the imageio_ffmpeg v7.1 binary by default (override with `FFMPEG_BIN`);
+the iGameCenter 2017 ffmpeg lacks `tpad` and will not work.
 
-The script lives at `../script.md`. Suggested flow:
+Burn subtitles in an NLE afterward if needed (Vietnamese narration with English
+technical terms).
 
-1. Record one mp3 per slide into `audio/NN_slidename.mp3`.
-2. In DaVinci Resolve / Premiere, drop the rendered mp4 scenes onto the
-   timeline, then sync each audio clip.
-3. Burn subtitles via ffmpeg if needed.
+## Style guide
 
-Or use edge-tts for a quick draft narration:
+- Background: `#0E1518` (near-black, 3B1B-style).
+- Accent: `#EB811B` (warm orange).
+- Typography: DejaVu Sans for body, DejaVu Sans Mono for code.
+- Math: `MathTex` with color-coded variable letters.
+- Morph transforms used at: slide 5 (import → constraint), slide 10 (gap → fix), slide 12 (error → constraint), slide 13 (formula mutation).
+- No 3D camera flythroughs. All depth is simulated via `glow()` + gradient `deep_box()`.
 
-```bash
-edge-tts --voice vi-VN-HoaiMyNeural \
-  --file ../script.md --write-media audio/full_draft.mp3
-```
+## Verification
 
-## Render-time benchmarks (reference, M2-class laptop)
-
-| Scene             | -ql (480p15) | -qh (1080p60) |
-|-------------------|--------------|---------------|
-| Title             | ~4 s         | ~25 s         |
-| DependencyDomino  | ~12 s        | ~90 s         |
-| BacktrackingTree  | ~10 s        | ~75 s         |
-| SpeedRace         | ~6 s         | ~40 s         |
-| Blender 11_agents | —            | ~8 min (240 fr Cycles 64 spp) |
-
-## Composite layer order (in NLE)
-
-```
-5  Vietnamese / English subtitles
-4  Persistent slide title chip + page chip      (Manim chrome)
-3  Manim main scene content                      (most slides)
-2  Blender 3D backdrop / hero                    (slides 1, 11, 15)
-1  Background gradient softgray → white
-```
-
-## Open decisions
-
-See bottom of `STORYBOARD.md` — pick voiceover source, subtitle language,
-strict-10-min vs. 12-min, and Blender-vs-Manim for slide 11.
+- `make list` should show 24 scenes in narrative order.
+- `make preview SCENE=Name` should render cleanly for every name.
+- No file in this directory should reference Blender (`git grep -i blender`).

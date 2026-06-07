@@ -21,6 +21,15 @@ fse-aiware-python-dependencies/         (repo root)
 > workspace and is intentionally not tracked here. See README "Repository
 > scope" for the rationale.
 
+## Zones — frozen vs active
+
+Two clearly separated zones. Do not let one bleed into the other.
+
+| Zone | Paths | Rule |
+|---|---|---|
+| 🔒 **FROZEN** (end-of-term present + published baselines) | `manuscripts/slide/`, `manuscripts/slide-turn1/`, `manuscripts/video/`, `tools/{pllm,memres,cgar}/`, `benchmarks/` | Do **not** modify. Slides + video are the defended deliverable; tools + datasets are the published FSE'26 artifacts. |
+| 🧪 **ACTIVE** (ongoing ICSE'27 research) | `research/icse27/` (local-only), `results/icse27/` | All new dependency-resolution method work happens here. Remote-GPU runtime lives in `research/icse27/deploy/`. |
+
 ## What lives where
 
 ### `benchmarks/`  (do not touch)
@@ -65,16 +74,23 @@ results/
 
 ```
 manuscripts/
-├── assets/              ← shared figures
 ├── paper/               ← paper LaTeX source (locally only — see .gitignore)
 ├── slide/               ← slide decks (Beamer)
 │   └── docs/DEFENSE_QA.md   ← defense question prep
 ├── submission/          ← final PDFs (locally only)
-└── video/               ← promotional video pipeline
-    ├── Makefile
-    ├── STORYBOARD.md
-    ├── blender/, manim/     ← scene sources
-    └── renders/, audio/     ← outputs (locally only)
+└── video/               ← presentation video pipeline (pure-Manim, 3Blue1Brown style)
+    ├── Makefile             ← render orchestration
+    ├── STORYBOARD.md        ← 24-scene mapping 1:1 with slide/main.tex
+    ├── README.md            ← build guide
+    ├── manim/
+    │   ├── style.py            palette, helpers (glow, chip, count_up, …)
+    │   ├── algorithms.py       reusable mobjects (DFSTreeAnimator,
+    │   │                       ConstraintLedger, AgentCard/Bus, MorphBar)
+    │   └── scenes.py           24 scene classes (Title … ThankYou)
+    ├── renders/             ← outputs (locally only)
+    │   ├── cgar_presentation.mp4   final concatenated video
+    │   └── videos/scenes/1080p60/  per-scene HD mp4s
+    └── audio/               ← narration (recorded later in NLE)
 ```
 
 ## How to find things

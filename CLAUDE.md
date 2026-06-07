@@ -232,6 +232,44 @@ This is the **FSE-AIWare 2026 competition platform** for agentic Python dependen
 **Slide deck:** `manuscripts/slide/main.tex` (Metropolis theme, 56 pages, compiled to `main.pdf`).
 Old FSE-only deck preserved at `manuscripts/slide-turn1/`.
 
+**Presentation video:** `manuscripts/video/` — pure-Manim, 3Blue1Brown-style ~3 min, 1080p60. Vietnamese narration with English technical terms. The 24 scenes mirror `manuscripts/slide/main.tex` slide-by-slide; never invent numbers — pull them from the deck.
+
+Style language (do NOT drift back to Notion/dashboard look):
+- **Black BG** `#0E1518`, warm orange accent `#EB811B`. Color + size = hierarchy, not boxes.
+- **Minimal boxes.** Use plain text + thin colored rules (`Line`) + numbered prefix. Cards/`RoundedRectangle` only when content needs a real container (code panels, the Session Store ledger).
+- **Geometric primitives over icons:** agents = `Circle` with `glow()`, not card rectangles. Domain mockups use `Polygon`, `Arc`, `Ellipse`, `Arrow`, `Line`, `Dot`.
+- **Math-To-Manim aesthetic:** `MathTex` reveals via `TransformFromCopy` / `TransformMatchingShapes`. Equations placed beside the geometric visualization, not in a sidebar.
+- **No Blender, no 3D camera flythroughs.** 3D feel is faked with isometric projection + semi-transparent polygons + dimmed back edges (see `CombinatorialExplosion`).
+- **Morph transforms** where they fall out naturally: import → constraint (slide 5), gap → fix (slide 10), error → constraint (slide 12 multi-agent loop), formula symbol mutation (slide 13 CSP).
+- **No voiceover yet.** `beat()` pauses are placeholder timing; record audio in NLE later.
+- **Forbidden content claims** (not accurate, don't put back): "0.34 LLM calls / snippet", "68% no-LLM success", "75% token usage cut", "Cuộc gọi LLM tốt nhất là cuộc bạn không gọi". Use real metrics from the slide deck instead (pass rate, avg seconds, speedup ratio).
+
+Layout:
+- `manim/style.py` — palette, fonts, helpers: `slide_chrome` (section chip lives at **UR** corner, not DR — DR collides with footers), `glow`, `chip` (dot + colored text, NOT a pill), `card`, `kbd`, `beat`, `starfield`, `count_up`, `code_panel`, `math_block`.
+- `manim/algorithms.py` — reusable: `DFSTreeAnimator`, `ConstraintLedger`, `AgentCard` / `AgentBus`, `MorphBar`. Ledger cards via `push()` use explicit absolute positioning relative to `frame.get_top()` — do NOT switch back to `next_to(rule, DOWN)` + `Restore()`, that breaks after the parent VGroup is moved.
+- `manim/scenes.py` — 24 scene classes in narrative order. Centerpieces (extra polish): `MultiAgentLoop` (2-iteration trace with constraint accumulation), `CSPFormulation` (P=⟨X,D,C⟩ color-coded morph + inset DFS prune), `RelatedWorkTimeline` (axes + ~47% plateau line + breakthrough arrow), `CombinatorialExplosion` (wireframe isometric cube + math derivation).
+
+Build commands (run from `manuscripts/video/manim/`):
+```
+manim -ql scenes.py <SceneName> --media_dir ../renders   # 480p15 fast iterate
+manim -qh scenes.py <SceneName> --media_dir ../renders   # 1080p60 final
+```
+Concat 24 scenes → `renders/cgar_presentation.mp4` via `Makefile` `concat` target, or manually:
+```
+cd renders/videos/scenes/1080p60
+ffmpeg -y -f concat -safe 0 -i concat.txt -c copy ../../../cgar_presentation.mp4
+```
+(Working ffmpeg on this box: `/c/Program Files/iGameCenter/SAVIConverter/tools/ffmpeg.exe`. The Anaconda one is broken — missing DLL.)
+
+Pitfalls already hit (don't redo):
+- `FadeIn(vgroup[:N])` with mixed nested submobjects → `zip() argument 2 is shorter than argument 1`. Use `FadeIn(whole_vgroup)` or animate items individually.
+- `aligned_edge=DOWN` on `arrange()` with mixed font sizes → baselines look misaligned. Use uniform font_size for a single horizontal strip.
+- Plan chips sent via `AgentBus.send` linger over the Executor circle. FadeOut the chip right after `send`.
+- Constraint cards' bg should be `width = row.width + 0.30`, NOT `self.width_ - 0.35` — otherwise content looks left-mounted with weird right whitespace.
+- Per-scene timeout when batching renders: a bad scene can hang LaTeX/font compile and block the whole batch. Wrap each render in `timeout 120 manim …` in batch loops.
+- Unicode `⟨ ⟩` angle brackets are not in DejaVu Sans — they render as empty boxes in `Text`. Use `<>` in `Text` and `\langle \rangle` in `MathTex`.
+- `slide_chrome(section=...)` chip stays in the **UR** corner (don't move back to DR).
+
 ### Experimental Results (Final)
 
 | Benchmark | Tool | Pass rate | Avg/snippet | Pass-only avg | Total time |
