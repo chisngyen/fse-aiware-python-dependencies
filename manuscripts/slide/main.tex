@@ -251,10 +251,10 @@ Khôi phục tự động môi trường Python từ mã nguồn cũ bằng \tex
 \scriptsize
 \textbf{\color{alert}Evaluation budget} {\tiny\color{gray}(giống nhau mọi tool)}
 \begin{itemize}\setlength{\itemsep}{1pt}\scriptsize
-  \item \textbf{180s wall-clock / snippet} \tiny\color{gray}(gồm cả thời gian LLM reasoning + Docker build)
-  \item Trong đó: $\le$\textbf{10} vòng Docker build, $K_{\text{solve}}\le$50 CSP {\tiny\color{gray}(logic, no Docker)}
-  \item Sequential, 1 worker
-  \item \tiny\color{success!50!black}\textit{CGAR thường về đích trong $\le$5 vòng build (tỉa không gian) $\Rightarrow$ dùng \textbf{ít budget hơn} trong cùng trần 180s}
+  \item Mỗi Docker build timeout \textbf{180s}; $\le$\textbf{10} build/snippet
+  \item $\Rightarrow$ trần \textbf{$\approx$1800s} wall-clock/snippet (+ thời gian LLM)
+  \item $K_{\text{solve}}\le$50 CSP {\tiny\color{gray}(logic, no Docker)}; Sequential, 1 worker
+  \item \tiny\color{success!50!black}\textit{CGAR thường về đích trong $\le$5 build (tỉa không gian) $\Rightarrow$ dùng \textbf{ít budget hơn} trong cùng trần}
 \end{itemize}
 
 \column{0.30\textwidth}
@@ -262,7 +262,7 @@ Khôi phục tự động môi trường Python từ mã nguồn cũ bằng \tex
 \textbf{\color{mLightBrown}Metrics}
 \begin{itemize}\setlength{\itemsep}{1pt}\scriptsize
   \item \textbf{Pass rate} (primary)
-  \item Avg time / snippet \tiny\color{gray}(đo \emph{trong} cùng budget 180s)
+  \item Avg time / snippet \tiny\color{gray}(đo \emph{trong} cùng trần $\approx$1800s)
 \end{itemize}
 \end{columns}
 \end{frame}
@@ -936,7 +936,7 @@ Lưu trữ và chia sẻ ràng buộc học được giữa các snippets trong 
 
 \vspace{0.5em}
 \tiny PLLM 44.8\% = reproduction single-run (paper headline 54.8\% là 10-run union). \textbf{Time} = avg tất cả snippet (pass+fail) trên HG2.9K. $^{\dagger}$SMT-LLM 23.9s là \emph{median} (paper không báo avg/snippet). SMT-LLM cũng dùng Gemma-2 9B + Docker, đồng venue FSE'26 với MEMRES.\\
-\textcolor{mDarkTeal}{\textbf{Fairness}: budget = \textbf{180s wall-clock/snippet, giống nhau mọi tool} (gồm cả LLM + build). CGAR chỉ cần $\le$5 vòng build (vs 10) để về đích trong cùng trần $\Rightarrow$ time thấp là do \emph{hội tụ nhanh}, không phải budget khác. Speed headline so trên \textbf{GitChameleon} (mọi tool cùng cấu hình).}
+\textcolor{mDarkTeal}{\textbf{Fairness}: budget = \textbf{$\le$10 build $\times$ 180s/build $\approx$1800s/snippet, giống nhau mọi tool}. CGAR chỉ cần $\le$5 build để về đích trong cùng trần $\Rightarrow$ time thấp là do \emph{hội tụ nhanh}, không phải budget khác. Speed headline so trên \textbf{GitChameleon} (mọi tool cùng cấu hình).}
 \end{frame}
 
 % ─── R2. HG2.9K — In-Distribution Detailed ──────────────────
@@ -1387,7 +1387,7 @@ University of Science, VNU-HCM
 
 \vspace{0.4em}
 \centering\scriptsize\color{success!55!black}
-\textbf{Hiệu quả:} median resolution 15.2s · self-learning at runtime, no HG2.9K leakage
+\textbf{Hiệu quả:} self-learning at runtime, no HG2.9K leakage
 \end{frame}
 
 \begin{frame}[fragile]{Backup: GitChameleon Re-framing}
