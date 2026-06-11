@@ -1,4 +1,4 @@
-\frametitle{Backup --- Critic Agent Prompt}
+\frametitle{Backup: Critic Agent Prompt}
 \vspace{0.1em}
 {\tiny\color{gray}\textit{prompts.py · CRITIC\_PROMPT · fires when $\ge\!3$ consecutive same-type fails}}
 \vspace{0.2em}
