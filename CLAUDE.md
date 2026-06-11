@@ -202,6 +202,120 @@ Before launching anything heavier than `hg2k_smoke`, append a row to
 This is the audit trail for what was tried. If the run is interrupted, the
 row stays so the next session knows the method has been attempted.
 
+## Method Direction Rules (D1–D6) — agentic is the novelty
+
+User decision (2026-06-07): the paper's headline contribution MUST be an
+**agentic** method. Rule-based / CSP / PyPI-filter machinery is welcome, but
+ONLY as a supporting search-space reducer — never the thing that gets credit.
+This overrides the earlier "m10 cascade as headline + agentic as negative
+result" framing: m10 is now demoted to a **strong baseline the agentic method
+must beat**, not the contribution.
+
+### D1 — The contribution is the agentic loop, not the rules
+The novelty claimed in the paper is the agentic mechanism: autonomous agent(s)
+that perceive (snippet, PyPI metadata, Docker error) → decide → act (tool call)
+→ observe → re-plan, in a feedback loop. A cascade, a CSP solver, or a static
+filter is NOT a contribution on its own. If a method's pass rate comes entirely
+from rules, it does not count as an agentic result — relabel it a baseline.
+
+### D2 — Rules allowed ONLY as search-space reduction
+Rule-based components (wheel filter, `requires_python` prune, import→pip map,
+CSP candidate generation, live PyPI lookup) may shrink the candidate set the
+agent reasons over. They MUST sit *upstream* of the agent and hand it a pruned
+space — they must not make the final accept/version decision. The agent decides;
+rules only narrow the menu.
+
+### D3 — Agentic lift must survive a rule-only ablation (the falsifier)
+Every agentic method ships the ablation "agents off → rules-only fallback".
+The agentic version MUST beat its own rules-only ablation on the primary cell,
+outside the noise band. If agents-off ties agents-on, the agency added nothing →
+it is engineering, not a contribution → kill it (re-states G2 + G5). State this
+falsifier in the method file header before coding.
+
+### D4 — Must contest the m10 baseline, not just PLLM
+The bar is the strong non-agentic baseline (m10 heterogeneous cascade,
+92.3% HG2.9K / 97.9% GitChameleon), NOT the weak PLLM. "Agentic" is not novel
+for free: if the agentic method only ties m10 while being slower/costlier, that
+is an honest negative — report it, then pivot the *agentic design* (D-axis),
+never silently drop the agentic requirement to chase the cascade number.
+
+### D5 — Agentic = real tool-use loop with feedback, not a dressed-up call
+A single one-shot LLM call relabeled "agent" does not qualify. Required: a loop
+where Docker/verifier feedback (typed error → constraint) actually changes the
+next action. Multi-agent ONLY if each role fixes a NAMED failure mode of the
+single-agent version (show it in tool-call logs) — otherwise one agent + tools
+(re-states G2). Reflexion/blackboard memory across attempts is in-scope.
+
+### D6 — Rules-as-reducer get their own ablation row too
+Because rules now play a (supporting) role, the ablation table must isolate
+them: "w/o rule reducer (agent reasons over full space)" is a required row, to
+show the reducer makes the agent faster/cheaper without being what earns the
+pass. This keeps the credit attribution honest (G1).
+
+## ICSE'27 Execution Protocol (E1–E9) — LOCKED 2026-06-07
+
+User-locked run/eval conventions for the agentic phase. Do NOT deviate or ask
+the user to re-state these. Full rationale in `research/icse27/direction.md`.
+
+### E1 — Run shape
+One `run_experiment` invocation = **1 method × 1 backbone × 1 dataset**. To run a
+method across all datasets, use the driver `run_suite.py` (1 method × 1 backbone
+→ loops every dataset sequentially). Multiple methods = run the driver per method,
+**sequentially** (shared single Ollama + one GPU MIG slice → parallel contends).
+
+### E2 — How much to run (explore vs lock)
+- **HG2.9K (2890, slow): two modes** — explore = **10%** (`hg2k_10pct`, stratified
+  by error category) / lock = **full** (`hg2k_full`).
+- **All other benches are small → ALWAYS full**, even during exploration:
+  GitChameleon (328), DI-Bench (148 py), EnvBench (329 py).
+- Explore suite = `hg2k_10pct` + gitchameleon + dibench + envbench.
+  Lock suite = `hg2k_full` + the same three + seeds + backbones.
+
+### E3 — Seeds & backbone ablation: ONLY at method-lock
+During exploration: **single backbone** (`qwen3-8b` default on the H100 MIG-40GB
+box; keep `gemma2-9b` for FSE'26 parity), **single seed**, NO multi-seed runs, NO
+backbone sweep. The 3-seed mean + backbone ablation (qwen3 sizes, gemma2, etc.)
+run only when the user says "chốt method" (R3).
+
+### E4 — Results layout (NO seed subfolder during explore)
+`results/icse27/<method>/<backbone>/<dataset>/` — seed is recorded in the
+results.csv `seed` column + `run.json`, NOT as a folder level. Only at method-lock
+do multi-seed runs get `.../<dataset>/seedN/` via an explicit `--out`.
+Per-run files: `results.csv, run.json, llm_usage.json, trajectories/<id>.jsonl,
+blackboard.jsonl, heartbeat.json`.
+
+### E5 — Metrics are per-bench; fairness is per-bench (never average across)
+Each bench is scored by its NATIVE metric, identical for our method + every
+baseline on that bench. Do NOT invent one cross-bench number or average different
+metrics.
+- HG2.9K / GitChameleon → **pass rate** (udocker build+run).
+- DI-Bench → **Precision/Recall/F1** on the dependency set (exact + name_only).
+- EnvBench → its env-config success metric.
+- All benches also report LLM cost (#calls, tokens) for the accuracy–cost Pareto.
+
+### E6 — Scope = Option A (4 benches), honest task split
+- **Core task = dependency CONFLICT RESOLUTION** → headline evidence on **HG2.9K +
+  GitChameleon** (baselines exist, same pass-rate metric).
+- **DI-Bench (dep inference) + EnvBench (env setup) = GENERALIZATION**, not
+  conflict resolution. EnvBench also carries the small-vs-big story (EvoConfig
+  GPT-4o 78.1% published there). Frame as "best on core task + generalizes to
+  adjacent repo-level tasks". NEVER claim "SOTA on all benches" as one number.
+
+### E7 — Verifier + budget
+Verifier = **udocker** (`_shared/udocker_harness.py`), rootless, on the remote
+H100 (no Docker daemon). Budget = **wall-clock per task**, identical across methods:
+180s/snippet, 1200s/repo. Tokens/LLM-calls are REPORTED, never capped.
+
+### E8 — Agentic = prompt-driven
+Methods are LLM-agent loops driven by **prompts** (qwen3) + udocker verifier
+feedback (error → typed constraint → next prompt). Rules/CSP only reduce the
+candidate space (D1–D6). Every prompt+response is logged to `trajectories/`.
+
+### E9 — Remote ops
+Run on the H100 via `research/icse27/deploy/` (see `REMOTE.md`). Heavy data lives
+on `/network-volume` (2TB persistent); caches on `/home/jovyan` (regenerable).
+`bash /home/jovyan/ops/start_services.sh` (re)starts Ollama after a VM restart.
+
 ## What This Project Is
 
 This is the **FSE-AIWare 2026 competition platform** for agentic Python dependency resolution. The repo hosts:
