@@ -1,5 +1,5 @@
 # Fdb version 4
-["pdflatex"] 1781948927.52 "main.tex" "main.pdf" "main" 1781948930.99829 0
+["pdflatex"] 1781952578.45984 "main.tex" "main.pdf" "main" 1781952582.30133 0
   "d:/Downloads/Tools/Latex/texlive/2025/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc" 1765854997 2900 1537cc8184ad1792082cd229ecc269f4 ""
   "d:/Downloads/Tools/Latex/texlive/2025/texmf-dist/fonts/map/fontname/texfonts.map" 1765856471 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "d:/Downloads/Tools/Latex/texlive/2025/texmf-dist/fonts/tfm/adobe/symbol/psyr.tfm" 1765860759 1408 5937f58aa508ea2cea4901c07d10f5fe ""
@@ -50,8 +50,6 @@
   "d:/Downloads/Tools/Latex/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb" 1765853860 37912 07513ec114ac737ab54cea0152f4424b ""
   "d:/Downloads/Tools/Latex/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb" 1765853860 36281 c355509802a035cadc5f15869451dcee ""
   "d:/Downloads/Tools/Latex/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb" 1765853860 35469 dcf3a5f2fc1862f5952e3ee5eb1d98c4 ""
-  "d:/Downloads/Tools/Latex/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb" 1765853860 35752 024fb6c41858982481f6968b5fc26508 ""
-  "d:/Downloads/Tools/Latex/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb" 1765853860 32722 d7379af29a190c3f453aba36302ff5a9 ""
   "d:/Downloads/Tools/Latex/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr5.pfb" 1765853860 31809 8670ca339bf94e56da1fc21c80635e2a ""
   "d:/Downloads/Tools/Latex/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb" 1765853860 32734 69e00a6b65cedb993666e42eedb3d48f ""
   "d:/Downloads/Tools/Latex/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb" 1765853860 32762 7fee39e011c23b3589931effd97b9702 ""
@@ -312,11 +310,11 @@
   "figures/hcmus.png" 1779083736 141764 e800ad530021fb07eafd3d0fe436d286 ""
   "figures/memres-pipeline.png" 1779112262 1012400 5bb78fc4a6cfab9f207f0e52d9e6c13d ""
   "figures/session-learning.png" 1781152715 1838272 2f1cb33b12c44509da3384272f9ea081 ""
-  "main.aux" 1781948930 7214 f8773d81b82d54e0fddcd46ff99774c5 "pdflatex"
-  "main.nav" 1781948930 4730 bbaf71acd570b7beca1f237a337190e8 "pdflatex"
-  "main.out" 1781948930 741 890ab1994896a9022ead0942492d144a "pdflatex"
-  "main.tex" 1781948911 89148 0911300109f4644537473df3342ce9d1 ""
-  "main.vrb" 1781948930 1641 c466249deef00eb7f06e62135c3dda19 "pdflatex"
+  "main.aux" 1781952581 7214 f8773d81b82d54e0fddcd46ff99774c5 "pdflatex"
+  "main.nav" 1781952581 4730 bbaf71acd570b7beca1f237a337190e8 "pdflatex"
+  "main.out" 1781952581 741 890ab1994896a9022ead0942492d144a "pdflatex"
+  "main.tex" 1781952564 91187 b78dd9e65ca6e786dc5ddb84d1f514be ""
+  "main.vrb" 1781952581 1641 c466249deef00eb7f06e62135c3dda19 "pdflatex"
   (generated)
   "main.aux"
   "main.log"

@@ -65,6 +65,8 @@
 \definecolor{mLightBrown}{HTML}{EB811B}
 \definecolor{softgray}{HTML}{F2F4F7}
 \definecolor{tealtint}{HTML}{D6DEE0}
+\definecolor{nightsky}{HTML}{18242B}   % gloomy night backdrop (darker mDarkTeal)
+\definecolor{moongold}{HTML}{F3D55B}   % yellow moon
 
 \colorlet{navydeep}{mDarkTeal}
 \colorlet{accent}{mLightBrown}
@@ -137,8 +139,7 @@ Khôi phục tự động môi trường Python từ mã nguồn cũ bằng \tex
 
 \vspace{1.1em}
 \centering
-\scriptsize University of Science, VNU-HCM\\[0.4em]
-{\tiny\color{gray}Logo: HCMUS \href{https://www.hcmus.edu.vn}{\textcolor{mLightBrown}{hcmus.edu.vn}} · FSE 2026 \href{https://conf.researchr.org/home/fse-2026}{\textcolor{mLightBrown}{conf.researchr.org/home/fse-2026}}}
+\scriptsize University of Science, VNU-HCM
 \end{frame}
 
 % ==================== OUTLINE ====================
@@ -166,22 +167,32 @@ Khôi phục tự động môi trường Python từ mã nguồn cũ bằng \tex
 \centering
 \begin{tikzpicture}[font=\scriptsize]
   \def\rw{0.6}
-  % --- night sky: crescent moon + stars (over the graveyard) ---
-  \fill[mLightBrown!8]  (-5.2,3.0) circle (0.8);
-  \fill[mLightBrown!30] (-5.2,3.0) circle (0.48);
-  \fill[white]          (-5.02,3.13) circle (0.42);
-  \foreach \sx/\sy in {-3.7/3.35, -2.4/2.95, -0.8/3.45, 0.7/3.15, 1.9/3.4}
-    \fill[navydeep!30] (\sx,\sy) circle (0.028);
-  % --- graveyard ground (left side only) ---
-  \fill[black!5] (-6.35,-0.08) to[out=2,in=180] (-0.2,0.05) -- (-0.2,-1.15) -- (-6.35,-1.15) -- cycle;
-  \draw[black!22, line width=0.8pt] (-6.35,-0.08) to[out=2,in=180] (-0.2,0.05);
+  % --- gloomy night panel: a self-contained dark card (rounded both sides) holding
+  %     only the graveyard; the "hồi sinh" arrow + terminal sit on clean white ---
+  \fill[nightsky, rounded corners=12pt] (-6.7,-1.3) rectangle (-0.3,3.6);
+  % --- yellow moon with soft glow, top-left (the darkest corner) ---
+  \fill[moongold, opacity=0.12] (-5.2,3.0) circle (1.02);
+  \fill[moongold, opacity=0.24] (-5.2,3.0) circle (0.66);
+  \fill[moongold]               (-5.2,3.0) circle (0.46);
+  \fill[nightsky]               (-4.98,3.14) circle (0.40); % crescent shadow (sky-coloured)
+  % --- stars over the dark sky ---
+  \foreach \sx/\sy/\sr in {-3.7/3.35/0.030, -2.4/2.95/0.020, -0.8/3.45/0.026,
+        -6.05/2.45/0.024, -4.55/2.0/0.017, -2.05/3.28/0.020,
+        -5.5/3.4/0.015, -1.25/2.62/0.022, -3.15/2.18/0.016, -1.7/2.0/0.016}
+    \fill[white, opacity=0.9] (\sx,\sy) circle (\sr);
+  % --- graveyard ground (dark earth, left side) ---
+  \fill[nightsky!82] (-6.55,-0.08) to[out=2,in=180] (-0.45,0.03) -- (-0.45,-1.18) -- (-6.55,-1.18) -- cycle;
+  \draw[nightsky!55, line width=0.8pt] (-6.55,-0.08) to[out=2,in=180] (-0.45,0.03);
+  % --- low ground fog (translucent mist drifting between the graves) ---
+  \foreach \fx in {-5.1,-3.3,-1.5}
+    \fill[white, opacity=0.08] (\fx,-0.06) ellipse [x radius=1.35, y radius=0.20];
   % --- CLUSTER of 4 dead-environment tombstones ---
   \foreach \x/\h/\ep in {%
       -5.4/1.75/{reqs.txt\\ mất},
       -4.05/2.15/{Python\\ 2/3},
       -2.7/1.9/{API\\ removed},
       -1.35/2.15/{wheel\\ fail}}{
-    \fill[black!8] (\x,-0.04) ellipse [x radius={\rw+0.16}, y radius=0.13];
+    \fill[black, opacity=0.28] (\x,-0.04) ellipse [x radius={\rw+0.16}, y radius=0.13];
     \draw[fill=navydeep!12, draw=navydeep!55, line width=0.9pt]
       (\x-\rw,0) -- (\x-\rw,\h) arc (180:0:\rw) -- (\x+\rw,0) -- cycle;
     \pgfmathsetmacro\cy{\h+0.24}
@@ -194,12 +205,12 @@ Khôi phục tự động môi trường Python từ mã nguồn cũ bằng \tex
     \draw[green!45!black!55, line width=0.5pt] (\x+\rw-0.04,0) -- (\x+\rw+0.08,0.18);
   }
   % cluster label
-  \draw[decorate, decoration={brace, amplitude=4pt, mirror, raise=2pt}, gray!50, line width=0.7pt]
+  \draw[decorate, decoration={brace, amplitude=4pt, mirror, raise=2pt}, white, opacity=0.5, line width=0.7pt]
     (-6.05,-0.02) -- (-0.55,-0.02);
-  \node[font=\scriptsize\itshape, gray!75!black] at (-3.3,-0.62) {hàng nghìn gist Python ``chết môi trường''};
+  \node[font=\scriptsize\itshape, white!85] at (-3.3,-0.62) {hàng nghìn gist Python ``chết môi trường''};
   % --- rising arrow: the resurrection AIM (labels stacked clear above the curve) ---
   \draw[-{Stealth[length=4mm]}, mLightBrown, line width=2.4pt, line cap=round]
-    (0.0,1.0) .. controls (1.5,1.1) and (2.1,1.62) .. (3.0,1.75);
+    (0.3,1.02) .. controls (1.5,1.1) and (2.1,1.62) .. (2.72,1.71);
   \node[font=\footnotesize\bfseries, mLightBrown!88!black] at (1.4,2.28) {hồi sinh};
   \node[font=\tiny\itshape, mLightBrown!70!black]         at (1.4,1.92) {CGAR · MEMRES};
   % --- AIM: a revived, RUNNING environment shown as a terminal (elevated, distinct) ---
@@ -412,31 +423,51 @@ import cv2                          # PyPI name: opencv-python
     }
   }
   \node[font=\tiny, navydeep!75] at (3.35,2.45) {$\times\,\sim$\textbf{10} ver};
-  % --- rays fanning into the explosion cloud ---
+  % --- rays fanning into the front face of the 3D volume ---
   \foreach \yc in {1.65,0.45,-0.75}{
     \foreach \dy in {0.34,0,-0.34}{
       \pgfmathsetmacro\vy{\yc+\dy}
-      \pgfmathsetmacro\ty{\vy*0.4}
-      \draw[mLightBrown!35, line width=0.3pt] (3.5,\vy) -- (5.05,\ty);
+      \pgfmathsetmacro\ty{\vy*0.42-0.15}
+      \draw[mLightBrown!35, line width=0.3pt] (3.5,\vy) -- (5.0,\ty);
   }}
-  % --- EXPLOSION cloud: ~10^7 candidate environments (navy -> orange, denser to the right) ---
-  \foreach \cx in {5.1,5.35,...,8.1}{
-    \pgfmathsetmacro\hh{0.3+(\cx-5.1)*0.82}
-    \pgfmathtruncatemacro\nn{3+(\cx-5.1)*4.6}
-    \pgfmathtruncatemacro\pp{84-(\cx-5.1)*23}
-    \foreach \r in {1,...,\nn}{
-      \pgfmathsetmacro\yy{-\hh + 2*\hh*(\r-0.5)/\nn}
-      \fill[navydeep!\pp!mLightBrown] (\cx,\yy) circle (0.032);
-    }
+  % --- 3D candidate-environment volume: cube PACKED with ~10^7 points (one is the solution) ---
+  % point(i,j,k) = (5.0 + 0.40 i + 0.32 k, -1.25 + 0.40 j + 0.25 k); grid 6x6x5 = 180 dots.
+  % depth (k) fades navy->faint and shrinks => clean 3D stacking, not a flat blob.
+  % faint receding faces behind the cloud (kills the "hollow" look)
+  \fill[navydeep!7]  (5.0,0.75) -- (7.0,0.75) -- (8.28,1.75) -- (6.28,1.75) -- cycle; % top
+  \fill[navydeep!10] (7.0,-1.25) -- (7.0,0.75) -- (8.28,1.75) -- (8.28,-0.25) -- cycle; % right
+  % hidden back edges (dashed, behind the cloud)
+  \draw[navydeep!20, line width=0.4pt, dashed] (5.0,-1.25) -- (6.28,-0.25);
+  \draw[navydeep!20, line width=0.4pt, dashed] (6.28,-0.25) -- (8.28,-0.25);
+  \draw[navydeep!20, line width=0.4pt, dashed] (6.28,-0.25) -- (6.28,1.75);
+  % the point cloud (drawn back -> front so nearer dots sit on top)
+  \foreach \k in {4,3,2,1,0}{
+    \pgfmathsetmacro\fr{\k/4}
+    \pgfmathtruncatemacro\pp{84-\fr*56}
+    \pgfmathsetmacro\rr{0.047-\fr*0.019}
+    \foreach \i in {0,...,5}{ \foreach \j in {0,...,5}{
+      \pgfmathsetmacro\sx{5.0+0.40*\i+0.32*\k}
+      \pgfmathsetmacro\sy{-1.25+0.40*\j+0.25*\k}
+      \fill[navydeep!\pp] (\sx,\sy) circle (\rr);
+    }}
   }
-  \node[font=\tiny, navydeep!75] at (5.95,2.55) {$\times\,\sim$\textbf{8} Python};
-  % --- the single valid solution (needle in the haystack) ---
-  \fill[mLightBrown] (7.05,0.0) circle (0.075);
-  \draw[mLightBrown!85!black, line width=0.6pt] (7.05,0.0) circle (0.18);
-  \draw[mLightBrown!85!black, line width=0.4pt] (7.05,0.2) -- (7.3,1.2);
-  \node[font=\tiny\bfseries, mLightBrown!85!black, anchor=south] at (7.3,1.2) {1 lời giải};
+  % visible bounding edges (thin frame around the cloud)
+  \draw[navydeep!50, line width=0.55pt] (5.0,-1.25) -- (7.0,-1.25) -- (7.0,0.75) -- (5.0,0.75) -- cycle; % front
+  \draw[navydeep!50, line width=0.55pt] (5.0,0.75) -- (6.28,1.75); % top-left depth edge (Python axis)
+  \draw[navydeep!50, line width=0.55pt] (7.0,0.75) -- (8.28,1.75) -- (6.28,1.75); % top-right + back-top
+  \draw[navydeep!50, line width=0.55pt] (7.0,-1.25) -- (8.28,-0.25) -- (8.28,1.75); % bottom-right + back-right
+  % depth axis = the 3rd dimension that makes the space 3D (8 Python runtimes)
+  \draw[->, navydeep!60, line width=0.5pt] (4.78,1.58) -- (5.40,1.18);
+  \node[font=\tiny, navydeep!80, anchor=east] at (4.76,1.61) {$\times\,\sim$\textbf{8} Python};
+  % --- the single valid solution: one point lifted out of the haystack ---
+  \fill[white] (6.52,0.20) circle (0.135);
+  \fill[mLightBrown] (6.52,0.20) circle (0.085);
+  \draw[mLightBrown!85!black, line width=0.8pt] (6.52,0.20) circle (0.175);
+  \draw[mLightBrown!35, line width=0.6pt] (6.52,0.20) circle (0.285);
+  \draw[mLightBrown!85!black, line width=0.5pt] (6.52,0.37) -- (6.52,1.97);
+  \node[font=\tiny\bfseries, mLightBrown!85!black, anchor=south] at (6.52,1.95) {1 lời giải};
   % --- climax ---
-  \node[font=\footnotesize\bfseries, alert] at (6.6,-2.7) {$\approx 10^{7}$ tổ hợp};
+  \node[font=\footnotesize\bfseries, alert] at (6.4,-1.8) {$\approx 10^{7}$ tổ hợp};
 \end{tikzpicture}}
 
 % ===== RIGHT: giải thích =====
@@ -449,14 +480,7 @@ import cv2                          # PyPI name: opencv-python
   \item \textbf{Python}: 1 trong $\sim$8 runtime
 \end{itemize}
 
-\vspace{0.4em}
-\begin{center}
-\fcolorbox{alert}{alert!10}{\parbox{0.95\linewidth}{\centering
-  $\sim$500K $\times$ $\sim$10 $\times$ $\sim$8\\[3pt]
-  $\approx$ {\Large\bfseries\color{alert}$10^{7}$} môi trường ứng viên}}
-\end{center}
-
-\vspace{0.3em}
+\vspace{0.6em}
 {\scriptsize\color{mDarkTeal}$\Rightarrow$ Không thể thử hết bằng tay, cần solver/agent để \textbf{tỉa không gian}.}
 \end{columns}
 \end{frame}
