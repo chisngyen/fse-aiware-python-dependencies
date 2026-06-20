@@ -302,11 +302,11 @@ Khôi phục tự động môi trường Python từ mã nguồn cũ bằng \tex
   \draw[arr, success!60!black] (sys.south) -- (ok.north);
 \end{tikzpicture}
 
-\vspace{0.8em}
+\vspace{1.2em}
 \begin{columns}[T,onlytextwidth]
 \column{0.34\textwidth}
 \scriptsize
-\textbf{\color{mDarkTeal}Hard requirements}\\[2pt]
+{\small\textbf{\color{mDarkTeal}Hard requirements}}\\[3pt]
 \textcolor{mDarkTeal!22}{\rule{\linewidth}{0.5pt}}
 \begin{itemize}\setlength{\itemsep}{2pt}\scriptsize
   \item Mọi thao tác trong \textbf{Docker}
@@ -317,7 +317,7 @@ Khôi phục tự động môi trường Python từ mã nguồn cũ bằng \tex
 
 \column{0.34\textwidth}
 \scriptsize
-\textbf{\color{mDarkTeal}Evaluation budget} {\tiny\color{gray}(giống nhau mọi tool)}\\[2pt]
+{\small\textbf{\color{mDarkTeal}Evaluation budget}} {\tiny\color{gray}(giống nhau mọi tool)}\\[3pt]
 \textcolor{mDarkTeal!22}{\rule{\linewidth}{0.5pt}}
 \begin{itemize}\setlength{\itemsep}{2pt}\scriptsize
   \item Mỗi Docker build timeout \textbf{180s}; $\le$\textbf{10} build/snippet
@@ -327,7 +327,7 @@ Khôi phục tự động môi trường Python từ mã nguồn cũ bằng \tex
 
 \column{0.30\textwidth}
 \scriptsize
-\textbf{\color{mDarkTeal}Metrics}\\[2pt]
+{\small\textbf{\color{mDarkTeal}Metrics}}\\[3pt]
 \textcolor{mDarkTeal!22}{\rule{\linewidth}{0.5pt}}
 \begin{itemize}\setlength{\itemsep}{2pt}\scriptsize
   \item \textbf{Pass rate} (primary)
@@ -340,15 +340,15 @@ Khôi phục tự động môi trường Python từ mã nguồn cũ bằng \tex
 \begin{columns}[c]
 \column{0.43\textwidth}
 \begin{lstlisting}
-from scipy.misc import imread       # removed in scipy >= 1.2
+from scipy.misc import imread       # removed in scipy >= 1.3
 import sklearn.cross_validation     # removed in sklearn >= 0.20
 import cv2                          # PyPI name: opencv-python
 \end{lstlisting}
 
 \begin{itemize}\scriptsize
   \item \textbf{Tên import gây hiểu lầm}: \texttt{cv2} $\to$ \texttt{opencv-python}
-  \item \textbf{API biến mất}: \texttt{imread} chỉ ở scipy $\le 1.1$
-  \item \textbf{Hiệu ứng domino}: scipy $\le 1.1 \to$ Python $\le 3.7 \to$ numpy cũ...
+  \item \textbf{API biến mất}: \texttt{imread} còn tới scipy $\le 1.2$ (bỏ ở 1.3)
+  \item \textbf{Hiệu ứng domino}: scipy $\le 1.2 \to$ Python $\le 3.7 \to$ numpy cũ...
 \end{itemize}
 
 \column{0.56\textwidth}
@@ -379,7 +379,7 @@ import cv2                          # PyPI name: opencv-python
   % --- code tags phía trên, lệch theo hướng đổ ---
   \node[tag] at (0.95, 2.95) {cv2};
   \node[tag] at (2.8, 2.65) {imread};
-  \node[tag] at (4.7, 2.30) {scipy $\le$ 1.1};
+  \node[tag] at (4.7, 2.30) {scipy $\le$ 1.2};
   \node[tag] at (6.9, 1.95) {Python $\le$ 3.7};
 \end{tikzpicture}}
 \caption{Hiệu ứng domino trong Dependency Hell}
@@ -845,10 +845,10 @@ Build thất bại không phí: mỗi lần fail $\to$ +1 constraint $\to$ Plann
 ]
   % ---- LEFT: numbered pipeline ----
   \node<1->[num] at (-6.5,2.5) {1};
-  \node<1->[snip] (s1) at (-4.7,2.5) {import scipy, numpy\\ {\scriptsize\rmfamily target Python $\pi=3.7$}};
+  \node<1->[snip] (s1) at (-4.7,2.5) {from scipy.misc import imread\\ {\scriptsize\rmfamily target Python $\pi=3.7$}};
 
   \node<2->[num] at (-6.5,1.4) {2};
-  \node<2->[mapb] (s2) at (-4.7,1.4) {\textbf{import $\to$ pip} {\tiny(static map)}\\ \texttt{scipy.misc}$\to$\texttt{scipy}, \texttt{numpy}$\to$\texttt{numpy}};
+  \node<2->[mapb] (s2) at (-4.7,1.4) {\textbf{import $\to$ pip} {\tiny(static map)}\\ \texttt{scipy.misc}$\to$\texttt{scipy}; \texttt{numpy} = dep của scipy};
   \draw<2->[ar] (s1.south) -- (s2.north);
 
   \node<3->[num,fill=alert] at (-6.5,0.25) {3};
@@ -868,7 +868,7 @@ Build thất bại không phí: mỗi lần fail $\to$ +1 constraint $\to$ Plann
     {{\bfseries\color{navydeep}PyPI JSON (rút gọn)}\\[1pt]\textcolor{navydeep!30}{\rule{\linewidth}{0.5pt}}\\[2pt]
      {\ttfamily\tiny releases:}\\
      {\ttfamily\tiny\quad 1.7.3 $\to$ req\_py $\geq$3.7, wheel cp37-manylinux \cmark}\\
-     {\ttfamily\tiny\quad 1.2.0 $\to$} {\rmfamily\tiny (imread đã bỏ)}\\
+     {\ttfamily\tiny\quad 1.2.3 $\to$ req\_py py3.7, wheel cp37 \cmark}\\
      {\rmfamily\tiny\quad\ldots\ $\sim$60 bản phát hành trên PyPI}};
   \draw<3->[arh, dashed] (s3.east) to[bend left=12] (json.west);
 
@@ -877,7 +877,7 @@ Build thất bại không phí: mỗi lần fail $\to$ +1 constraint $\to$ Plann
      {\ttfamily\tiny $D$(scipy)$=$[1.7.3, 1.7.2, 1.7.1, \ldots]} {\rmfamily\tiny ·8}\\
      {\ttfamily\tiny $D$(numpy)$=$[1.21.6, 1.21.5, \ldots]} {\rmfamily\tiny ·8}\\
      {\rmfamily\tiny\color{gray}(mỗi ứng viên \cmark wheel \cmark py$\geq$3.7)}\\[2pt]
-     {\rmfamily\tiny\color{alert}$\approx\!10^{7}$ tổ hợp $\Rightarrow$ $\sim$8 ứng viên/gói}};
+     {\rmfamily\tiny\color{alert}$\approx\!10^{7}$ (không gian gốc, toàn cục) $\to$ $\le$8 ứng viên/gói}};
   \draw<5->[ar] (s5.east) to[bend right=12] (dom.west);
 \end{tikzpicture}
 
@@ -901,17 +901,17 @@ Build thất bại không phí: mỗi lần fail $\to$ +1 constraint $\to$ Plann
     {from scipy.misc import imread};
   % ---- Bước 1 (fail) ----
   \node[circle, fill=alert, text=white, font=\bfseries\tiny, inner sep=2pt] at (-6.25,2.25) {1};
-  \node[pill] (a1) at (-5.1,2.25) {scipy 1.5};
+  \node[pill] (a1) at (-5.1,2.25) {scipy 1.7.3};
   \node[dock] (d1) at (-3.4,2.25) {Docker build};
   \node[fail] (f1) at (-1.0,2.25) {\xmark\ ImportError: cannot import name \texttt{imread}};
   \draw[ar] (a1)--(d1); \draw[ar] (d1)--(f1);
   % analyzer -> constraint
-  \node[cons] (c1) at (-3.2,1.15) {Analyzer: \textbf{scipy $\le$ 1.2}  {\color{cUpper}[UPPER]}};
+  \node[cons] (c1) at (-3.2,1.15) {Analyzer: \textbf{scipy $<$ 1.3}  {\color{cUpper}[UPPER]}};
   \draw[ar, mLightBrown] (f1.south) |- (c1.east);
   % ---- Bước 2 (pass) ----
   \node[circle, fill=success!55!black, text=white, font=\bfseries\tiny, inner sep=2pt] at (-6.25,-0.05) {2};
-  \node[pill] (a2) at (-5.1,-0.05) {scipy 1.1};
-  \node[font=\tiny, gray, anchor=north] at (-5.1,-0.45) {cao nhất $\le$1.2, có wheel};
+  \node[pill] (a2) at (-5.1,-0.05) {scipy 1.2.3};
+  \node[font=\tiny, gray, anchor=north] at (-5.1,-0.45) {cao nhất $<$1.3, có wheel};
   \node[dock] (d2) at (-3.4,-0.05) {Docker build};
   \node[okb] (ok2) at (-1.2,-0.05) {\cmark\ build OK};
   \draw[ar] (a2)--(d2); \draw[ar] (d2)--(ok2);
@@ -920,7 +920,7 @@ Build thất bại không phí: mỗi lần fail $\to$ +1 constraint $\to$ Plann
   \node[draw=navydeep!50, fill=navydeep!4, rounded corners=6pt, line width=1pt, text width=2.9cm,
         align=left, inner sep=8pt, anchor=north] (store) at (4.7,3.5)
     {{\bfseries\color{navydeep}Session Store}\\[2pt]\textcolor{navydeep!30}{\rule{\linewidth}{0.5pt}}\\[4pt]
-     {\color{cUpper}$\bullet$}\ scipy $\le$ 1.2 \ {\tiny(UPPER)}\\[6pt]
+     {\color{cUpper}$\bullet$}\ scipy $<$ 1.3 \ {\tiny(UPPER)}\\[6pt]
      {\tiny\color{gray}tích lũy + chia sẻ cho snippet sau trong cùng session}};
 \end{tikzpicture}
 
@@ -932,8 +932,8 @@ Build thất bại không phí: mỗi lần fail $\to$ +1 constraint $\to$ Plann
 \begin{columns}[T]
 \column{0.50\textwidth}
 \scriptsize
-\textbf{\color{alert}KHÔNG phải CSP tĩnh.} Ràng buộc thật \emph{ẩn}, chỉ lộ qua build: verifier hộp đen $f(\mathcal{A})\!\to\!\{\textsf{pass},\,\textsf{typed-error}\}$.\\
-{\tiny\color{gray}$C_0=\varnothing$ (không cho trước). Mỗi lỗi Docker $=$ một \emph{counterexample} $\Rightarrow$ agent \textbf{acquire} ràng buộc (\emph{Constraint Acquisition}, CA; kiểu CEGIS), \textbf{không} solve một CSP có sẵn.}
+\textbf{Ràng buộc thật \emph{ẩn}, không cho trước}: chỉ lộ ra qua verifier dạng hộp đen $f(\mathcal{A})\!\to\!\{\textsf{pass},\,\textsf{typed-error}\}$.\\
+{\tiny\color{gray}$C_0=\varnothing$. Mỗi lỗi Docker $=$ một \emph{counterexample} $\Rightarrow$ agent \textbf{học} ràng buộc (\emph{Constraint Acquisition}, CA; kiểu CEGIS), \textbf{không} giải một CSP cho sẵn.}
 
 \vspace{0.35em}
 \textbf{Search state} $\mathcal{S}_t = \langle X, D, C_t \rangle$, với $C_t$ lớn dần.
@@ -1715,9 +1715,9 @@ $K_{\text{build}}\!\le\!10$ Docker retries/snippet (180s/build, expensive).
 \textbf{\color{navydeep}3. Analyzer $\to$ Store (write)}\\[0.1em]
 \textit{store.add\_upper\_bound() / inject()}
 \begin{lstlisting}[basicstyle=\tiny\ttfamily, language=Python]
-add_upper_bound("scipy", "3.7", "1.2")
-# scipy >= 1.2 infeasible on py3.7
-# (imread removed in scipy 1.2)
+add_upper_bound("scipy", "3.7", "1.3")
+# scipy >= 1.3 infeasible on py3.7
+# (imread removed in scipy 1.3)
 \end{lstlisting}
 
 \column{0.50\textwidth}
@@ -1725,7 +1725,7 @@ add_upper_bound("scipy", "3.7", "1.2")
 \textit{next round, planner queries store}
 \begin{lstlisting}[basicstyle=\tiny\ttfamily, language=Python]
 store.get_upper_bound("scipy", "3.7")
-# -> "1.2"
+# -> "1.3"
 store.get_infeasible_versions("scipy","3.7")
 # -> {"1.7.3", "1.6.0", ...}
 # Planner's solver prunes these
@@ -1808,16 +1808,16 @@ log = "ImportError: cannot import name
 
 # 3. _API_REMOVED_RE.search(log)
 #    -> ("imread", "scipy.misc")
-add_upper_bound("scipy","3.7","1.2")
+add_upper_bound("scipy","3.7","1.3")
 
 # 4. Analyzer LLM may confirm/add UB
 consult_llm() -> {"type":"UPPER",
-  "package":"scipy","upper_bound":"1.2"}
+  "package":"scipy","upper_bound":"1.3"}
 
 # Resulting store state:
 _records[("scipy","1.7.3","3.7")] =
   InfeasibleRecord(SOFT, count=1, 0.8)
-_upper_bounds[("scipy","3.7")] = "1.2"
+_upper_bounds[("scipy","3.7")] = "1.3"
 \end{lstlisting}
 \end{columns}
 
@@ -1855,11 +1855,11 @@ _upper_bounds[("scipy","3.7")] = "1.2"
 \begin{lstlisting}[basicstyle=\tiny\ttfamily, language=]
 {
  "assignment": {
-   "scipy": "1.1.0",
+   "scipy": "1.2.3",
    "numpy": "1.16.6"
  },
  "reason":
-   "imread requires scipy<1.2"
+   "imread requires scipy<1.3"
 }
 \end{lstlisting}
 \end{columns}

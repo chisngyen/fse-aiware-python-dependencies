@@ -534,6 +534,8 @@ INPUT d:/Downloads/Tools/Latex/texlive/2025/texmf-dist/fonts/tfm/vntex/vnr/vntt8
 INPUT d:/Downloads/Tools/Latex/texlive/2025/texmf-dist/fonts/tfm/vntex/vnr/vnssi8.tfm
 INPUT d:/Downloads/Tools/Latex/texlive/2025/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc
 INPUT d:/Downloads/Tools/Latex/texlive/2025/texmf-dist/fonts/tfm/vntex/vnr/vntt8.tfm
+INPUT d:/Downloads/Tools/Latex/texlive/2025/texmf-dist/fonts/tfm/vntex/vnr/vnss9.tfm
+INPUT d:/Downloads/Tools/Latex/texlive/2025/texmf-dist/fonts/tfm/vntex/vnr/vnssbx10.tfm
 OUTPUT main.vrb
 INPUT ./main.vrb
 INPUT ./main.vrb

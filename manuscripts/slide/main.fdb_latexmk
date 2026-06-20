@@ -1,5 +1,5 @@
 # Fdb version 4
-["pdflatex"] 1781965033.84313 "main.tex" "main.pdf" "main" 1781965037.73814 0
+["pdflatex"] 1781971096.5574 "main.tex" "main.pdf" "main" 1781971100.01408 0
   "d:/Downloads/Tools/Latex/texlive/2025/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc" 1765854997 2900 1537cc8184ad1792082cd229ecc269f4 ""
   "d:/Downloads/Tools/Latex/texlive/2025/texmf-dist/fonts/map/fontname/texfonts.map" 1765856471 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "d:/Downloads/Tools/Latex/texlive/2025/texmf-dist/fonts/tfm/adobe/symbol/psyr.tfm" 1765860759 1408 5937f58aa508ea2cea4901c07d10f5fe ""
@@ -43,6 +43,7 @@
   "d:/Downloads/Tools/Latex/texlive/2025/texmf-dist/fonts/tfm/vntex/vnr/vnss12.tfm" 1765861701 3884 6d1211788d2aa72329dde520b5e45148 ""
   "d:/Downloads/Tools/Latex/texlive/2025/texmf-dist/fonts/tfm/vntex/vnr/vnss17.tfm" 1765861701 3884 1cbeee1fab9b7c3d29df5b2d36d88a8a ""
   "d:/Downloads/Tools/Latex/texlive/2025/texmf-dist/fonts/tfm/vntex/vnr/vnss8.tfm" 1765861701 3856 4d7a904b471c6370b1ce588976358ccb ""
+  "d:/Downloads/Tools/Latex/texlive/2025/texmf-dist/fonts/tfm/vntex/vnr/vnss9.tfm" 1765861701 3884 93ef9b728d9ddb8256a418a05a922ff3 ""
   "d:/Downloads/Tools/Latex/texlive/2025/texmf-dist/fonts/tfm/vntex/vnr/vnssbx10.tfm" 1765861701 3856 6a55030ccf7e10b39c4bda2f2b38ecae ""
   "d:/Downloads/Tools/Latex/texlive/2025/texmf-dist/fonts/tfm/vntex/vnr/vnssi12.tfm" 1765861701 4116 e6a6f383427b42b466d0095e529f972d ""
   "d:/Downloads/Tools/Latex/texlive/2025/texmf-dist/fonts/tfm/vntex/vnr/vnssi8.tfm" 1765861701 4088 83085fa90daf5ce8778f084a375e6f26 ""
@@ -318,11 +319,11 @@
   "figures/hcmus.png" 1779083736 141764 e800ad530021fb07eafd3d0fe436d286 ""
   "figures/memres-pipeline.png" 1779112262 1012400 5bb78fc4a6cfab9f207f0e52d9e6c13d ""
   "figures/session-learning.png" 1781152715 1838272 2f1cb33b12c44509da3384272f9ea081 ""
-  "main.aux" 1781965037 7342 86579bc31a565278b3cc1fad0c636b6c "pdflatex"
-  "main.nav" 1781965037 4822 968373b9aafb53a727efa5f9f8b3609d "pdflatex"
-  "main.out" 1781965037 741 890ab1994896a9022ead0942492d144a "pdflatex"
-  "main.tex" 1781965020 95410 4cc66991dbbf9ebb37a23e2a619cdcbd ""
-  "main.vrb" 1781965037 1641 c466249deef00eb7f06e62135c3dda19 "pdflatex"
+  "main.aux" 1781971099 7342 86579bc31a565278b3cc1fad0c636b6c "pdflatex"
+  "main.nav" 1781971099 4822 968373b9aafb53a727efa5f9f8b3609d "pdflatex"
+  "main.out" 1781971099 741 890ab1994896a9022ead0942492d144a "pdflatex"
+  "main.tex" 1781971049 95430 a15ce0f44c2be8acc6b2a5edad6eccd9 ""
+  "main.vrb" 1781971099 1641 c466249deef00eb7f06e62135c3dda19 "pdflatex"
   (generated)
   "main.aux"
   "main.log"
