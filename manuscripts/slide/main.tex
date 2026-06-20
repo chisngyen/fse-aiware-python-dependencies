@@ -852,7 +852,7 @@ Build thất bại không phí: mỗi lần fail $\to$ +1 constraint $\to$ Plann
   \draw<2->[ar] (s1.south) -- (s2.north);
 
   \node<3->[num,fill=alert] at (-6.5,0.25) {3};
-  \node<3->[getb] (s3) at (-4.7,0.25) {GET pypi.org/pypi/\textbf{scipy}/json\\ GET pypi.org/pypi/\textbf{numpy}/json\\ {\rmfamily\tiny\color{alert!60!black} HTTP trực tiếp --- KHÔNG LLM}};
+  \node<3->[getb] (s3) at (-4.7,0.25) {GET pypi.org/pypi/\textbf{scipy}/json\\ GET pypi.org/pypi/\textbf{numpy}/json\\ {\rmfamily\tiny\color{alert!60!black} HTTP trực tiếp, KHÔNG LLM}};
   \draw<3->[ar] (s2.south) -- (s3.north);
 
   \node<4->[num] at (-6.5,-0.95) {4};
@@ -882,7 +882,7 @@ Build thất bại không phí: mỗi lần fail $\to$ +1 constraint $\to$ Plann
 \end{tikzpicture}
 
 \vspace{0.2em}
-\onslide<6->{{\centering\footnotesize\color{mDarkTeal} $D$ = top-8 ứng viên \textbf{có wheel}, hợp $\pi$ --- lọc từ \textbf{PyPI trực tiếp} (reducer xác định, \textbf{0 LLM}); là đầu vào cho solver \& ràng buộc học được.\par}}
+\onslide<6->{{\centering\footnotesize\color{mDarkTeal} $D$ = top-8 ứng viên \textbf{có wheel}, hợp $\pi$, lọc từ \textbf{PyPI trực tiếp} (reducer xác định, \textbf{0 LLM}); là đầu vào cho solver \& ràng buộc học được.\par}}
 \end{frame}
 
 \begin{frame}{CGAR: Tích lũy ràng buộc (ví dụ)}
@@ -932,11 +932,11 @@ Build thất bại không phí: mỗi lần fail $\to$ +1 constraint $\to$ Plann
 \begin{columns}[T]
 \column{0.50\textwidth}
 \scriptsize
-\textbf{\color{alert}KHÔNG phải CSP tĩnh.} Ràng buộc thật \emph{ẩn}, chỉ lộ qua build --- verifier hộp đen $f(\mathcal{A})\!\to\!\{\textsf{pass},\,\textsf{typed-error}\}$.\\
-{\tiny\color{gray}$C_0=\varnothing$ (không cho trước). Mỗi lỗi Docker $=$ một \emph{counterexample} $\Rightarrow$ agent \textbf{acquire} ràng buộc (\emph{Constraint Acquisition}, CA --- CEGIS-style), \textbf{không} solve một CSP có sẵn.}
+\textbf{\color{alert}KHÔNG phải CSP tĩnh.} Ràng buộc thật \emph{ẩn}, chỉ lộ qua build: verifier hộp đen $f(\mathcal{A})\!\to\!\{\textsf{pass},\,\textsf{typed-error}\}$.\\
+{\tiny\color{gray}$C_0=\varnothing$ (không cho trước). Mỗi lỗi Docker $=$ một \emph{counterexample} $\Rightarrow$ agent \textbf{acquire} ràng buộc (\emph{Constraint Acquisition}, CA; kiểu CEGIS), \textbf{không} solve một CSP có sẵn.}
 
 \vspace{0.35em}
-\textbf{Search state} $\mathcal{S}_t = \langle X, D, C_t \rangle$ --- $C_t$ lớn dần.
+\textbf{Search state} $\mathcal{S}_t = \langle X, D, C_t \rangle$, với $C_t$ lớn dần.
 
 \vspace{0.35em}
 \textbf{Variables $X$:} thư viện $\{P_1, \ldots, P_n\}$ + phiên bản Python $\pi$.
@@ -953,7 +953,7 @@ D(P_i) = \{ v \mid \text{req\_py}(P_i, v) \models \pi \land \text{has\_wheel}(P_
 \begin{itemize}
   \item \textbf{\color{cHard}Hard}: cấm vĩnh viễn version lỗi rõ ràng
   \item \textbf{\color{cSoft!75!black}Soft}: cấm tạm nếu lỗi $\ge 2$ lần
-  \item \textbf{\color{cUpper}Upper Bound}: $v_i < \text{ub}(P_i)$ -- cấm cả khoảng
+  \item \textbf{\color{cUpper}Upper Bound}: $v_i < \text{ub}(P_i)$, cấm cả khoảng
 \end{itemize}
 
 \vspace{0.35em}
