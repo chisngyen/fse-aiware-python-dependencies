@@ -57,14 +57,8 @@
   innertopmargin=3pt,innerbottommargin=3pt,
   backgroundcolor=cInferL]{inferbox}
 
-\newcommand{\takeaway}[1]{%
-  \vspace{0.3em}%
-  \begin{mdframed}[linecolor=mLightBrown,linewidth=1.2pt,
-    backgroundcolor=mLightBrown!8,
-    innertopmargin=4pt,innerbottommargin=4pt,
-    innerleftmargin=8pt,innerrightmargin=8pt,roundcorner=2pt]
-  \centering\footnotesize\bfseries\color{mDarkTeal} #1
-  \end{mdframed}}
+% (removed unused \takeaway box macro — closing lines unified to one
+%  centered \footnotesize\color{mDarkTeal} sentence style across the deck)
 
 % Colors
 \definecolor{mDarkTeal}{HTML}{23373B}
@@ -90,10 +84,14 @@
   breaklines=true,
   numbers=none,
   language=Python,
+  xleftmargin=5pt,
+  xrightmargin=5pt,
+  aboveskip=7pt,
+  belowskip=7pt,
 }
 
 % Title
-\title{MEMRES \& CGAR: Agentic Python Dependency Resolution}
+\title{MEMRES to CGAR: Agentic Python Dependency Resolution}
 \author{Trần Chí Nguyên, Đào Sỹ Duy Minh, Huỳnh Trung Kiệt}
 \institute{University of Science, VNU-HCM}
 \date{ML Course Project -- 2026}
@@ -106,16 +104,16 @@
 \begin{columns}[c]
 \column{0.18\textwidth}
 \centering
-\includegraphics[height=2.0cm]{hcmus.png}
+\href{https://www.hcmus.edu.vn}{\includegraphics[height=2.0cm]{hcmus.png}}
 
 \column{0.64\textwidth}
 \centering
 \LARGE\textbf{Machine Learning Course Project}\\[0.7em]
-\large\textcolor{navydeep}{MEMRES \& CGAR:\\Agentic Python Dependency Resolution}
+\large\textcolor{navydeep}{MEMRES $\to$ CGAR:\\Agentic Python Dependency Resolution}
 
 \column{0.18\textwidth}
 \centering
-\includegraphics[height=1.6cm]{fse.png}
+\href{https://conf.researchr.org/home/fse-2026}{\includegraphics[height=1.6cm]{fse.png}}
 \end{columns}
 
 \vspace{1.5em}
@@ -137,9 +135,10 @@ Khôi phục tự động môi trường Python từ mã nguồn cũ bằng \tex
 \end{block}
 \end{columns}
 
-\vspace{1.5em}
+\vspace{1.1em}
 \centering
-\scriptsize University of Science, VNU-HCM
+\scriptsize University of Science, VNU-HCM\\[0.4em]
+{\tiny\color{gray}Logo: HCMUS \href{https://www.hcmus.edu.vn}{\textcolor{mLightBrown}{hcmus.edu.vn}} · FSE 2026 \href{https://conf.researchr.org/home/fse-2026}{\textcolor{mLightBrown}{conf.researchr.org/home/fse-2026}}}
 \end{frame}
 
 % ==================== OUTLINE ====================
@@ -155,7 +154,7 @@ Khôi phục tự động môi trường Python từ mã nguồn cũ bằng \tex
 
 \vspace{1em}
 \centering\scriptsize\color{gray}
-\textit{($+$ 10 Backup slides cho Q\&A: MEMRES Stages, GitChameleon, Filter \& CSP I/O, Agent Comm., Session Store, LLM Call, Build Loop, 3 Agent Prompts)}
+\textit{($+$ 8 Backup slides cho Q\&A: Filter \& CSP I/O, Agent Comm., Session Store, LLM Call, Build Loop, 3 Agent Prompts)}
 \end{frame}
 
 % ============================================================
@@ -163,10 +162,67 @@ Khôi phục tự động môi trường Python từ mã nguồn cũ bằng \tex
 % ============================================================
 
 \begin{frame}{Bối cảnh}
-\begin{figure}
-    \centering
-    \includegraphics[width=0.97\textwidth]{boicanh.png}
-\end{figure}
+\vspace{0.4em}
+\centering
+\begin{tikzpicture}[font=\scriptsize]
+  \def\rw{0.6}
+  % --- night sky: crescent moon + stars (over the graveyard) ---
+  \fill[mLightBrown!8]  (-5.2,3.0) circle (0.8);
+  \fill[mLightBrown!30] (-5.2,3.0) circle (0.48);
+  \fill[white]          (-5.02,3.13) circle (0.42);
+  \foreach \sx/\sy in {-3.7/3.35, -2.4/2.95, -0.8/3.45, 0.7/3.15, 1.9/3.4}
+    \fill[navydeep!30] (\sx,\sy) circle (0.028);
+  % --- graveyard ground (left side only) ---
+  \fill[black!5] (-6.35,-0.08) to[out=2,in=180] (-0.2,0.05) -- (-0.2,-1.15) -- (-6.35,-1.15) -- cycle;
+  \draw[black!22, line width=0.8pt] (-6.35,-0.08) to[out=2,in=180] (-0.2,0.05);
+  % --- CLUSTER of 4 dead-environment tombstones ---
+  \foreach \x/\h/\ep in {%
+      -5.4/1.75/{reqs.txt\\ mất},
+      -4.05/2.15/{Python\\ 2/3},
+      -2.7/1.9/{API\\ removed},
+      -1.35/2.15/{wheel\\ fail}}{
+    \fill[black!8] (\x,-0.04) ellipse [x radius={\rw+0.16}, y radius=0.13];
+    \draw[fill=navydeep!12, draw=navydeep!55, line width=0.9pt]
+      (\x-\rw,0) -- (\x-\rw,\h) arc (180:0:\rw) -- (\x+\rw,0) -- cycle;
+    \pgfmathsetmacro\cy{\h+0.24}
+    \draw[navydeep!45, line width=0.6pt] (\x,\cy+0.13) -- (\x,\cy-0.13);
+    \draw[navydeep!45, line width=0.6pt] (\x-0.08,\cy+0.05) -- (\x+0.08,\cy+0.05);
+    \pgfmathsetmacro\ry{\h-0.2}
+    \node[font=\tiny\bfseries, navydeep!75] at (\x,\ry) {R.I.P.};
+    \node[font=\tiny, gray!80!black, align=center, text width=1.25cm] at (\x,0.48) {\ep};
+    \draw[green!45!black!55, line width=0.5pt] (\x-\rw+0.04,0) -- (\x-\rw-0.08,0.18);
+    \draw[green!45!black!55, line width=0.5pt] (\x+\rw-0.04,0) -- (\x+\rw+0.08,0.18);
+  }
+  % cluster label
+  \draw[decorate, decoration={brace, amplitude=4pt, mirror, raise=2pt}, gray!50, line width=0.7pt]
+    (-6.05,-0.02) -- (-0.55,-0.02);
+  \node[font=\scriptsize\itshape, gray!75!black] at (-3.3,-0.62) {hàng nghìn gist Python ``chết môi trường''};
+  % --- rising arrow: the resurrection AIM (labels stacked clear above the curve) ---
+  \draw[-{Stealth[length=4mm]}, mLightBrown, line width=2.4pt, line cap=round]
+    (0.0,1.0) .. controls (1.5,1.1) and (2.1,1.62) .. (3.0,1.75);
+  \node[font=\footnotesize\bfseries, mLightBrown!88!black] at (1.4,2.28) {hồi sinh};
+  \node[font=\tiny\itshape, mLightBrown!70!black]         at (1.4,1.92) {CGAR · MEMRES};
+  % --- AIM: a revived, RUNNING environment shown as a terminal (elevated, distinct) ---
+  \def\cx{4.65}\def\cy{1.62}\def\hw{1.55}\def\hh{1.0}
+  \fill[success!9, rounded corners=11pt] (\cx-\hw-0.28,\cy-\hh-0.28) rectangle (\cx+\hw+0.28,\cy+\hh+0.28);
+  \begin{scope}
+    \clip[rounded corners=5pt] (\cx-\hw,\cy-\hh) rectangle (\cx+\hw,\cy+\hh);
+    \fill[white] (\cx-\hw,\cy-\hh) rectangle (\cx+\hw,\cy+\hh);
+    \fill[navydeep!92] (\cx-\hw,\cy+\hh-0.42) rectangle (\cx+\hw,\cy+\hh);
+  \end{scope}
+  \fill[red!65!black]     (\cx-\hw+0.2,\cy+\hh-0.21) circle (0.052);
+  \fill[orange!75!black]  (\cx-\hw+0.4,\cy+\hh-0.21) circle (0.052);
+  \fill[success!60!black] (\cx-\hw+0.6,\cy+\hh-0.21) circle (0.052);
+  \node[font=\tiny\ttfamily, white!92] at (\cx+0.5,\cy+\hh-0.205) {python env};
+  \node[anchor=west, font=\tiny\ttfamily, navydeep]        at (\cx-\hw+0.18,\cy+0.28) {\$ python gist.py};
+  \node[anchor=west, font=\tiny\ttfamily, success!45!black] at (\cx-\hw+0.18,\cy-0.08) {\checkmark\ 5 imports OK};
+  \node[anchor=west, font=\tiny\ttfamily, success!45!black] at (\cx-\hw+0.18,\cy-0.44) {\checkmark\ env restored};
+  \draw[rounded corners=5pt, draw=success!55!black, line width=1.3pt] (\cx-\hw,\cy-\hh) rectangle (\cx+\hw,\cy+\hh);
+  \node[font=\scriptsize\bfseries, success!45!black] at (\cx,\cy-\hh-0.32) {môi trường \emph{chạy lại được}};
+\end{tikzpicture}
+
+\vspace{0.6em}
+{\centering\footnotesize\color{mDarkTeal}\textbf{Mục tiêu:} tự động dựng lại môi trường \emph{chạy được} cho mã Python ``chết''.\par}
 
 % ---- Nội dung text gốc (giữ để tham khảo, ảnh đã chứa cùng ý) ----
 % \begin{block}{Vấn đề thực tế}
@@ -231,16 +287,17 @@ Khôi phục tự động môi trường Python từ mã nguồn cũ bằng \tex
 
   \node[ok] (ok) at (0, 0.0)
     {\color{success!50!black}\textbf{Success Criterion:}\;
-     mọi \texttt{import} chạy được trong Docker — không \texttt{ImportError} / \texttt{ModuleNotFoundError} / \texttt{SyntaxError}};
+     mọi \texttt{import} chạy được trong Docker, không \texttt{ImportError} / \texttt{ModuleNotFoundError} / \texttt{SyntaxError}};
   \draw[arr, success!60!black] (sys.south) -- (ok.north);
 \end{tikzpicture}
 
-\vspace{0.4em}
+\vspace{0.8em}
 \begin{columns}[T,onlytextwidth]
 \column{0.34\textwidth}
 \scriptsize
-\textbf{\color{navydeep}Hard requirements}
-\begin{itemize}\setlength{\itemsep}{0pt}\scriptsize
+\textbf{\color{mDarkTeal}Hard requirements}\\[2pt]
+\textcolor{mDarkTeal!22}{\rule{\linewidth}{0.5pt}}
+\begin{itemize}\setlength{\itemsep}{2pt}\scriptsize
   \item Mọi thao tác trong \textbf{Docker}
   \item LLM \textbf{open-source}, $\le$\textbf{10\,GB VRAM}
   \item Reference: \textbf{Gemma-2 9B} (Ollama)\\
@@ -249,18 +306,19 @@ Khôi phục tự động môi trường Python từ mã nguồn cũ bằng \tex
 
 \column{0.34\textwidth}
 \scriptsize
-\textbf{\color{alert}Evaluation budget} {\tiny\color{gray}(giống nhau mọi tool)}
-\begin{itemize}\setlength{\itemsep}{1pt}\scriptsize
+\textbf{\color{mDarkTeal}Evaluation budget} {\tiny\color{gray}(giống nhau mọi tool)}\\[2pt]
+\textcolor{mDarkTeal!22}{\rule{\linewidth}{0.5pt}}
+\begin{itemize}\setlength{\itemsep}{2pt}\scriptsize
   \item Mỗi Docker build timeout \textbf{180s}; $\le$\textbf{10} build/snippet
   \item $\Rightarrow$ trần \textbf{$\approx$1800s} wall-clock/snippet (+ thời gian LLM)
   \item $K_{\text{solve}}\le$50 CSP {\tiny\color{gray}(logic, no Docker)}; Sequential, 1 worker
-  \item \tiny\color{success!50!black}\textit{CGAR thường về đích trong $\le$5 build (tỉa không gian) $\Rightarrow$ dùng \textbf{ít budget hơn} trong cùng trần}
 \end{itemize}
 
 \column{0.30\textwidth}
 \scriptsize
-\textbf{\color{mLightBrown}Metrics}
-\begin{itemize}\setlength{\itemsep}{1pt}\scriptsize
+\textbf{\color{mDarkTeal}Metrics}\\[2pt]
+\textcolor{mDarkTeal!22}{\rule{\linewidth}{0.5pt}}
+\begin{itemize}\setlength{\itemsep}{2pt}\scriptsize
   \item \textbf{Pass rate} (primary)
   \item Avg time / snippet \tiny\color{gray}(đo \emph{trong} cùng trần $\approx$1800s)
 \end{itemize}
@@ -329,42 +387,56 @@ import cv2                          # PyPI name: opencv-python
 \column{0.55\textwidth}
 \centering
 \resizebox{\linewidth}{!}{%
-\begin{tikzpicture}[
-  x={(0.95cm,0.5cm)}, y={(-0.95cm,0.5cm)}, z={(0cm,1.0cm)}, font=\small,
+\begin{tikzpicture}[font=\scriptsize,
+  pkg/.style={draw=navydeep!60, fill=navydeep!8, rounded corners=2pt, font=\tiny\ttfamily, inner sep=2.5pt},
+  ver/.style={circle, fill=navydeep!55, inner sep=1.3pt},
+  edge/.style={navydeep!45, line width=0.4pt},
 ]
-  \def\A{4.0}\def\B{2.0}\def\C{2.4}     % packages (x) X versions (y) X python (z)
-  \def\nx{6}\def\ny{3}\def\nz{3}
-  % 3 mặt
-  \fill[navydeep!13] (0,0,0)--(0,\B,0)--(0,\B,\C)--(0,0,\C)--cycle;
-  \fill[navydeep!20] (0,0,0)--(\A,0,0)--(\A,0,\C)--(0,0,\C)--cycle;
-  \fill[navydeep!28] (0,0,\C)--(\A,0,\C)--(\A,\B,\C)--(0,\B,\C)--cycle;
-  % lưới (nhạt, thưa)
-  \foreach \i in {0,...,\nx}{\pgfmathsetmacro\px{\i*\A/\nx}
-    \draw[navydeep!28,line width=0.3pt] (\px,0,0)--(\px,0,\C) (\px,0,\C)--(\px,\B,\C);}
-  \foreach \j in {0,...,\ny}{\pgfmathsetmacro\py{\j*\B/\ny}
-    \draw[navydeep!28,line width=0.3pt] (0,\py,0)--(0,\py,\C) (0,\py,\C)--(\A,\py,\C);}
-  \foreach \k in {0,...,\nz}{\pgfmathsetmacro\pz{\k*\C/\nz}
-    \draw[navydeep!28,line width=0.3pt] (0,0,\pz)--(\A,0,\pz) (0,0,\pz)--(0,\B,\pz);}
-  \draw[navydeep,line width=0.8pt]
-    (0,0,0)--(\A,0,0)--(\A,0,\C)--(0,0,\C)--cycle
-    (0,0,\C)--(\A,0,\C)--(\A,\B,\C)--(0,\B,\C)--cycle
-    (0,0,0)--(0,\B,0)--(0,\B,\C) (0,\B,0)--(0,0,0) (\A,0,0)--(\A,0,\C);
-  % cube văng ra (mỗi cube = 1 môi trường ứng viên)
-  \foreach \px/\py/\pz/\s in {4.5/0.3/2.1/0.42, 5.2/1.0/2.4/0.34, 4.8/1.6/2.5/0.28}{
-    \fill[mLightBrown!25] (\px,\py,\pz)--(\px,\py+\s,\pz)--(\px,\py+\s,\pz+\s)--(\px,\py,\pz+\s)--cycle;
-    \fill[mLightBrown!40] (\px,\py,\pz)--(\px+\s,\py,\pz)--(\px+\s,\py,\pz+\s)--(\px,\py,\pz+\s)--cycle;
-    \fill[mLightBrown!60] (\px,\py,\pz+\s)--(\px+\s,\py,\pz+\s)--(\px+\s,\py+\s,\pz+\s)--(\px,\py+\s,\pz+\s)--cycle;
-    \draw[mLightBrown,line width=0.5pt]
-      (\px,\py,\pz)--(\px+\s,\py,\pz)--(\px+\s,\py,\pz+\s)--(\px,\py,\pz+\s)--cycle
-      (\px,\py,\pz+\s)--(\px+\s,\py,\pz+\s)--(\px+\s,\py+\s,\pz+\s)--(\px,\py+\s,\pz+\s)--cycle
-      (\px,\py,\pz)--(\px,\py+\s,\pz)--(\px,\py+\s,\pz+\s);}
-  % nhãn trục: mũi tên 2 đầu, đặt LỆCH RA NGOÀI khối (không đè mặt)
-  \draw[{Stealth[length=2mm]}-{Stealth[length=2mm]}, navydeep!70, line width=0.6pt] (0,0,-0.5)--(\A,0,-0.5);
-  \node[font=\footnotesize, navydeep, anchor=north] at (\A*0.5,0,-0.85) {$\sim$\textbf{500K} packages};
-  \draw[{Stealth[length=2mm]}-{Stealth[length=2mm]}, navydeep!70, line width=0.6pt] (-0.5,0,0)--(-0.5,\B,0);
-  \node[font=\footnotesize, navydeep, anchor=north east] at (-0.55,\B*0.5,0) {$\sim$\textbf{10} version};
-  \draw[{Stealth[length=2mm]}-{Stealth[length=2mm]}, navydeep!70, line width=0.6pt] (0,-0.5,0)--(0,-0.5,\C);
-  \node[font=\footnotesize, navydeep, anchor=east] at (0,-0.55,\C*0.5) {$\sim$\textbf{8} Python};
+  % --- root: 1 import ---
+  \node[draw=navydeep, fill=navydeep!12, rounded corners=3pt, font=\tiny\bfseries,
+        inner sep=3pt, align=center] (root) at (-0.4,0) {1\\import};
+  % --- level 1: packages (3 shown + "...500K") ---
+  \node[pkg] (p1) at (1.9,1.65) {scipy};
+  \node[pkg] (p2) at (1.9,0.45) {numpy};
+  \node[pkg] (p3) at (1.9,-0.75) {cv2};
+  \node[font=\scriptsize, navydeep!55] at (1.78,-1.65) {$\vdots$};
+  \draw[edge] (root)--(p1); \draw[edge] (root)--(p2); \draw[edge] (root)--(p3);
+  \draw[edge] (root)--(1.5,-1.6);
+  \node[font=\tiny, navydeep!75] at (1.9,2.45) {$\sim$\textbf{500K} package};
+  % --- level 2: ~10 versions / package (3 dots each) ---
+  \foreach \yc in {1.65,0.45,-0.75}{
+    \foreach \dy in {0.34,0,-0.34}{
+      \pgfmathsetmacro\vy{\yc+\dy}
+      \node[ver] at (3.35,\vy) {};
+      \draw[edge] (2.5,\yc) -- (3.35,\vy);
+    }
+  }
+  \node[font=\tiny, navydeep!75] at (3.35,2.45) {$\times\,\sim$\textbf{10} ver};
+  % --- rays fanning into the explosion cloud ---
+  \foreach \yc in {1.65,0.45,-0.75}{
+    \foreach \dy in {0.34,0,-0.34}{
+      \pgfmathsetmacro\vy{\yc+\dy}
+      \pgfmathsetmacro\ty{\vy*0.4}
+      \draw[mLightBrown!35, line width=0.3pt] (3.5,\vy) -- (5.05,\ty);
+  }}
+  % --- EXPLOSION cloud: ~10^7 candidate environments (navy -> orange, denser to the right) ---
+  \foreach \cx in {5.1,5.35,...,8.1}{
+    \pgfmathsetmacro\hh{0.3+(\cx-5.1)*0.82}
+    \pgfmathtruncatemacro\nn{3+(\cx-5.1)*4.6}
+    \pgfmathtruncatemacro\pp{84-(\cx-5.1)*23}
+    \foreach \r in {1,...,\nn}{
+      \pgfmathsetmacro\yy{-\hh + 2*\hh*(\r-0.5)/\nn}
+      \fill[navydeep!\pp!mLightBrown] (\cx,\yy) circle (0.032);
+    }
+  }
+  \node[font=\tiny, navydeep!75] at (5.95,2.55) {$\times\,\sim$\textbf{8} Python};
+  % --- the single valid solution (needle in the haystack) ---
+  \fill[mLightBrown] (7.05,0.0) circle (0.075);
+  \draw[mLightBrown!85!black, line width=0.6pt] (7.05,0.0) circle (0.18);
+  \draw[mLightBrown!85!black, line width=0.4pt] (7.05,0.2) -- (7.3,1.2);
+  \node[font=\tiny\bfseries, mLightBrown!85!black, anchor=south] at (7.3,1.2) {1 lời giải};
+  % --- climax ---
+  \node[font=\footnotesize\bfseries, alert] at (6.6,-2.7) {$\approx 10^{7}$ tổ hợp};
 \end{tikzpicture}}
 
 % ===== RIGHT: giải thích =====
@@ -441,14 +513,14 @@ import cv2                          # PyPI name: opencv-python
     {\color{success!50!black}\cmark\ \textbf{Ưu:}} cấu trúc rõ, deterministic, dễ giải thích.\\[5pt]
     {\color{alert}\xmark\ \textbf{Hạn chế:}} DB lỗi thời nhanh, gãy khi registry đổi schema.};
   \node[rwnum, fill=navydeep] at (-5.35,2.55) {1};
-  % ---- 2. Regex / Log-parsing (cam) ----
-  \node[rwcard, draw=mLightBrown!55, fill=mLightBrown!6] (c2) at (0,3.0) {%
-    \hspace*{0.62cm}\textbf{\normalsize\color{mLightBrown!85!black}Regex / Log-parsing}\\[3pt]
-    \textcolor{mLightBrown!30}{\rule{\linewidth}{0.5pt}}\\[4pt]
+  % ---- 2. Regex / Log-parsing (gold; orange reserved for "ours") ----
+  \node[rwcard, draw=cSoft!75!black, fill=cSoft!14] (c2) at (0,3.0) {%
+    \hspace*{0.62cm}\textbf{\normalsize\color{cSoft!55!black}Regex / Log-parsing}\\[3pt]
+    \textcolor{cSoft!45}{\rule{\linewidth}{0.5pt}}\\[4pt]
     \textbf{Ý tưởng:} parse error log bằng regex để suy missing dependency, patch môi trường rồi build lại.\\[5pt]
     {\color{success!50!black}\cmark\ \textbf{Ưu:}} nhẹ, runtime-driven, không cần DB.\\[5pt]
     {\color{alert}\xmark\ \textbf{Hạn chế:}} \emph{brittle}, log đổi định dạng (Python/pip update) là parser vỡ.};
-  \node[rwnum, fill=mLightBrown!85!black] at (-1.5,2.55) {2};
+  \node[rwnum, fill=cSoft!72!black] at (-1.5,2.55) {2};
   % ---- 3. LLM + RAG (teal) ----
   \node[rwcard, draw=success!55!black!45, fill=success!55!black!5] (c3) at (3.85,3.0) {%
     \hspace*{0.62cm}\textbf{\normalsize\color{success!45!black}LLM + RAG}\\[3pt]
@@ -460,7 +532,7 @@ import cv2                          # PyPI name: opencv-python
 \end{tikzpicture}
 
 \vspace{0.5em}
-{\centering\footnotesize\textcolor{mDarkTeal}{\textbf{$\Rightarrow$ Khoảng trống:} chưa phương pháp nào \emph{học từ thất bại} để thu hẹp không gian tìm kiếm một cách hệ thống.}\par}
+{\centering\footnotesize\textcolor{mDarkTeal}{\textbf{Khoảng trống:} chưa phương pháp nào \emph{học từ thất bại} để thu hẹp không gian tìm kiếm một cách hệ thống.}\par}
 \end{frame}
 
 % --- Related Work 2/2: Bảng tổng hợp method × venue × hạn chế + timeline viz ---
@@ -479,7 +551,7 @@ import cv2                          # PyPI name: opencv-python
   \rowcolor{navydeep!8}
   ReadPyE            & TSE'24   & KG + README naming      & DB drift \\
   \midrule
-  \rowcolor{mLightBrown!10}
+  \rowcolor{cSoft!18}
   PyDFix             & ISSTA'21 & Regex log-parse         & Format brittle \\
   \midrule
   \rowcolor{cInferL}
@@ -497,7 +569,7 @@ import cv2                          # PyPI name: opencv-python
 \vspace{0.5em}
 \tiny
 \textcolor{navydeep}{$\blacksquare$} KG \quad
-\textcolor{mLightBrown}{$\blacksquare$} Log-parse \quad
+\textcolor{cSoft!65!black}{$\blacksquare$} Log-parse \quad
 \textcolor{cInfer}{$\blacksquare$} Closed LLM \quad
 \textcolor{success!50!black}{$\blacksquare$} Open LLM+RAG
 
@@ -505,6 +577,8 @@ import cv2                          # PyPI name: opencv-python
 \centering
 \begin{tikzpicture}[scale=0.82]
   \def\xmin{0}\def\xmax{6.3}\def\ymin{0}\def\ymax{4.2}
+  % KG-era ceiling zone (region under ~47% where KG methods stayed stuck)
+  \fill[alert!5] (\xmin,\ymin) rectangle (6.0, 3.15);
   % Axes
   \draw[->, gray!60] (\xmin,\ymin) -- (\xmax+0.3, \ymin) node[below, font=\tiny, black]{Year};
   \draw[->, gray!60] (\xmin,\ymin) -- (\xmin, \ymax+0.2)
@@ -536,11 +610,14 @@ import cv2                          # PyPI name: opencv-python
   \fill[success!50!black] (6.7, 3.65) circle (3pt);
   \node[font=\tiny, anchor=south] at (6.7, 3.95) {PLLM};
   \draw[gray!50, very thin] (6.7, 3.72) -- (6.7, 3.9);
+  % breakthrough: LLM paradigm crosses the KG ceiling
+  \draw[-{Stealth[length=2mm]}, success!55!black, line width=1pt]
+    (5.5, 2.95) to[bend left=22] (6.55, 3.55);
 \end{tikzpicture}
 
 \vspace{0.4em}
 \scriptsize \textcolor{mDarkTeal}{KG-era \emph{ceiling $\sim$47\%} trên HG2.9K; PLLM (LLM paradigm) phá vỡ lên $\sim$55\%.}\\
-{\tiny\color{gray} Nguồn: \textit{Raiders of the Lost Dependency} (arXiv:2501.16191), Table 1 --- PyEGo 45.0\% (1302/2891), ReadPyE 47.2\% (1365/2891), PLLM 54.8\% (1583/2891, 10-run union). Trong harness của nhóm, PLLM single-run = 44.8\% (số dùng ở bảng so sánh).}
+{\tiny\color{gray} Nguồn: \textit{Raiders of the Lost Dependency} (arXiv:2501.16191), Table 1: PyEGo 45.0\% (1302/2891), ReadPyE 47.2\% (1365/2891), PLLM 54.8\% (1583/2891, 10-run union). Trong harness của nhóm, PLLM single-run = 44.8\% (số dùng ở bảng so sánh).}
 \end{columns}
 \end{frame}
 
@@ -554,30 +631,36 @@ import cv2                          # PyPI name: opencv-python
 \begin{columns}[T]
 \column{0.66\textwidth}
 \centering
-\includegraphics[width=\linewidth]{memres-pipeline.png}
+\href{https://arxiv.org/abs/2604.16941}{\includegraphics[width=\linewidth]{memres-pipeline.png}}
 
 \vspace{0.3em}
-{\tiny\color{gray}\textit{4 stages + 2 fast paths (cache hit, Py2 fast); 2 memory stores feed back vào pipeline.}}
+{\tiny\color{gray}\textit{4 stages + 2 fast paths (cache hit, Py2 fast); 2 memory stores feed back vào pipeline.}\\
+Figure: paper gốc MEMRES, \href{https://arxiv.org/abs/2604.16941}{\textcolor{mLightBrown}{arXiv:2604.16941}}}
 
 \column{0.32\textwidth}
 \centering
 \vspace{0.5em}
+{\scriptsize\textbf{\color{navydeep}Pass rate (\%)}}
 \begin{tikzpicture}[scale=0.62]
-  \def\R{2.0}
-  \foreach \ang/\lbl/\anch in {90/Pass HG2.9K/south,
-                                 0/Pass GitCh./west,
-                               270/Rescue PLLM/north,
-                               180/Cross-bench/east} {
-    \draw[gray!50] (0,0) -- (\ang:\R);
-    \node[font=\tiny, anchor=\anch] at (\ang:\R+0.12) {\lbl};
+  \draw[->, gray!60] (0,0) -- (3.7,0);
+  \draw[->, gray!60] (0,0) -- (0,4.5) node[above, font=\tiny, black]{\%};
+  \foreach \y/\v in {0/0, 2/50, 4/100} {
+    \draw[gray!40] (-0.08,\y) -- (0.06,\y);
+    \node[font=\tiny, gray, anchor=east] at (-0.12,\y) {\v};
   }
-  \foreach \r in {0.5, 1.0, 1.5, 2.0} {
-    \draw[gray!25, very thin] (0:\r) -- (90:\r) -- (180:\r) -- (270:\r) -- cycle;
-  }
-  \draw[fill=alert!15, draw=alert, line width=0.9pt, opacity=0.9]
-    (90:{2.0*0.448}) -- (0:{2.0*0.655}) -- (270:{2.0*0.0}) -- (180:{2.0*0.0}) -- cycle;
-  \draw[fill=success!20, draw=success!60!black, line width=0.9pt, opacity=0.85]
-    (90:{2.0*0.863}) -- (0:{2.0*0.817}) -- (270:{2.0*0.752}) -- (180:{2.0*0.95}) -- cycle;
+  \def\bw{0.42}
+  % --- HG2.9K group: PLLM 44.8 vs MEMRES 86.3 (1 unit = 25%) ---
+  \fill[alert!70]         (0.55,0)            rectangle ++(\bw, 1.792);
+  \fill[success!60!black] (0.55+\bw+0.05,0)   rectangle ++(\bw, 3.452);
+  \node[font=\tiny, anchor=north] at (0.55+\bw+0.025, -0.06) {HG2.9K};
+  \node[font=\tiny, anchor=south, color=alert!80!black]   at (0.55+\bw/2, 1.792) {44.8};
+  \node[font=\tiny, anchor=south, color=success!50!black] at (0.55+\bw+0.05+\bw/2, 3.452) {86.3};
+  % --- GitChameleon group: PLLM 65.5 vs MEMRES 81.7 ---
+  \fill[alert!70]         (2.25,0)            rectangle ++(\bw, 2.62);
+  \fill[success!60!black] (2.25+\bw+0.05,0)   rectangle ++(\bw, 3.268);
+  \node[font=\tiny, anchor=north] at (2.25+\bw+0.025, -0.06) {GitCh.};
+  \node[font=\tiny, anchor=south, color=alert!80!black]   at (2.25+\bw/2, 2.62) {65.5};
+  \node[font=\tiny, anchor=south, color=success!50!black] at (2.25+\bw+0.05+\bw/2, 3.268) {81.7};
 \end{tikzpicture}
 
 \vspace{0.1em}
@@ -591,45 +674,39 @@ import cv2                          # PyPI name: opencv-python
 \end{columns}
 
 \vspace{0.3em}
-\centering\footnotesize\color{success!55!black}
-MEMRES = \emph{Memory-augmented retry}, cứu được nhiều lỗi NHƯNG chưa biến thất bại thành \emph{ràng buộc logic} để tỉa không gian.
+\centering\footnotesize\color{mDarkTeal}
+MEMRES = \emph{Memory-augmented retry}: cứu được nhiều lỗi, nhưng chưa biến thất bại thành \emph{ràng buộc logic} để tỉa không gian.
 \end{frame}
 
 \begin{frame}{Từ MEMRES đến CGAR: Vá Đúng 3 Lỗ Hổng}
 \centering
 \begin{tikzpicture}[
   font=\scriptsize,
-  gapcard/.style={draw=alert!55, fill=alert!7, rounded corners=5pt, line width=1pt,
-                  text width=3.4cm, minimum height=1.55cm, align=center, inner sep=5pt},
-  fixcard/.style={draw=success!55!black!55, fill=success!12, rounded corners=5pt, line width=1pt,
-                  text width=3.4cm, minimum height=1.15cm, align=center, inner sep=5pt},
-  num/.style={circle, fill=alert, text=white, font=\bfseries\tiny, inner sep=2pt},
-  vafix/.style={-{Stealth[length=2.5mm]}, line width=1.4pt, mLightBrown},
-  conv/.style={-{Stealth[length=2.5mm]}, line width=1pt, mDarkTeal!70},
+  gaptext/.style={anchor=west, text width=4.35cm, align=left, inner sep=1pt},
+  fixtext/.style={anchor=west, text width=4.5cm, align=left, inner sep=1pt},
+  numb/.style={circle, fill=mDarkTeal, text=white, font=\bfseries\scriptsize, inner sep=1.7pt},
+  va/.style={-{Stealth[length=2.6mm]}, line width=1.5pt, mLightBrown},
 ]
-  \def\xa{-4.4}\def\xb{0}\def\xc{4.4}
-  % ---- hàng GAP (đỏ) ----
-  \node[gapcard] (g1) at (\xa,3.0) {{\color{alert}\xmark\ \textbf{12.8\% bí đường}}\\[2pt]{\tiny API removed / source-only,\\ build kẹt 3 phút}};
-  \node[gapcard] (g2) at (\xb,3.0) {{\color{alert}\xmark\ \textbf{Chi phí lỗi cao}}\\[2pt]{\tiny 335s/snippet,\\ ca khó vẫn rất chậm}};
-  \node[gapcard] (g3) at (\xc,3.0) {{\color{alert}\xmark\ \textbf{Không tỉa không gian}}\\[2pt]{\tiny Docker error = blackbox,\\ không thành ràng buộc}};
-  \node[num] at (\xa-1.5,3.58) {1}; \node[num] at (\xb-1.5,3.58) {2}; \node[num] at (\xc-1.5,3.58) {3};
-  % ---- mũi tên "vá" ----
-  \foreach \x in {\xa,\xb,\xc}{
-    \draw[vafix] (\x,2.18) -- (\x,1.62);
-    \node[fill=mLightBrown, text=white, rounded corners=2pt, font=\tiny\bfseries, inner sep=1.6pt] at (\x,1.9) {vá};}
-  % ---- hàng FIX (xanh) ----
-  \node[fixcard] (f1) at (\xa,1.0) {{\color{success!45!black}\cmark\ \textbf{Analyzer Agent}}\\{\tiny parse log $\to$ constraint}};
-  \node[fixcard] (f2) at (\xb,1.0) {{\color{success!45!black}\cmark\ \textbf{wheel\_filter()}}\\{\tiny chỉ thử bản có wheel}};
-  \node[fixcard] (f3) at (\xc,1.0) {{\color{success!45!black}\cmark\ \textbf{3-tier constraints}}\\{\tiny HARD / SOFT / UPPER}};
-  % ---- hero CGAR ----
-  \node[draw=mDarkTeal, fill=mDarkTeal!12, rounded corners=6pt, line width=1.3pt,
-        minimum width=12.6cm, minimum height=1.25cm, align=center] (sol) at (0,-0.95)
-    {\textbf{\normalsize\color{mDarkTeal} CGAR: Constraint-Guided Agentic Resolution}\\[3pt]
-     \textcolor{alert}{\textbf{LLM đoán mò}} \;$\xrightarrow{\;\text{paradigm shift}\;}$\;
-     \textcolor{success!45!black}{\textbf{Multi-Agent + CSP}} với ràng buộc học được};
-  \draw[conv] (f1.south) -- ([yshift=1pt]sol.north -| f1);
-  \draw[conv] (f2.south) -- ([yshift=1pt]sol.north);
-  \draw[conv] (f3.south) -- ([yshift=1pt]sol.north -| f3);
+  \def\xg{-5.7}\def\xaa{-1.05}\def\xbb{0.25}\def\xf{0.7}
+  % 3 rows: MEMRES gap --vá--> CGAR component
+  \foreach \y/\n/\gt/\gd/\ft/\fd in {%
+      2.5/1/{12.8\% bí đường}/{API removed / source-only, build kẹt 3 phút}/{Analyzer Agent}/{parse log $\to$ constraint},%
+      1.3/2/{Chi phí lỗi cao}/{335s/snippet, ca khó vẫn rất chậm}/{wheel\_filter()}/{chỉ thử bản có wheel},%
+      0.1/3/{Không tỉa không gian}/{Docker error = blackbox, không thành ràng buộc}/{3-tier constraints}/{HARD / SOFT / UPPER}}{
+    \node[numb] at (-6.15,\y) {\n};
+    \node[gaptext] at (\xg,\y) {{\color{alert}\xmark\ \textbf{\gt}}\\[1pt]{\tiny\color{gray}\gd}};
+    \draw[va] (\xaa,\y) -- (\xbb,\y);
+    \node[font=\tiny\bfseries, mLightBrown!85!black] at ({(\xaa+\xbb)/2},\y+0.23) {vá};
+    \node[fixtext] at (\xf,\y) {{\color{success!45!black}\cmark\ \textbf{\ft}}\\[1pt]{\tiny\color{gray}\fd}};
+  }
+  % row separators
+  \draw[gray!22, line width=0.5pt] (-6.4,1.9) -- (5.45,1.9);
+  \draw[gray!22, line width=0.5pt] (-6.4,0.7) -- (5.45,0.7);
+  % foundation: CGAR (de-boxed, thin orange rule)
+  \draw[mLightBrown!55, line width=1pt] (-6.4,-0.62) -- (5.45,-0.62);
+  \node[align=center] at (-0.475,-1.2) {%
+    \textbf{\normalsize\color{mDarkTeal}CGAR: Constraint-Guided Agentic Resolution}\\[3pt]
+    \textcolor{alert}{\textbf{LLM đoán mò}}$\;\xrightarrow{\;\text{paradigm shift}\;}\;$\textcolor{success!45!black}{\textbf{Multi-Agent + CSP}} với ràng buộc học được};
 \end{tikzpicture}
 
 \vspace{0.5em}
@@ -643,11 +720,12 @@ MEMRES = \emph{Memory-augmented retry}, cứu được nhiều lỗi NHƯNG chư
 \begin{frame}{CGAR: Tổng quan 3 Agent}
     \begin{figure}
         \centering
-        \includegraphics[height=0.80\textheight]{cgar-overview.png}
+        \href{https://chatgpt.com/share/6a2a3c91-5640-83ec-8761-25876b30abe3}{\includegraphics[height=0.74\textheight]{cgar-overview.png}}
     \end{figure}
-    \vspace{-0.4em}
+    \vspace{-0.5em}
     \centering\footnotesize\color{mDarkTeal}
-    3 LLM agent (Planner / Analyzer / Critic) + Docker build loop; chi tiết prompt ở phần Backup.
+    3 LLM agent (Planner / Analyzer / Critic) + Docker build loop; chi tiết prompt ở phần Backup.\\
+    {\tiny\color{gray}Minh họa AI, \href{https://chatgpt.com/share/6a2a3c91-5640-83ec-8761-25876b30abe3}{\textcolor{mLightBrown}{ChatGPT prompt}}}
 \end{frame}
 
 \begin{frame}{CGAR: Multi-Agent Loop}
@@ -723,7 +801,7 @@ MEMRES = \emph{Memory-augmented retry}, cứu được nhiều lỗi NHƯNG chư
 \textbf{Flow}: Planner $\to$ Executor $\to$ (OK?) $\to$ Analyzer ghi constraint vào Store $\to$ Planner kế tiếp đọc lại $\Rightarrow$ né vùng đã hỏng.
 
 \vspace{0.3em}
-\centering\footnotesize\color{success!55!black}
+\centering\footnotesize\color{mDarkTeal}
 Build thất bại không phí: mỗi lần fail $\to$ +1 constraint $\to$ Planner kế tiếp né cả vùng, điều MEMRES không có.
 \end{frame}
 
@@ -761,7 +839,7 @@ Build thất bại không phí: mỗi lần fail $\to$ +1 constraint $\to$ Plann
   % ---- Constraint Store ----
   \node[draw=navydeep!50, fill=navydeep!4, rounded corners=6pt, line width=1pt, text width=2.9cm,
         align=left, inner sep=8pt, anchor=north] (store) at (4.7,3.5)
-    {{\bfseries\color{navydeep}Constraint Store}\\[2pt]\textcolor{navydeep!30}{\rule{\linewidth}{0.5pt}}\\[4pt]
+    {{\bfseries\color{navydeep}Session Store}\\[2pt]\textcolor{navydeep!30}{\rule{\linewidth}{0.5pt}}\\[4pt]
      {\color{cUpper}$\bullet$}\ scipy $\le$ 1.2 \ {\tiny(UPPER)}\\[6pt]
      {\tiny\color{gray}tích lũy + chia sẻ cho snippet sau trong cùng session}};
 \end{tikzpicture}
@@ -859,18 +937,17 @@ Sắp xếp \textit{wheel-first}, semver giảm dần.
 \end{frame}
 
 \begin{frame}{CGAR: Session-scoped Learning}
-\scriptsize
-\vspace*{1.6em}
-\begin{block}{Session = 1 Repository = Nhiều Snippets}
-Lưu trữ và chia sẻ ràng buộc học được giữa các snippets trong cùng session.
-\end{block}
+\vspace{0.4em}
+{\centering\footnotesize\color{mDarkTeal}\textbf{Session = 1 repository = nhiều snippets:} ràng buộc học được \emph{chia sẻ} giữa các snippet trong cùng session.\par}
 
 \vspace{0.3em}
 \begin{figure}
     \centering
-    \includegraphics[width=0.6\textwidth]{session-learning.png}
-    \caption{Cơ chế học chéo: Session Store giúp "cứu" 17.9\% MEMRES-failures (71/396)}
+    \href{https://chatgpt.com/share/6a2a3c8b-93f8-83ec-9452-052ef1ef7e87}{\includegraphics[width=0.82\textwidth]{session-learning.png}}
+    \caption{Cơ chế học chéo: Session Store giúp ``cứu'' 17.9\% MEMRES-failures (71/396)}
 \end{figure}
+\vspace{-0.4em}
+{\centering\tiny\color{gray}Minh họa AI, \href{https://chatgpt.com/share/6a2a3c8b-93f8-83ec-9452-052ef1ef7e87}{\textcolor{mLightBrown}{ChatGPT prompt}}\par}
 \end{frame}
 
 % ---- Slide Failure Cases (tạm ẩn) ----
@@ -883,11 +960,11 @@ Lưu trữ và chia sẻ ràng buộc học được giữa các snippets trong 
 %   \rowcolor{alert!8}
 %   Hardcode bảng API-removal & Rất dễ gãy; sập mỗi khi có API mới bị xóa & Dùng Error Analyzer Agent (LLM) \\
 %   \rowcolor{alert!8}
-%   Reset store sau mỗi snippet & Lãng phí khả năng học chéo & Session-scoped store $\Rightarrow$ +19.7\% \\
+%   Reset store sau mỗi snippet & Lãng phí khả năng học chéo & Session-scoped store (ablation: bỏ store $\Rightarrow -21\%$ rescue) \\
 %   \rowcolor{alert!8}
 %   Chỉ dùng ràng buộc HARD & Vô tình cấm do lỗi ngẫu nhiên & Thêm mức SOFT (đếm $\ge 2$) \\
 %   \rowcolor{alert!8}
-%   Không lọc wheel & Build source tốn 3 phút; kẹt ở \textbf{10\%} & \texttt{wheel\_filter()} $\Rightarrow$ cứu \textbf{17.9\%} \\
+%   Không lọc wheel & Build source tốn 3 phút; kẹt ở \textbf{10\%} & \texttt{wheel\_filter()} (ablation: bỏ $\Rightarrow -44\%$ rescue) \\
 %   DFS Tham lam (không giới hạn) & Bị kẹt ở không gian rộng $>$ 1000 ứng viên & Giới hạn 50 lần thử + Python pivot \\
 %   \bottomrule
 % \end{tabular}
@@ -930,7 +1007,7 @@ Lưu trữ và chia sẻ ràng buộc học được giữa các snippets trong 
   8 & SMT-LLM              & FSE'26   & Z3 SMT + LLM imput. & 83.6\%           & --     & 23.9s\,{\tiny(med)}$^{\dagger}$ & \textcolor{success}{\ding{51}} \\
   9 & \textbf{MEMRES}      & \textbf{FSE'26} & Memory + Cascade & 86.3\% & 81.7\% & 335.3s & \textcolor{success}{\ding{51}} \\
   \rowcolor{accent!18}
-  10& \textbf{CGAR}        & \textbf{(ours)} & \textbf{Multi-Agent + CSP} & \textbf{87.1\%} & \textbf{83.2\%} & \textbf{22.3s} & \textcolor{success}{\ding{51}} \\
+  10& \textbf{CGAR}        & \textbf{(ours)} & \textbf{Multi-Agent + CSP} & \textcolor{success!50!black}{\textbf{87.1\%}} & \textcolor{success!50!black}{\textbf{83.2\%}} & \textbf{22.3s} & \textcolor{success}{\ding{51}} \\
   \bottomrule
 \end{tabular}
 
@@ -993,7 +1070,7 @@ Lưu trữ và chia sẻ ràng buộc học được giữa các snippets trong 
 \end{tikzpicture}
 
 \vspace{0.4em}
-\scriptsize \textbf{Insight}: CGAR triệt tiêu \textbf{4 nhóm lỗi}; gần như chỉ còn ImportError (99.7\% phần còn lại).\\
+\scriptsize CGAR triệt tiêu \textbf{4 nhóm lỗi}; gần như chỉ còn ImportError (99.7\% phần còn lại).\\
 Total fails: PLLM \textbf{1596} $\to$ CGAR \textbf{373} \quad\textcolor{success!50!black}{$\Delta\,-76.6\%$}
 
 \hspace{0.04\textwidth}
@@ -1076,7 +1153,7 @@ Total fails: PLLM \textbf{1596} $\to$ CGAR \textbf{373} \quad\textcolor{success!
   PLLM (Gemma-2 9B)   & open + RAG      & 65.5\% & \textcolor{success}{\ding{51}} \\
   \textbf{MEMRES}     & open + Memory   & 81.7\% & \textcolor{success}{\ding{51}} \\
   \rowcolor{accent!22}
-  \textbf{CGAR}       & open + Agent+CSP & \textbf{83.2\%} & \textcolor{success}{\ding{51}} \\
+  \textbf{CGAR}       & open + Agent+CSP & \textcolor{success!50!black}{\textbf{83.2\%}} & \textcolor{success}{\ding{51}} \\
   \bottomrule
 \end{tabular}
 
@@ -1096,7 +1173,7 @@ Total fails: PLLM \textbf{1596} $\to$ CGAR \textbf{373} \quad\textcolor{success!
   PLLM            & 44.8\% & 65.5\% & \alert{$-$20.7pp} \\
   MEMRES          & 86.3\% & 81.7\% & $-$4.6pp \\
   \rowcolor{accent!22}
-  \textbf{CGAR}   & \textbf{87.1\%} & \textbf{83.2\%} & \textbf{$-$3.9pp} \\
+  \textbf{CGAR}   & \textcolor{success!50!black}{\textbf{87.1\%}} & \textcolor{success!50!black}{\textbf{83.2\%}} & \textcolor{success!50!black}{\textbf{$-$3.9pp}} \\
   \bottomrule
 \end{tabular}
 
@@ -1105,10 +1182,8 @@ Total fails: PLLM \textbf{1596} $\to$ CGAR \textbf{373} \quad\textcolor{success!
 \end{columns}
 
 \vspace{0.9em}
-\centering\scriptsize
-\textbf{\color{success!55!black}Insight:} CGAR có cross-benchmark gap nhỏ nhất $\to$ solver thao tác trên live PyPI data, generalize tốt.\\[0.3em]
-\textbf{\color{alert!85!black}Đánh bại closed-weight:} CGAR (open 9B, $<$10\,GB VRAM) vượt o1 (closed enterprise, $>$200B params) \textbf{+32.0pp}\\
-\footnotesize\color{mDarkTeal!80}\emph{$\Rightarrow$ open-weight + system design $\gg$ raw model scale.}
+\centering\footnotesize\color{mDarkTeal}
+CGAR (open 9B, $<$10\,GB VRAM) vượt o1 (closed, $>$200B params) \textbf{+32.0pp} trên GitChameleon: \emph{system design $>$ raw model scale}.
 \end{frame}
 
 % ─── R4. Speed & Efficiency ───────────────────────────────
@@ -1268,21 +1343,23 @@ Total fails: PLLM \textbf{1596} $\to$ CGAR \textbf{373} \quad\textcolor{success!
 \end{tikzpicture}
 
 \vspace{0.5em}
-{\centering\footnotesize\color{mDarkTeal}$\Rightarrow$ Mục tiêu dài hạn: từ bộ giải cho Python trở thành \textbf{``environment archaeologist''} đa năng cho mọi ecosystem.\par}
+{\centering\footnotesize\color{mDarkTeal}\textbf{Mục tiêu dài hạn:} từ bộ giải cho Python trở thành \textbf{``environment archaeologist''} đa năng cho mọi ecosystem.\par}
 \end{frame}
 
 \begin{frame}{Tài liệu tham khảo}
-\footnotesize
-\begin{enumerate}\setlength{\itemsep}{0.45em}
-  \item E. Horton, C. Parnin. \textit{Gistable: Evaluating the Executability of Python Code Snippets on GitHub}. ICSME 2018. {\scriptsize\color{gray}(nguồn dataset HG2.9K · arXiv:1808.04919)}
-  \item H. Ye, W. Chen, W. Dou, G. Wu, J. Wei. \textit{Knowledge-Based Environment Dependency Inference for Python Programs} (\textbf{PyEGo}). ICSE 2022.
-  \item \textit{Revisiting Knowledge-Based Inference of Python Runtime Environments} (\textbf{ReadPyE}). IEEE TSE, vol. 50, 2024.
-  \item S. Mukherjee, A. Almanza, C. Rubio-González. \textit{Fixing Dependency Errors for Python Build Reproducibility} (\textbf{PyDFix}). ISSTA 2021.
-  \item A. Bartlett, C. C. S. Liem, A. Panichella. \textit{Raiders of the Lost Dependency: Fixing Dependency Conflicts in Python using LLMs} (\textbf{PLLM}). arXiv:2501.16191, 2025.
-  \item \textit{GitChameleon 2.0: Evaluating AI Code Generation Against Python Library Version Incompatibilities}. arXiv:2507.12367, 2025.
-  \item N. Shinn et al. \textit{Reflexion: Language Agents with Verbal Reinforcement Learning}. NeurIPS 2023.
-  \item L. de Moura, N. Bjørner. \textit{Z3: An Efficient SMT Solver}. TACAS 2008.
-  \item SMT-LLM. \textit{Z3 SMT + LLM imputation cho dependency resolution}. Entry cùng cuộc thi FSE-AIWare 2026 (chưa công bố; số liệu nhóm tự reproduce trong cùng harness).
+\vspace{0.3em}
+\scriptsize
+\setbeamertemplate{enumerate items}{\color{mDarkTeal}\bfseries[\insertenumlabel]}
+\begin{enumerate}\setlength{\itemsep}{0.22em}\setlength{\parsep}{0pt}
+  \item E. Horton and C. Parnin, ``Gistable: Evaluating the executability of Python code snippets on GitHub,'' in \textit{Proc. ICSME}, 2018. {\color{gray}(dataset HG2.9K; arXiv:1808.04919)}
+  \item H. Ye, W. Chen, W. Dou, G. Wu, and J. Wei, ``Knowledge-based environment dependency inference for Python programs (PyEGo),'' in \textit{Proc. ICSE}, 2022.
+  \item ``Revisiting knowledge-based inference of Python runtime environments (ReadPyE),'' \textit{IEEE Trans. Softw. Eng.}, vol. 50, 2024.
+  \item S. Mukherjee, A. Almanza, and C. Rubio-González, ``Fixing dependency errors for Python build reproducibility (PyDFix),'' in \textit{Proc. ISSTA}, 2021.
+  \item A. Bartlett, C. C. S. Liem, and A. Panichella, ``Raiders of the lost dependency: Fixing dependency conflicts in Python using LLMs (PLLM),'' \textit{arXiv:2501.16191}, 2025.
+  \item ``GitChameleon 2.0: Evaluating AI code generation against Python library version incompatibilities,'' \textit{arXiv:2507.12367}, 2025.
+  \item N. Shinn \textit{et al.}, ``Reflexion: Language agents with verbal reinforcement learning,'' in \textit{Proc. NeurIPS}, 2023.
+  \item L. de Moura and N. Bjørner, ``Z3: An efficient SMT solver,'' in \textit{Proc. TACAS}, 2008.
+  \item ``SMT-LLM: Z3 SMT $+$ LLM imputation for dependency resolution,'' FSE-AIWare 2026 competition entry, unpublished (reproduced by our group).
 \end{enumerate}
 \end{frame}
 
@@ -1297,11 +1374,11 @@ Total fails: PLLM \textbf{1596} $\to$ CGAR \textbf{373} \quad\textcolor{success!
 \begin{columns}[c]
 \column{0.18\textwidth}
 \centering
-\includegraphics[height=1.4cm]{hcmus.png}
+\href{https://www.hcmus.edu.vn}{\includegraphics[height=1.4cm]{hcmus.png}}
 
 \column{0.64\textwidth}
 \centering
-\textcolor{navydeep}{MEMRES \& CGAR: Agentic Python Dependency Resolution}\\[0.3em]
+\textcolor{navydeep}{MEMRES $\to$ CGAR: Agentic Python Dependency Resolution}\\[0.3em]
 Trần Chí Nguyên · Đào Sỹ Duy Minh · Huỳnh Trung Kiệt
 \vspace{0.3em}
 
@@ -1309,7 +1386,7 @@ University of Science, VNU-HCM
 
 \column{0.18\textwidth}
 \centering
-\includegraphics[height=1.1cm]{fse.png}
+\href{https://conf.researchr.org/home/fse-2026}{\includegraphics[height=1.1cm]{fse.png}}
 \end{columns}
 \end{frame}
 
@@ -1318,6 +1395,8 @@ University of Science, VNU-HCM
 % ============================================================
 \appendix
 
+% [HIDDEN] slide MEMRES Stage Details -- bat lai: xoa dong iffalse ngay duoi + dong fi sau end frame
+\iffalse
 \begin{frame}{Backup: MEMRES Stage Details}
 \vspace{0.3em}
 
@@ -1389,7 +1468,11 @@ University of Science, VNU-HCM
 \centering\scriptsize\color{success!55!black}
 \textbf{Hiệu quả:} self-learning at runtime, no HG2.9K leakage
 \end{frame}
+\fi
+% [end HIDDEN: MEMRES Stage Details]
 
+% [HIDDEN] slide GitChameleon Re-framing -- bat lai: xoa dong iffalse ngay duoi + dong fi sau end frame
+\iffalse
 \begin{frame}[fragile]{Backup: GitChameleon Re-framing}
 \vspace{0.3em}
 \scriptsize
@@ -1451,6 +1534,8 @@ Version \textbf{giấu} $\to$ lưu riêng \texttt{ground\_truth.csv}.
 Success = \textbf{pass unit test} (semantic correctness), không phải chỉ \texttt{import} chạy được.
 Cài \texttt{torch==2.0} thay vì \texttt{1.9} vẫn import OK nhưng \texttt{assert} fail $\to$ tool bắt buộc pick đúng version.
 \end{frame}
+\fi
+% [end HIDDEN: GitChameleon Re-framing]
 
 % ============================================================
 % ─── Backup: Filter & CSP I/O ───────────────────────────────
@@ -1744,7 +1829,7 @@ Empty / parse-fail response & $\to$ rule fallback \\
   \item \textbf{Planner} $\to$ PyPI + CSP + LLM
   \item \textbf{Executor} Docker (180\,s)
   \item pass? \texttt{on\_success()}; \textbf{break}
-  \item else \textbf{Analyzer} writes HARD\\/SOFT\\/UPPER
+  \item else \textbf{Analyzer} writes HARD / SOFT / UPPER
   \item \textbf{Critic} fires nếu $\ge\!3$ same-fails
 \end{itemize}
 
@@ -1776,7 +1861,7 @@ Empty / parse-fail response & $\to$ rule fallback \\
 \vspace{0.1em}
 {\tiny\color{gray}\textit{prompts.py · PLANNER\_PROMPT · consulted in PlannerAgent.step()}}
 \vspace{0.2em}
-\begin{lstlisting}[basicstyle=\tiny\ttfamily, breaklines=true, breakatwhitespace=true]
+\begin{lstlisting}[basicstyle=\tiny\ttfamily, breaklines=true, breakatwhitespace=true, language={}, stringstyle={}, commentstyle={}, keywordstyle={}, emph={python_version,candidate_block,constraint_block,rule_pick,assignment_block,regex_type,regex_sig,error_log,pattern,total_failures,last_error_types,python_versions_tried}, emphstyle={\color{mLightBrown}}]
 You are the Planner agent in a dependency-resolution system.
 
 Goal: choose one version per package that is most likely to install AND
@@ -1811,7 +1896,7 @@ JSON output:
 \vspace{0.1em}
 {\tiny\color{gray}\textit{prompts.py · ANALYZER\_PROMPT · consulted after regex classification}}
 \vspace{0.2em}
-\begin{lstlisting}[basicstyle=\tiny\ttfamily, breaklines=true, breakatwhitespace=true]
+\begin{lstlisting}[basicstyle=\tiny\ttfamily, breaklines=true, breakatwhitespace=true, language={}, stringstyle={}, commentstyle={}, keywordstyle={}, emph={python_version,candidate_block,constraint_block,rule_pick,assignment_block,regex_type,regex_sig,error_log,pattern,total_failures,last_error_types,python_versions_tried}, emphstyle={\color{mLightBrown}}]
 You are the Analyzer agent. A Docker build just failed.
 
 Assignment tried:
@@ -1846,7 +1931,7 @@ JSON output:
 \vspace{0.1em}
 {\tiny\color{gray}\textit{prompts.py · CRITIC\_PROMPT · fires when $\ge\!3$ consecutive same-type fails}}
 \vspace{0.2em}
-\begin{lstlisting}[basicstyle=\tiny\ttfamily, breaklines=true, breakatwhitespace=true]
+\begin{lstlisting}[basicstyle=\tiny\ttfamily, breaklines=true, breakatwhitespace=true, language={}, stringstyle={}, commentstyle={}, keywordstyle={}, emph={python_version,candidate_block,constraint_block,rule_pick,assignment_block,regex_type,regex_sig,error_log,pattern,total_failures,last_error_types,python_versions_tried}, emphstyle={\color{mLightBrown}}]
 You are the Critic agent. The Planner has failed several attempts on the
 current snippet and you must propose a strategic pivot.
 

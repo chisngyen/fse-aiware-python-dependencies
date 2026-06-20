@@ -2,7 +2,7 @@
 \vspace{0.1em}
 {\tiny\color{gray}\textit{prompts.py · CRITIC\_PROMPT · fires when $\ge\!3$ consecutive same-type fails}}
 \vspace{0.2em}
-\begin{lstlisting}[basicstyle=\tiny\ttfamily, breaklines=true, breakatwhitespace=true]
+\begin{lstlisting}[basicstyle=\tiny\ttfamily, breaklines=true, breakatwhitespace=true, language={}, stringstyle={}, commentstyle={}, keywordstyle={}, emph={python_version,candidate_block,constraint_block,rule_pick,assignment_block,regex_type,regex_sig,error_log,pattern,total_failures,last_error_types,python_versions_tried}, emphstyle={\color{mLightBrown}}]
 You are the Critic agent. The Planner has failed several attempts on the
 current snippet and you must propose a strategic pivot.
 
