@@ -1969,6 +1969,7 @@ Rules:
 Output ONLY valid JSON: {"assignment": {"pkg1": "X.Y.Z", "pkg2": "X.Y.Z"}, "reason": "<short>"}
 
 JSON output:
+{"assignment": {"scipy": "1.2.3", "numpy": "1.16.6"}, "reason": "imread requires scipy<1.3"}
 \end{lstlisting}
 \end{frame}
 
@@ -2004,6 +2005,7 @@ Output ONLY valid JSON:
 {"type": "HARD|SOFT|UPPER", "package": "<pkg>", "upper_bound": "X.Y.Z|null", "reason": "<short>"}
 
 JSON output:
+{"type": "UPPER", "package": "scipy", "upper_bound": "1.3", "reason": "imread removed in scipy 1.3"}
 \end{lstlisting}
 \end{frame}
 
@@ -2040,6 +2042,7 @@ Output ONLY valid JSON:
 {"action": "continue|switch_python|mark_unfixable", "target": "<py_version or null>", "reason": "<short>"}
 
 JSON output:
+{"action": "switch_python", "target": "2.7", "reason": "repeated SyntaxError -> likely Python 2 code"}
 \end{lstlisting}
 \end{frame}
 
