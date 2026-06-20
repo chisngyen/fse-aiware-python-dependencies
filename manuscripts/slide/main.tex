@@ -123,7 +123,7 @@
 \column{0.45\textwidth}
 \begin{block}{Project Overview}
 \scriptsize
-Khôi phục tự động môi trường Python từ mã nguồn cũ bằng \textbf{Multi-Agent LLM} và \textbf{Constraint Satisfaction Problem}.
+Khôi phục tự động môi trường Python từ mã nguồn cũ bằng \textbf{Multi-Agent LLM} và \textbf{Constraint Acquisition} (ràng buộc học dần từ build-verifier).
 \end{block}
 
 \column{0.4\textwidth}
@@ -155,7 +155,7 @@ Khôi phục tự động môi trường Python từ mã nguồn cũ bằng \tex
 
 \vspace{1em}
 \centering\scriptsize\color{gray}
-\textit{($+$ 8 Backup slides cho Q\&A: Filter \& CSP I/O, Agent Comm., Session Store, LLM Call, Build Loop, 3 Agent Prompts)}
+\textit{($+$ 8 Backup slides cho Q\&A: Filter \& Solver I/O, Agent Comm., Session Store, LLM Call, Build Loop, 3 Agent Prompts)}
 \end{frame}
 
 % ============================================================
@@ -322,7 +322,7 @@ Khôi phục tự động môi trường Python từ mã nguồn cũ bằng \tex
 \begin{itemize}\setlength{\itemsep}{2pt}\scriptsize
   \item Mỗi Docker build timeout \textbf{180s}; $\le$\textbf{10} build/snippet
   \item $\Rightarrow$ trần \textbf{$\approx$1800s} wall-clock/snippet (+ thời gian LLM)
-  \item $K_{\text{solve}}\le$50 CSP {\tiny\color{gray}(logic, no Docker)}; Sequential, 1 worker
+  \item $K_{\text{solve}}\le$50 constraint-solve {\tiny\color{gray}(logic, no Docker)}; Sequential, 1 worker
 \end{itemize}
 
 \column{0.30\textwidth}
@@ -730,7 +730,7 @@ MEMRES = \emph{Memory-augmented retry}: cứu được nhiều lỗi, nhưng ch�
   \draw[mLightBrown!55, line width=1pt] (-6.4,-0.62) -- (5.45,-0.62);
   \node[align=center] at (-0.475,-1.2) {%
     \textbf{\normalsize\color{mDarkTeal}CGAR: Constraint-Guided Agentic Resolution}\\[3pt]
-    \textcolor{alert}{\textbf{LLM đoán mò}}$\;\xrightarrow{\;\text{paradigm shift}\;}\;$\textcolor{success!45!black}{\textbf{Multi-Agent + CSP}} với ràng buộc học được};
+    \textcolor{alert}{\textbf{LLM đoán mò}}$\;\xrightarrow{\;\text{paradigm shift}\;}\;$\textcolor{success!45!black}{\textbf{Multi-Agent + Constraint Acquisition}} (ràng buộc \emph{học} từ verifier)};
 \end{tikzpicture}
 
 \vspace{0.5em}
@@ -829,6 +829,62 @@ MEMRES = \emph{Memory-augmented retry}: cứu được nhiều lỗi, nhưng ch�
 Build thất bại không phí: mỗi lần fail $\to$ +1 constraint $\to$ Planner kế tiếp né cả vùng, điều MEMRES không có.
 \end{frame}
 
+% ─── CGAR: miền giá trị D đến từ đâu (PyPI filter, reveal từng bước) ───
+\begin{frame}{CGAR: Miền giá trị $D$ đến từ đâu? (lọc trực tuyến từ PyPI)}
+\centering
+\vspace{0.1em}
+\begin{tikzpicture}[font=\scriptsize,
+  num/.style={circle, fill=navydeep, text=white, font=\bfseries\tiny, inner sep=2pt},
+  snip/.style={draw=gray!45, fill=softgray, rounded corners=3pt, font=\ttfamily\scriptsize, inner sep=4pt, align=left},
+  mapb/.style={rounded corners=3pt, draw=navydeep!50, fill=navydeep!8, inner sep=4pt, align=left, text width=3.7cm, font=\tiny},
+  getb/.style={rounded corners=3pt, draw=alert!70, fill=alert!8, line width=1pt, inner sep=4pt, align=left, text width=3.7cm, font=\tiny\ttfamily},
+  filt/.style={rounded corners=3pt, draw=cUpper!70, fill=cUpper!12, inner sep=4pt, align=left, text width=3.7cm, font=\tiny},
+  card/.style={draw=navydeep!50, fill=navydeep!4, rounded corners=6pt, line width=1pt, inner sep=7pt, align=left, text width=4.7cm},
+  ar/.style={-{Stealth[length=2mm]}, line width=0.9pt, navydeep!60},
+  arh/.style={-{Stealth[length=2mm]}, line width=0.9pt, alert!70},
+]
+  % ---- LEFT: numbered pipeline ----
+  \node<1->[num] at (-6.5,2.5) {1};
+  \node<1->[snip] (s1) at (-4.7,2.5) {import scipy, numpy\\ {\scriptsize\rmfamily target Python $\pi=3.7$}};
+
+  \node<2->[num] at (-6.5,1.4) {2};
+  \node<2->[mapb] (s2) at (-4.7,1.4) {\textbf{import $\to$ pip} {\tiny(static map)}\\ \texttt{scipy.misc}$\to$\texttt{scipy}, \texttt{numpy}$\to$\texttt{numpy}};
+  \draw<2->[ar] (s1.south) -- (s2.north);
+
+  \node<3->[num,fill=alert] at (-6.5,0.25) {3};
+  \node<3->[getb] (s3) at (-4.7,0.25) {GET pypi.org/pypi/\textbf{scipy}/json\\ GET pypi.org/pypi/\textbf{numpy}/json\\ {\rmfamily\tiny\color{alert!60!black} HTTP trực tiếp --- KHÔNG LLM}};
+  \draw<3->[ar] (s2.south) -- (s3.north);
+
+  \node<4->[num] at (-6.5,-0.95) {4};
+  \node<4->[filt] (s4) at (-4.7,-0.95) {\textbf{Lọc} mỗi version: giữ nếu\\ \texttt{requires\_python}$\,\models\pi\;\wedge\;$\texttt{has\_wheel}\\ {\tiny bỏ pre/post/dev release}};
+  \draw<4->[ar] (s3.south) -- (s4.north);
+
+  \node<5->[num] at (-6.5,-2.1) {5};
+  \node<5->[filt] (s5) at (-4.7,-2.1) {\textbf{Sort} wheel-first, semver $\downarrow$ $\to$ lấy \textbf{top-8}/gói};
+  \draw<5->[ar] (s4.south) -- (s5.north);
+
+  % ---- RIGHT: artifacts ----
+  \node<3->[card] (json) at (2.8,1.05)
+    {{\bfseries\color{navydeep}PyPI JSON (rút gọn)}\\[1pt]\textcolor{navydeep!30}{\rule{\linewidth}{0.5pt}}\\[2pt]
+     {\ttfamily\tiny releases:}\\
+     {\ttfamily\tiny\quad 1.7.3 $\to$ req\_py $\geq$3.7, wheel cp37-manylinux \cmark}\\
+     {\ttfamily\tiny\quad 1.2.0 $\to$} {\rmfamily\tiny (imread đã bỏ)}\\
+     {\rmfamily\tiny\quad\ldots\ $\sim$60 bản phát hành trên PyPI}};
+  \draw<3->[arh, dashed] (s3.east) to[bend left=12] (json.west);
+
+  \node<5->[card] (dom) at (2.8,-1.6)
+    {{\bfseries\color{cUpper!85!black}Domain $D$ (đầu vào solver)}\\[1pt]\textcolor{cUpper!40}{\rule{\linewidth}{0.5pt}}\\[2pt]
+     {\ttfamily\tiny $D$(scipy)$=$[1.7.3, 1.7.2, 1.7.1, \ldots]} {\rmfamily\tiny ·8}\\
+     {\ttfamily\tiny $D$(numpy)$=$[1.21.6, 1.21.5, \ldots]} {\rmfamily\tiny ·8}\\
+     {\rmfamily\tiny\color{gray}(mỗi ứng viên \cmark wheel \cmark py$\geq$3.7)}\\[2pt]
+     {\rmfamily\tiny\color{alert}$\approx\!10^{7}$ tổ hợp $\Rightarrow$ $\sim$8 ứng viên/gói}};
+  \draw<5->[ar] (s5.east) to[bend right=12] (dom.west);
+\end{tikzpicture}
+
+\vspace{0.2em}
+\onslide<6->{{\centering\footnotesize\color{mDarkTeal} $D$ = top-8 ứng viên \textbf{có wheel}, hợp $\pi$ --- lọc từ \textbf{PyPI trực tiếp} (reducer xác định, \textbf{0 LLM}); là đầu vào cho solver \& ràng buộc học được.\par}}
+\end{frame}
+
 \begin{frame}{CGAR: Tích lũy ràng buộc (ví dụ)}
 \centering
 \vspace{0.3em}
@@ -872,33 +928,36 @@ Build thất bại không phí: mỗi lần fail $\to$ +1 constraint $\to$ Plann
 {\centering\footnotesize\color{mDarkTeal} Mỗi build fail $\to$ \textbf{một ràng buộc điển hình} $\to$ solver thu hẹp miền, hội tụ đúng version mà \textbf{không thử mù}.\par}
 \end{frame}
 
-\begin{frame}{CGAR: Online CSP (ràng buộc khám phá dần)}
+\begin{frame}{CGAR: Feedback-Guided Constraint Discovery}
 \begin{columns}[T]
 \column{0.50\textwidth}
 \scriptsize
-\textbf{Formulation:} Tuple $\mathcal{P}_t = \langle X, D, C_t \rangle$.\\
-{\tiny\color{gray}$C_t$ \emph{lớn dần}: ràng buộc \textbf{acquire từ Docker verifier} (oracle), không cho trước $\Rightarrow$ \emph{interactive/online CSP}, không phải CSP tĩnh.}
+\textbf{\color{alert}KHÔNG phải CSP tĩnh.} Ràng buộc thật \emph{ẩn}, chỉ lộ qua build --- verifier hộp đen $f(\mathcal{A})\!\to\!\{\textsf{pass},\,\textsf{typed-error}\}$.\\
+{\tiny\color{gray}$C_0=\varnothing$ (không cho trước). Mỗi lỗi Docker $=$ một \emph{counterexample} $\Rightarrow$ agent \textbf{acquire} ràng buộc (\emph{Constraint Acquisition}, CA --- CEGIS-style), \textbf{không} solve một CSP có sẵn.}
 
-\vspace{0.4em}
-\textbf{Variables $X$:} các thư viện $\{P_1, \ldots, P_n\}$ + phiên bản Python $\pi$.
+\vspace{0.35em}
+\textbf{Search state} $\mathcal{S}_t = \langle X, D, C_t \rangle$ --- $C_t$ lớn dần.
 
-\vspace{0.4em}
+\vspace{0.35em}
+\textbf{Variables $X$:} thư viện $\{P_1, \ldots, P_n\}$ + phiên bản Python $\pi$.
+
+\vspace{0.35em}
 \textbf{Domains $D$:}
 \[
 D(P_i) = \{ v \mid \text{req\_py}(P_i, v) \models \pi \land \text{has\_wheel}(P_i, v) \}
 \]
-Sắp xếp \textit{wheel-first}, semver giảm dần.
+{\tiny wheel-first, semver giảm dần.}
 
-\vspace{0.4em}
-\textbf{Constraints $C$:}
+\vspace{0.35em}
+\textbf{Ràng buộc \emph{học được} $C_t$} (từ counterexample):
 \begin{itemize}
   \item \textbf{\color{cHard}Hard}: cấm vĩnh viễn version lỗi rõ ràng
   \item \textbf{\color{cSoft!75!black}Soft}: cấm tạm nếu lỗi $\ge 2$ lần
   \item \textbf{\color{cUpper}Upper Bound}: $v_i < \text{ub}(P_i)$ -- cấm cả khoảng
 \end{itemize}
 
-\vspace{0.4em}
-\textbf{Goal:} tìm $\mathcal{A} = \{\pi^*, v_1^*, \ldots, v_n^*\}$ thỏa $C$; giới hạn $k=50$ attempts.
+\vspace{0.35em}
+\textbf{Vòng lặp:} chọn $\mathcal{A}\models C_t \to$ build $\to$ fail? \textbf{học} $C_{t+1}$, re-solve ($\le\!50$). {\tiny\color{gray}Agent cần thiết \emph{vì} $C$ không cho trước.}
 
 \column{0.48\textwidth}
 \centering
@@ -956,7 +1015,7 @@ Sắp xếp \textit{wheel-first}, semver giảm dần.
 \end{tikzpicture}
 
 \vspace{0.3em}
-{\centering\footnotesize\itshape\color{gray} HARD / SOFT / UPPER tỉa cây tìm kiếm $\to$ 1 path khả thi.\par}
+{\centering\footnotesize\itshape\color{gray} HARD / SOFT / UPPER \emph{học từ build} tỉa cây $\to$ 1 path khả thi.\par}
 \end{columns}
 \end{frame}
 
@@ -1031,7 +1090,7 @@ Sắp xếp \textit{wheel-first}, semver giảm dần.
   8 & SMT-LLM              & FSE'26   & Z3 SMT + LLM imput. & 83.6\%           & --     & 23.9s\,{\tiny(med)}$^{\dagger}$ & \textcolor{success}{\ding{51}} \\
   9 & \textbf{MEMRES}      & \textbf{FSE'26} & Memory + Cascade & 86.3\% & 81.7\% & 335.3s & \textcolor{success}{\ding{51}} \\
   \rowcolor{accent!18}
-  10& \textbf{CGAR}        & \textbf{(ours)} & \textbf{Multi-Agent + CSP} & \textcolor{success!50!black}{\textbf{87.1\%}} & \textcolor{success!50!black}{\textbf{83.2\%}} & \textbf{22.3s} & \textcolor{success}{\ding{51}} \\
+  10& \textbf{CGAR}        & \textbf{(ours)} & \textbf{Multi-Agent + CA} & \textcolor{success!50!black}{\textbf{87.1\%}} & \textcolor{success!50!black}{\textbf{83.2\%}} & \textbf{22.3s} & \textcolor{success}{\ding{51}} \\
   \bottomrule
 \end{tabular}
 
@@ -1177,7 +1236,7 @@ Total fails: PLLM \textbf{1596} $\to$ CGAR \textbf{373} \quad\textcolor{success!
   PLLM (Gemma-2 9B)   & open + RAG      & 65.5\% & \textcolor{success}{\ding{51}} \\
   \textbf{MEMRES}     & open + Memory   & 81.7\% & \textcolor{success}{\ding{51}} \\
   \rowcolor{accent!22}
-  \textbf{CGAR}       & open + Agent+CSP & \textcolor{success!50!black}{\textbf{83.2\%}} & \textcolor{success}{\ding{51}} \\
+  \textbf{CGAR}       & open + Agent+CA & \textcolor{success!50!black}{\textbf{83.2\%}} & \textcolor{success}{\ding{51}} \\
   \bottomrule
 \end{tabular}
 
@@ -1562,9 +1621,9 @@ Cài \texttt{torch==2.0} thay vì \texttt{1.9} vẫn import OK nhưng \texttt{as
 % [end HIDDEN: GitChameleon Re-framing]
 
 % ============================================================
-% ─── Backup: Filter & CSP I/O ───────────────────────────────
+% ─── Backup: Filter & Constraint Solver I/O ─────────────────
 % ============================================================
-\begin{frame}[fragile]{Backup: Filter \& CSP (I/O)}
+\begin{frame}[fragile]{Backup: Filter \& Constraint Solver (I/O)}
 \vspace{0.2em}
 \scriptsize
 \begin{columns}[T,onlytextwidth]
@@ -1596,7 +1655,7 @@ Output: {
 \end{lstlisting}
 
 \column{0.49\textwidth}
-\textbf{\color{navydeep}CSP: ConstraintSolver}\\[0.2em]
+\textbf{\color{navydeep}Solver: ConstraintSolver}\\[0.2em]
 \textit{constraint\_solver.py:51-123}
 \begin{lstlisting}[basicstyle=\tiny\ttfamily, language=Python]
 Input : graph (from Filter)
@@ -1850,7 +1909,7 @@ Empty / parse-fail response & $\to$ rule fallback \\
 \textbf{reset} per-snippet state\\[0.4em]
 \textbf{loop} $\le\!\mathbf{10}$ Docker attempts:
 \begin{itemize}\setlength{\itemsep}{0.15em}\scriptsize
-  \item \textbf{Planner} $\to$ PyPI + CSP + LLM
+  \item \textbf{Planner} $\to$ PyPI + Solver + LLM
   \item \textbf{Executor} Docker (180\,s)
   \item pass? \texttt{on\_success()}; \textbf{break}
   \item else \textbf{Analyzer} writes HARD / SOFT / UPPER
