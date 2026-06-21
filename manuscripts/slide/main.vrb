@@ -28,4 +28,5 @@ Output ONLY valid JSON:
 {"action": "continue|switch_python|mark_unfixable", "target": "<py_version or null>", "reason": "<short>"}
 
 JSON output:
+{"action": "switch_python", "target": "2.7", "reason": "repeated SyntaxError -> likely Python 2 code"}
 \end{lstlisting}
