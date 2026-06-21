@@ -1446,6 +1446,24 @@ CGAR (open 9B, $<$10\,GB VRAM) vượt o1 (closed, $>$200B params) \textbf{+32.0
 \end{enumerate}
 \end{frame}
 
+% ─── Video demo: clickable thumbnail -> video link ───
+\def\videourl{https://www.facebook.com/share/v/17m6jVkP5F/}
+\begin{frame}{Video trình bày (\texorpdfstring{$\sim$}{~}6 phút)}
+\centering
+\vspace{0.2em}
+\href{\videourl}{%
+  \IfFileExists{figures/video-demo.png}%
+    {\includegraphics[height=0.62\textheight]{video-demo.png}}%
+    {\fcolorbox{navydeep!40}{softgray}{\parbox[c][0.55\textheight][c]{0.78\textwidth}{\centering
+       {\Huge\color{navydeep!60}$\triangleright$}\\[0.7em]
+       {\normalsize\color{gray}\texttt{figures/video-demo.png}}\\[0.4em]
+       {\scriptsize\color{gray}(lưu ảnh capture vào đây, slide tự hiện)}}}}%
+}
+
+\vspace{0.6em}
+{\footnotesize\color{mDarkTeal} Bấm vào ảnh để xem video demo (\href{\videourl}{mở liên kết}).\par}
+\end{frame}
+
 \begin{frame}{Thank you!}
 \vspace{2em}
 \centering

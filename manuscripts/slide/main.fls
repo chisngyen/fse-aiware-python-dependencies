@@ -570,6 +570,10 @@ INPUT ./figures/session-learning.png
 INPUT d:/Downloads/Tools/Latex/texlive/2025/texmf-dist/fonts/tfm/vntex/vnr/vnss17.tfm
 INPUT d:/Downloads/Tools/Latex/texlive/2025/texmf-dist/fonts/tfm/vntex/vnr/vnssbx10.tfm
 INPUT d:/Downloads/Tools/Latex/texlive/2025/texmf-dist/fonts/tfm/public/cm/cmss8.tfm
+INPUT ./figures/video-demo.png
+INPUT ./figures/video-demo.png
+INPUT ./figures/video-demo.png
+INPUT ./figures/video-demo.png
 INPUT d:/Downloads/Tools/Latex/texlive/2025/texmf-dist/fonts/tfm/vntex/vnr/vnssi12.tfm
 INPUT ./figures/hcmus.png
 INPUT ./figures/hcmus.png
