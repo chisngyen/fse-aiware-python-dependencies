@@ -33,10 +33,10 @@
 \newcommand{\xmark}{\ding{55}}
 
 % --- Semantic colored boxes (vay từ LeJEPA style) ---
-\definecolor{cHard}{HTML}{B85450}      % terracotta — deterministic error
-\definecolor{cSoft}{HTML}{C8A951}      % gold — probabilistic
-\definecolor{cInfer}{HTML}{2C3E6B}     % navy — inferred / monotone
-\definecolor{cUpper}{HTML}{2E86AB}     % steel blue — upper-bound constraint
+\definecolor{cHard}{HTML}{B85450}      % terracotta: deterministic error
+\definecolor{cSoft}{HTML}{C8A951}      % gold: probabilistic
+\definecolor{cInfer}{HTML}{2C3E6B}     % navy: inferred / monotone
+\definecolor{cUpper}{HTML}{2E86AB}     % steel blue: upper-bound constraint
 \definecolor{cHardL}{HTML}{F2E6E5}
 \definecolor{cSoftL}{HTML}{F5F0E0}
 \definecolor{cInferL}{HTML}{EEF0F5}
@@ -715,7 +715,7 @@ MEMRES = \emph{Memory-augmented retry}: cứu được nhiều lỗi, nhưng ch�
   % 3 rows: MEMRES gap --vá--> CGAR component
   \foreach \y/\n/\gt/\gd/\ft/\fd in {%
       2.5/1/{12.8\% bí đường}/{API removed / source-only, build kẹt 3 phút}/{Analyzer Agent}/{parse log $\to$ constraint},%
-      1.3/2/{Chi phí lỗi cao}/{335s/snippet, ca khó vẫn rất chậm}/{wheel\_filter()}/{chỉ thử bản có wheel},%
+      1.3/2/{Chi phí lỗi cao}/{335s/snippet, fail tốn gần trọn budget}/{wheel\_filter()}/{chỉ thử bản có wheel},%
       0.1/3/{Không tỉa không gian}/{Docker error = blackbox, không thành ràng buộc}/{3-tier constraints}/{HARD / SOFT / UPPER}}{
     \node[numb] at (-6.15,\y) {\n};
     \node[gaptext] at (\xg,\y) {{\color{alert}\xmark\ \textbf{\gt}}\\[1pt]{\tiny\color{gray}\gd}};
@@ -734,7 +734,7 @@ MEMRES = \emph{Memory-augmented retry}: cứu được nhiều lỗi, nhưng ch�
 \end{tikzpicture}
 
 \vspace{0.5em}
-{\centering\footnotesize Mỗi lỗ hổng MEMRES $\to$ một thành phần CGAR: \textbf{vá có chủ đích}, không refactor mù.\par}
+{\centering\footnotesize Mỗi lỗ hổng MEMRES $\to$ một thành phần CGAR: \textbf{vá có chủ đích}.\par}
 \end{frame}
 
 % ============================================================
@@ -822,7 +822,7 @@ MEMRES = \emph{Memory-augmented retry}: cứu được nhiều lỗi, nhưng ch�
 
 \vspace{0.4em}
 \centering\scriptsize
-\textbf{Flow}: Planner $\to$ Executor $\to$ (OK?) $\to$ Analyzer ghi constraint vào Store $\to$ Planner kế tiếp đọc lại $\Rightarrow$ né vùng đã hỏng.
+\textbf{Flow}: Planner $\to$ Executor $\to$ (OK?) $\to$ Analyzer ghi constraint vào Store $\to$ vòng kế đọc Store trước khi chọn.
 
 \vspace{0.3em}
 \centering\footnotesize\color{mDarkTeal}
@@ -1021,7 +1021,7 @@ D(P_i) = \{ v \mid \text{req\_py}(P_i, v) \models \pi \land \text{has\_wheel}(P_
 
 \begin{frame}{CGAR: Session-scoped Learning}
 \vspace{0.4em}
-{\centering\footnotesize\color{mDarkTeal}\textbf{Session = 1 repository = nhiều snippets:} ràng buộc học được \emph{chia sẻ} giữa các snippet trong cùng session.\par}
+{\centering\footnotesize\color{mDarkTeal}\textbf{Session = 1 repository = nhiều snippet:} ràng buộc học được \emph{chia sẻ} giữa các snippet trong cùng session.\par}
 
 \vspace{0.3em}
 \begin{figure}
