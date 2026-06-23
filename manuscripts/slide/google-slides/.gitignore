@@ -1,8 +1,6 @@
-# Rendered previews / crops (regenerate via: node render-slide.js all)
-slide_*.png
-before_*.png
-*_before.png
-_*.png
+# Render scratch only. Preview PNGs (slide_*.png / before_*.png) are kept
+# VISIBLE in the folder for review (untracked; regenerate via: node render-slide.js all)
+_cube*.png
 _render.html
 _render_*.html
 
@@ -18,3 +16,6 @@ chk_*.png
 export/
 uploads/*.pdf
 .thumbnail
+
+# Embedded video (heavy; keep local)
+uploads/*.mp4
