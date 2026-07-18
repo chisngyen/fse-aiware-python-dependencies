@@ -1,0 +1,1322 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;}
+  body{margin:0;}
+  ::selection{background:#E0772B;color:#fff;}
+  .vid-thumb,.vid-btn{transition:box-shadow .18s ease,filter .18s ease,border-color .18s ease;cursor:pointer;}
+  .vid-thumb:hover{box-shadow:0 22px 64px rgba(224,119,43,0.55);border-color:#ffb066;}
+  .vid-btn:hover{filter:brightness(1.08);}
+</style>
+<script src="image-slot.js"></script>
+</helmet>
+<x-import component-from-global-scope="deck-stage" from="./deck-stage.js" width="1920" height="1080" hint-size="100%,100%">
+
+<section data-label="Title" data-screen-label="Title" data-speaker-notes="Giới thiệu đề tài MEMRES đến CGAR và nhóm thực hiện." style="font-family:'Be Vietnam Pro',sans-serif;background:#16242A;color:#F6F4EF;padding:84px 96px;display:flex;flex-direction:column;position:relative;overflow:hidden;">
+  <div style="position:absolute;right:-80px;bottom:-160px;font-size:600px;font-weight:800;color:rgba(224,119,43,0.05);line-height:1;pointer-events:none;z-index:-1;">&rarr;</div>
+  <div style="display:flex;justify-content:space-between;align-items:flex-start;flex:none;">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:24px;letter-spacing:3px;color:#8BA0A2;text-transform:uppercase;">University of Science · VNU-HCM</div>
+    <div style="display:flex;gap:22px;align-items:center;">
+      <div style="background:#fff;border-radius:10px;padding:9px;height:84px;width:84px;display:flex;align-items:center;justify-content:center;"><img src="uploads/hcmus.png" alt="HCMUS" style="max-width:100%;max-height:100%;object-fit:contain;"></div>
+      <div style="background:#fff;border-radius:10px;padding:9px 14px;height:84px;display:flex;align-items:center;justify-content:center;"><img src="uploads/fse.png" alt="FSE 2026" style="max-height:100%;object-fit:contain;"></div>
+    </div>
+  </div>
+  <div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:16px;">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:25px;letter-spacing:4px;color:#E0772B;text-transform:uppercase;">Machine Learning Course Project · 2026</div>
+    <h1 style="margin:0;font-size:106px;font-weight:800;line-height:0.96;letter-spacing:-3px;color:#F6F4EF;">MEMRES <span style="color:#E0772B;">→</span> CGAR</h1>
+    <div style="font-size:38px;font-weight:500;color:#C3CDCE;">Agentic Python Dependency Resolution</div>
+    <div style="width:120px;height:4px;background:#E0772B;margin-top:10px;"></div>
+  </div>
+  <div style="display:flex;gap:64px;flex:none;border-top:1px solid rgba(255,255,255,0.12);padding-top:28px;">
+    <div style="flex:1.1;">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:22px;letter-spacing:2px;color:#E0772B;text-transform:uppercase;margin-bottom:12px;">Project Overview</div>
+      <div style="font-size:25px;line-height:1.45;color:#C3CDCE;">Khôi phục tự động môi trường Python từ mã nguồn cũ bằng <span style="color:#F6F4EF;font-weight:600;">Multi-Agent LLM</span> và <span style="color:#F6F4EF;font-weight:600;">Constraint Acquisition</span>.</div>
+    </div>
+    <div style="flex:0.9;">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:22px;letter-spacing:2px;color:#E0772B;text-transform:uppercase;margin-bottom:6px;">Team</div><div style="font-size:30px;font-weight:700;color:#F6F4EF;margin-bottom:10px;">The Fangs</div>
+      <div style="font-size:24px;line-height:1.6;color:#C3CDCE;"><div>Huỳnh Trung Kiệt · 23122039</div><div>Đào Sỹ Duy Minh · 23122041</div><div>Trần Chí Nguyên · 23122044</div></div>
+    </div>
+  </div>
+</section>
+
+<section data-label="Nội dung" data-screen-label="Outline" data-speaker-notes="Lộ trình: bài toán, công trình liên quan, MEMRES, CGAR (trọng tâm), kết quả, hạn chế." style="font-family:'Be Vietnam Pro',sans-serif;background:#F6F4EF;color:#23373B;padding:70px 96px 60px;display:flex;flex-direction:column;">
+  <div style="display:flex;flex-direction:column;gap:8px;flex:none;">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:24px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:#E0772B;">Mục lục</div>
+    <h2 style="margin:0;font-size:50px;font-weight:700;color:#23373B;letter-spacing:-0.5px;">Nội dung chính</h2>
+  </div>
+  <div style="flex:1;display:flex;flex-direction:column;justify-content:space-between;margin-top:32px;margin-bottom:14px;">
+    <div style="display:flex;align-items:baseline;gap:30px;padding-bottom:18px;border-bottom:1px solid rgba(22,36,42,0.2);"><span style="font-family:'JetBrains Mono',monospace;font-size:50px;font-weight:700;color:#6E7E80;min-width:78px;">01</span><span style="font-size:40px;font-weight:600;">Bối cảnh, bài toán &amp; công trình liên quan</span></div>
+    <div style="display:flex;align-items:baseline;gap:30px;padding-bottom:18px;border-bottom:1px solid rgba(22,36,42,0.2);"><span style="font-family:'JetBrains Mono',monospace;font-size:50px;font-weight:700;color:#6E7E80;min-width:78px;">02</span><span style="font-size:40px;font-weight:600;">MEMRES: phương pháp nền tảng</span></div>
+    <div style="display:flex;align-items:baseline;gap:30px;padding-bottom:18px;border-bottom:2px solid #E0772B;"><span style="font-family:'JetBrains Mono',monospace;font-size:50px;font-weight:700;color:#E0772B;min-width:78px;">03</span><span style="font-size:40px;font-weight:700;color:#E0772B;">CGAR: đề xuất của nhóm</span></div>
+    <div style="display:flex;align-items:baseline;gap:30px;padding-bottom:18px;border-bottom:1px solid rgba(22,36,42,0.2);"><span style="font-family:'JetBrains Mono',monospace;font-size:50px;font-weight:700;color:#6E7E80;min-width:78px;">04</span><span style="font-size:40px;font-weight:600;">Đánh giá thực nghiệm</span></div>
+    <div style="display:flex;align-items:baseline;gap:30px;padding-bottom:18px;border-bottom:1px solid rgba(22,36,42,0.2);"><span style="font-family:'JetBrains Mono',monospace;font-size:50px;font-weight:700;color:#6E7E80;min-width:78px;">05</span><span style="font-size:40px;font-weight:600;">Hạn chế &amp; hướng phát triển</span></div>
+  <div style="flex:none;font-family:'JetBrains Mono',monospace;font-size:24px;color:#5C6B6E;text-align:center;padding-top:16px;border-top:1px solid rgba(22,36,42,0.2);">+ 8 slide Backup cho Q&amp;A: Filter/Solver I/O · Agent Comm · Session Store · LLM Call · Build Loop · 3 Prompt</div>
+</section>
+
+<section data-label="§ Bài toán" data-screen-label="Section: Bài toán" data-speaker-notes="Mở phần 1: bài toán và bối cảnh." style="font-family:'Be Vietnam Pro',sans-serif;background:#16242A;color:#F6F4EF;padding:0;display:flex;flex-direction:column;position:relative;overflow:hidden;">
+  <div style="position:absolute;right:-34px;top:50%;margin-top:-330px;font-family:'Be Vietnam Pro',sans-serif;font-size:660px;font-weight:800;line-height:1;color:rgba(255,255,255,0.04);letter-spacing:-24px;pointer-events:none;">01</div>
+  <div style="position:absolute;right:96px;top:50%;margin-top:-250px;width:760px;height:500px;z-index:1;pointer-events:none;"><svg viewBox="0 0 760 500" style="width:100%;height:100%;overflow:visible;">
+    <!-- ===== Combinatorial-explosion tree: 1 -> 2 -> 4 -> 8, mostly broken ===== -->
+    <!-- Edges level 0->1 -->
+    <g fill="none" stroke="#7FA6B5" stroke-width="1.6" opacity="0.85">
+      <path d="M120,250 L260,150"/>
+      <path d="M120,250 L260,350"/>
+    </g>
+    <!-- Edges level 1->2 -->
+    <g fill="none" stroke="#7FA6B5" stroke-width="1.4" opacity="0.7">
+      <path d="M260,150 L420,90"/>
+      <path d="M260,150 L420,190"/>
+      <path d="M260,350 L420,310"/>
+      <path d="M260,350 L420,410"/>
+    </g>
+    <!-- Edges level 2->3 (8 leaves) -->
+    <g fill="none" stroke="rgba(255,255,255,0.13)" stroke-width="1.1">
+      <path d="M420,90 L600,55"/>
+      <path d="M420,90 L600,118"/>
+      <path d="M420,190 L600,178"/>
+      <path d="M420,190 L600,238"/>
+      <path d="M420,310 L600,300"/>
+      <path d="M420,310 L600,358"/>
+      <path d="M420,410 L600,420"/>
+      <path d="M420,410 L600,478"/>
+    </g>
+
+    <!-- Root node (level 0) -->
+    <circle cx="120" cy="250" r="13" fill="none" stroke="#E0772B" stroke-width="2"/>
+    <circle cx="120" cy="250" r="3.5" fill="#E0772B"/>
+
+    <!-- Level 1 nodes -->
+    <circle cx="260" cy="150" r="9" fill="none" stroke="#9DAEB0" stroke-width="1.6"/>
+    <circle cx="260" cy="350" r="9" fill="none" stroke="#9DAEB0" stroke-width="1.6"/>
+
+    <!-- Level 2 nodes -->
+    <g fill="none" stroke="#9DAEB0" stroke-width="1.4" opacity="0.85">
+      <circle cx="420" cy="90" r="7"/>
+      <circle cx="420" cy="190" r="7"/>
+      <circle cx="420" cy="310" r="7"/>
+      <circle cx="420" cy="410" r="7"/>
+    </g>
+
+    <!-- Level 3 leaves: 8 total. Most = red broken; one = valid (steel-blue) -->
+    <!-- broken leaves: red ring + red X -->
+    <g stroke="#B5483F" stroke-width="1.8" fill="none">
+      <circle cx="600" cy="55" r="11"/>  <path d="M593.5,48.5 L606.5,61.5 M606.5,48.5 L593.5,61.5"/>
+      <circle cx="600" cy="118" r="11"/> <path d="M593.5,111.5 L606.5,124.5 M606.5,111.5 L593.5,124.5"/>
+      <circle cx="600" cy="178" r="11"/> <path d="M593.5,171.5 L606.5,184.5 M606.5,171.5 L593.5,184.5"/>
+      <circle cx="600" cy="300" r="11"/> <path d="M593.5,293.5 L606.5,306.5 M606.5,293.5 L593.5,306.5"/>
+      <circle cx="600" cy="358" r="11"/> <path d="M593.5,351.5 L606.5,364.5 M606.5,351.5 L593.5,364.5"/>
+      <circle cx="600" cy="420" r="11"/> <path d="M593.5,413.5 L606.5,426.5 M606.5,413.5 L593.5,426.5"/>
+      <circle cx="600" cy="478" r="11"/> <path d="M593.5,471.5 L606.5,484.5 M606.5,471.5 L593.5,484.5"/>
+    </g>
+    <!-- the single valid leaf: steel-blue ring + check -->
+    <circle cx="600" cy="238" r="11" fill="none" stroke="#7FA6B5" stroke-width="1.8"/>
+    <path d="M594,238 L598.5,242.5 L607,233" fill="none" stroke="#7FA6B5" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+
+    <!-- mono labels -->
+    <text x="120" y="34" font-family="JetBrains Mono, monospace" font-size="17" letter-spacing="1" fill="#9DAEB0">tổ hợp bùng nổ</text>
+    <text x="120" y="56" font-family="JetBrains Mono, monospace" font-size="13" letter-spacing="0.5" fill="#6B8082">~500K pkgs &#215; versions</text>
+  </svg></div>
+  <div style="position:absolute;top:56px;left:96px;right:96px;display:flex;justify-content:space-between;align-items:center;font-family:'JetBrains Mono',monospace;font-size:22px;letter-spacing:3px;color:#6B8082;text-transform:uppercase;z-index:1;"><span>MEMRES &rarr; CGAR</span><span>01 / 05</span></div>
+  <div style="position:absolute;top:100px;left:96px;right:96px;height:1px;background:rgba(255,255,255,0.1);"></div>
+  <div style="flex:1;display:flex;flex-direction:column;justify-content:center;padding:0 96px;position:relative;z-index:1;">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:27px;letter-spacing:5px;color:#E0772B;text-transform:uppercase;margin-bottom:22px;">Phần 01</div>
+    <h2 style="margin:0;font-size:128px;font-weight:800;letter-spacing:-3px;line-height:0.95;color:#F6F4EF;">Bài toán</h2>
+    <div style="width:120px;height:5px;background:#E0772B;margin:38px 0;"></div>
+    <div style="font-size:30px;color:#9DAEB0;max-width:1150px;line-height:1.45;">Bối cảnh &nbsp;·&nbsp; không gian tìm kiếm &nbsp;·&nbsp; bộ dữ liệu &nbsp;·&nbsp; công trình liên quan</div>
+  </div>
+</section>
+
+<section data-label="Bối cảnh" data-screen-label="Bối cảnh" data-speaker-notes="Hàng nghìn gist Python trên GitHub bị chết môi trường; mục tiêu là dựng lại môi trường chạy được." style="font-family:'Be Vietnam Pro',sans-serif;background:#F6F4EF;color:#23373B;padding:70px 96px 56px;display:flex;flex-direction:column;">
+  <div style="display:flex;flex-direction:column;gap:8px;flex:none;">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:24px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:#E0772B;">Bài toán · 01</div>
+    <h2 style="margin:0;font-size:48px;font-weight:700;color:#23373B;letter-spacing:-0.5px;">Bối cảnh</h2>
+  </div>
+  <div style="flex:none;display:flex;align-items:stretch;gap:44px;margin-top:48px;">
+    <div style="flex:1.45;position:relative;height:660px;background:#0F1A1F;border:1px solid rgba(255,255,255,0.08);border-radius:16px;overflow:hidden;padding:24px;">
+      <div style="position:absolute;top:34px;left:44px;width:70px;height:70px;border-radius:50%;background:#F3D55B;box-shadow:0 0 38px 8px rgba(243,213,91,0.22);"></div>
+      <div style="position:absolute;top:30px;left:62px;width:66px;height:66px;border-radius:50%;background:#0F1A1F;"></div>
+      <div style="position:absolute;top:60px;left:280px;width:5px;height:5px;border-radius:50%;background:#fff;opacity:0.85;"></div>
+      <div style="position:absolute;top:46px;left:420px;width:4px;height:4px;border-radius:50%;background:#fff;opacity:0.7;"></div>
+      <div style="position:absolute;top:96px;left:540px;width:5px;height:5px;border-radius:50%;background:#fff;opacity:0.8;"></div>
+      <div style="position:absolute;top:120px;left:200px;width:4px;height:4px;border-radius:50%;background:#fff;opacity:0.6;"></div>
+      <div style="position:absolute;top:78px;left:660px;width:4px;height:4px;border-radius:50%;background:#fff;opacity:0.75;"></div>
+      <div style="position:absolute;left:0;right:0;bottom:0;height:150px;background:#16242A;"></div>
+      <div style="position:absolute;left:24px;right:24px;bottom:150px;display:flex;justify-content:space-between;align-items:flex-end;">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:8px;width:140px;"><div style="font-family:'JetBrains Mono',monospace;font-size:21px;color:#7E9092;text-align:center;">reqs.txt mất</div><div style="width:100px;height:150px;background:#243439;border:1px solid rgba(255,255,255,0.12);border-radius:50px 50px 8px 8px;display:flex;align-items:flex-start;justify-content:center;padding-top:30px;"><span style="font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:700;color:#5C7173;">R.I.P.</span></div></div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:8px;width:140px;"><div style="font-family:'JetBrains Mono',monospace;font-size:21px;color:#7E9092;text-align:center;">Python 2/3</div><div style="width:100px;height:180px;background:#243439;border:1px solid rgba(255,255,255,0.12);border-radius:50px 50px 8px 8px;display:flex;align-items:flex-start;justify-content:center;padding-top:34px;"><span style="font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:700;color:#5C7173;">R.I.P.</span></div></div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:8px;width:140px;"><div style="font-family:'JetBrains Mono',monospace;font-size:21px;color:#7E9092;text-align:center;">API removed</div><div style="width:100px;height:160px;background:#243439;border:1px solid rgba(255,255,255,0.12);border-radius:50px 50px 8px 8px;display:flex;align-items:flex-start;justify-content:center;padding-top:32px;"><span style="font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:700;color:#5C7173;">R.I.P.</span></div></div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:8px;width:140px;"><div style="font-family:'JetBrains Mono',monospace;font-size:21px;color:#7E9092;text-align:center;">wheel fail</div><div style="width:100px;height:180px;background:#243439;border:1px solid rgba(255,255,255,0.12);border-radius:50px 50px 8px 8px;display:flex;align-items:flex-start;justify-content:center;padding-top:34px;"><span style="font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:700;color:#5C7173;">R.I.P.</span></div></div>
+      </div>
+      <div style="position:absolute;left:0;right:0;bottom:54px;text-align:center;font-style:italic;font-size:23px;color:#B7C4C5;">hàng nghìn gist Python &ldquo;chết môi trường&rdquo;</div>
+    </div>
+    <div style="flex:0.55;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;">
+      <div style="font-size:30px;font-weight:700;color:#E0772B;">hồi sinh</div>
+      <div style="font-size:64px;color:#E0772B;line-height:1;">&rarr;</div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:21px;color:#5C6B6E;">CGAR · MEMRES</div>
+    </div>
+    <div style="flex:1.05;display:flex;flex-direction:column;background:#fff;border:2px solid #2E7D5B;border-radius:14px;overflow:hidden;box-shadow:0 18px 40px rgba(0,0,0,0.35);">
+      <div style="background:#23373B;display:flex;align-items:center;gap:9px;padding:14px 18px;">
+        <div style="width:13px;height:13px;border-radius:50%;background:#E0594B;"></div>
+        <div style="width:13px;height:13px;border-radius:50%;background:#E0A94B;"></div>
+        <div style="width:13px;height:13px;border-radius:50%;background:#5BBd7E;"></div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:21px;color:#C3CDCE;margin-left:8px;">python env</div>
+      </div>
+      <div style="flex:1;display:flex;flex-direction:column;justify-content:space-between;gap:26px;padding:48px 34px;font-family:'JetBrains Mono',monospace;font-size:33px;line-height:1.4;color:#23373B;">
+        <div style="color:#7E9092;">$ pip install -r reqs.txt</div><div style="color:#7E9092;">  resolving scipy · numpy …</div><div>$ python gist.py</div>
+        <div style="color:#2E7D5B;">&check; 5 imports OK</div>
+        <div style="color:#2E7D5B;">&check; env restored</div>
+      </div>
+    </div>
+  </div>
+  <div style="flex:none;text-align:center;font-size:27px;color:#23373B;margin-top:36px;"><span style="color:#E0772B;font-weight:700;">Mục tiêu:</span> tự động dựng lại môi trường <span style="color:#23373B;font-weight:700;font-style:italic;">chạy được</span> cho mã Python &ldquo;chết&rdquo;.</div>
+</section>
+
+<section data-label="Phát biểu" data-screen-label="Bài toán & yêu cầu" data-speaker-notes="Input là snippet không metadata; output là Python version + pip + apt. Tiêu chí: mọi import chạy trong Docker. Ngân sách build giống nhau mọi tool." style="font-family:'Be Vietnam Pro',sans-serif;background:#F6F4EF;color:#23373B;padding:70px 96px 56px;display:flex;flex-direction:column;">
+  <div style="display:flex;flex-direction:column;gap:8px;flex:none;">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:24px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:#E0772B;">Bài toán · 02</div>
+    <h2 style="margin:0;font-size:48px;font-weight:700;color:#23373B;letter-spacing:-0.5px;">Bài toán &amp; Yêu cầu đánh giá</h2>
+  </div>
+  <div style="flex:1;display:flex;flex-direction:column;justify-content:space-evenly;gap:40px;margin-top:24px;">
+    <div style="display:flex;align-items:stretch;gap:18px;">
+    <div style="flex:1;background:#fff;border:1px solid rgba(22,36,42,0.14);border-radius:12px;padding:30px 30px;display:flex;flex-direction:column;justify-content:center;border-top:5px solid #23373B;">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:24px;font-weight:700;letter-spacing:2px;color:#23373B;margin-bottom:14px;">INPUT</div>
+      <div style="font-size:26px;line-height:1.55;color:#3C4C50;">Python snippet (gist cũ) · không metadata, không <span style="font-family:'JetBrains Mono',monospace;">requirements.txt</span> · Python version chưa biết</div>
+    </div>
+    <div style="display:flex;align-items:center;font-size:50px;color:#E0772B;">&rarr;</div>
+    <div style="flex:0.85;background:#E0772B;border-radius:12px;padding:30px 30px;display:flex;flex-direction:column;justify-content:center;color:#fff;">
+      <div style="font-size:34px;font-weight:700;">RESOLVER</div>
+      <div style="font-size:24px;opacity:0.9;">dưới ràng buộc</div>
+    </div>
+    <div style="display:flex;align-items:center;font-size:50px;color:#E0772B;">&rarr;</div>
+    <div style="flex:1;background:#EFF5F0;border:1px solid rgba(46,125,91,0.4);border-radius:12px;padding:30px 30px;display:flex;flex-direction:column;justify-content:center;border-top:5px solid #2E7D5B;">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:24px;font-weight:700;letter-spacing:2px;color:#2E7D5B;margin-bottom:14px;">OUTPUT</div>
+      <div style="font-size:26px;line-height:1.55;color:#3C4C50;">Python version · <span style="font-family:'JetBrains Mono',monospace;">pip</span> packages (pinned) · <span style="font-family:'JetBrains Mono',monospace;">apt-get</span> libs (tùy chọn)</div>
+    </div>
+  </div>
+    <div style="background:rgba(46,125,91,0.1);border:1px solid rgba(46,125,91,0.35);border-radius:10px;padding:22px 24px;text-align:center;font-size:27px;color:#2E7D5B;"><span style="font-weight:700;">Tiêu chí thành công:</span> mọi <span style="font-family:'JetBrains Mono',monospace;">import</span> chạy được trong Docker: không <span style="font-family:'JetBrains Mono',monospace;">ImportError</span> / <span style="font-family:'JetBrains Mono',monospace;">ModuleNotFoundError</span> / <span style="font-family:'JetBrains Mono',monospace;">SyntaxError</span></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;">
+    <div style="background:#fff;border:1px solid rgba(22,36,42,0.14);border-radius:12px;padding:26px 28px;display:flex;flex-direction:column;border-top:5px solid #23373B;">
+      <div style="font-size:27px;font-weight:700;color:#23373B;padding-bottom:12px;border-bottom:2px solid #23373B;margin-bottom:18px;">Hard requirements</div>
+      <div style="display:flex;flex-direction:column;gap:13px;font-size:24px;line-height:1.45;color:#3C4C50;">
+        <div style="display:flex;gap:12px;align-items:baseline;"><span style="color:#23373B;font-size:15px;flex:none;">&#9654;</span><div>Mọi thao tác trong <b>Docker</b></div></div>
+        <div style="display:flex;gap:12px;align-items:baseline;"><span style="color:#23373B;font-size:15px;flex:none;">&#9654;</span><div>LLM <b>open-source</b>, &le; <b>10 GB VRAM</b></div></div>
+        <div style="display:flex;gap:12px;align-items:baseline;"><span style="color:#23373B;font-size:15px;flex:none;">&#9654;</span><div>Reference: <b>Gemma-2 9B</b> (Ollama)</div></div>
+      </div>
+    </div>
+    <div style="background:#fff;border:1px solid rgba(22,36,42,0.14);border-radius:12px;padding:26px 28px;display:flex;flex-direction:column;border-top:5px solid #2E7CA6;">
+      <div style="font-size:27px;font-weight:700;color:#23373B;padding-bottom:12px;border-bottom:2px solid #2E7CA6;margin-bottom:18px;">Evaluation budget</div>
+      <div style="display:flex;flex-direction:column;gap:13px;font-size:24px;line-height:1.45;color:#3C4C50;">
+        <div style="display:flex;gap:12px;align-items:baseline;"><span style="color:#2E7CA6;font-size:15px;flex:none;">&#9654;</span><div>Docker build timeout <b>180s</b>; &le; <b>10</b> build/snippet</div></div>
+        <div style="display:flex;gap:12px;align-items:baseline;"><span style="color:#2E7CA6;font-size:15px;flex:none;">&#9654;</span><div>&rArr; trần <b>&asymp;1800s</b> wall-clock/snippet</div></div>
+        <div style="display:flex;gap:12px;align-items:baseline;"><span style="color:#2E7CA6;font-size:15px;flex:none;">&#9654;</span><div>K<sub>solve</sub>&le;50 (logic, no Docker); 1 worker</div></div>
+      </div>
+    </div>
+    <div style="background:#fff;border:1px solid rgba(22,36,42,0.14);border-radius:12px;padding:26px 28px;display:flex;flex-direction:column;border-top:5px solid #E0772B;">
+      <div style="font-size:27px;font-weight:700;color:#23373B;padding-bottom:12px;border-bottom:2px solid #E0772B;margin-bottom:18px;">Metrics</div>
+      <div style="display:flex;flex-direction:column;gap:13px;font-size:24px;line-height:1.45;color:#3C4C50;">
+        <div style="display:flex;gap:12px;align-items:baseline;"><span style="color:#E0772B;font-size:15px;flex:none;">&#9654;</span><div><b>Pass rate</b> (primary)</div></div>
+        <div style="display:flex;gap:12px;align-items:baseline;"><span style="color:#E0772B;font-size:15px;flex:none;">&#9654;</span><div>Avg time / snippet: đo trong cùng trần &asymp;1800s</div></div>
+      </div>
+    </div>
+    </div>
+  </div>
+</section>
+
+<section data-label="Dependency Gap" data-screen-label="Khoảng cách phụ thuộc" data-speaker-notes="Tên import gây hiểu lầm, API biến mất, hiệu ứng domino kéo theo cả chuỗi phiên bản." style="font-family:'Be Vietnam Pro',sans-serif;background:#F6F4EF;color:#23373B;padding:70px 96px 56px;display:flex;flex-direction:column;">
+  <div style="display:flex;flex-direction:column;gap:8px;flex:none;">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:24px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:#E0772B;">Bài toán · 03</div>
+    <h2 style="margin:0;font-size:48px;font-weight:700;color:#23373B;letter-spacing:-0.5px;">The Dependency Gap</h2>
+  </div>
+  <div style="flex:1;display:flex;gap:40px;align-items:flex-start;margin-top:40px;">
+    <div style="flex:1;">
+      <div style="background:#16242A;border-radius:12px;padding:46px 38px;font-family:'JetBrains Mono',monospace;font-size:30px;line-height:2.1;color:#E6EAE9;white-space:nowrap;">
+        <div>from scipy.misc import imread <span style="color:#7E9092;"># bỏ ở scipy &ge; 1.3</span></div>
+        <div>import sklearn.cross_validation <span style="color:#7E9092;"># bỏ ở sklearn &ge; 0.20</span></div>
+        <div>import cv2 <span style="color:#E0772B;"># tên PyPI: opencv-python</span></div>
+      </div>
+      <div style="margin-top:54px;display:flex;flex-direction:column;gap:40px;font-size:32px;color:#3C4C50;">
+        <div style="display:flex;gap:18px;align-items:baseline;"><span style="color:#E0772B;font-size:20px;flex:none;">&#9654;</span><div><b style="color:#23373B;">Tên import gây hiểu lầm:</b> <span style="font-family:'JetBrains Mono',monospace;">cv2 &rarr; opencv-python</span></div></div>
+        <div style="display:flex;gap:18px;align-items:baseline;"><span style="color:#E0772B;font-size:20px;flex:none;">&#9654;</span><div><b style="color:#23373B;">API biến mất:</b> <span style="font-family:'JetBrains Mono',monospace;">imread</span> còn tới scipy &le; 1.2 (bỏ ở 1.3)</div></div>
+        <div style="display:flex;gap:18px;align-items:baseline;"><span style="color:#E0772B;font-size:20px;flex:none;">&#9654;</span><div><b style="color:#23373B;">Hiệu ứng domino:</b> scipy &le; 1.2 &rarr; Python &le; 3.7 &rarr; numpy cũ &hellip;</div></div>
+      </div>
+    </div>
+    <div style="flex:1;display:flex;flex-direction:column;align-items:center;margin-top:16px;padding-right:70px;">
+      <div style="position:relative;width:560px;height:320px;">
+        <div style="position:absolute;left:0;right:0;bottom:0;height:3px;background:rgba(22,36,42,0.22);"></div>
+        <div style="position:absolute;left:8px;bottom:3px;transform-origin:bottom right;transform:rotate(9deg);width:66px;height:210px;"><div style="position:absolute;left:62px;top:10px;width:18px;height:193px;background:#132026;transform:skewY(15deg);transform-origin:top left;border-radius:0 4px 4px 0;"></div><div style="position:absolute;left:6px;top:-12px;width:55px;height:17px;background:#34525C;transform:skewX(-46deg);transform-origin:bottom left;border-radius:3px;"></div><div style="position:absolute;left:0;top:0;width:66px;height:210px;background:#27414B;border-radius:7px;box-shadow:0 18px 24px -11px rgba(0,0,0,0.4);border-top:1.5px solid rgba(255,255,255,0.12);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:33px;"><div style="width:12px;height:12px;border-radius:50%;background:rgba(255,255,255,0.5);box-shadow:inset 0 1px 2px rgba(0,0,0,0.5);"></div><div style="width:12px;height:12px;border-radius:50%;background:rgba(255,255,255,0.5);box-shadow:inset 0 1px 2px rgba(0,0,0,0.5);"></div></div></div>
+        <div style="position:absolute;left:138px;bottom:3px;transform-origin:bottom right;transform:rotate(27deg);width:66px;height:210px;"><div style="position:absolute;left:62px;top:10px;width:18px;height:193px;background:#132026;transform:skewY(15deg);transform-origin:top left;border-radius:0 4px 4px 0;"></div><div style="position:absolute;left:6px;top:-12px;width:55px;height:17px;background:#34525C;transform:skewX(-46deg);transform-origin:bottom left;border-radius:3px;"></div><div style="position:absolute;left:0;top:0;width:66px;height:210px;background:#27414B;border-radius:7px;box-shadow:0 18px 24px -11px rgba(0,0,0,0.4);border-top:1.5px solid rgba(255,255,255,0.12);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:33px;"><div style="width:12px;height:12px;border-radius:50%;background:rgba(255,255,255,0.5);box-shadow:inset 0 1px 2px rgba(0,0,0,0.5);"></div><div style="width:12px;height:12px;border-radius:50%;background:rgba(255,255,255,0.5);box-shadow:inset 0 1px 2px rgba(0,0,0,0.5);"></div></div></div>
+        <div style="position:absolute;left:268px;bottom:3px;transform-origin:bottom right;transform:rotate(45deg);width:66px;height:210px;"><div style="position:absolute;left:62px;top:10px;width:18px;height:193px;background:#132026;transform:skewY(15deg);transform-origin:top left;border-radius:0 4px 4px 0;"></div><div style="position:absolute;left:6px;top:-12px;width:55px;height:17px;background:#34525C;transform:skewX(-46deg);transform-origin:bottom left;border-radius:3px;"></div><div style="position:absolute;left:0;top:0;width:66px;height:210px;background:#27414B;border-radius:7px;box-shadow:0 18px 24px -11px rgba(0,0,0,0.4);border-top:1.5px solid rgba(255,255,255,0.12);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:33px;"><div style="width:12px;height:12px;border-radius:50%;background:rgba(255,255,255,0.5);box-shadow:inset 0 1px 2px rgba(0,0,0,0.5);"></div><div style="width:12px;height:12px;border-radius:50%;background:rgba(255,255,255,0.5);box-shadow:inset 0 1px 2px rgba(0,0,0,0.5);"></div></div></div>
+        <div style="position:absolute;left:398px;bottom:3px;transform-origin:bottom right;transform:rotate(60deg);width:66px;height:210px;"><div style="position:absolute;left:62px;top:10px;width:18px;height:193px;background:#A4520E;transform:skewY(15deg);transform-origin:top left;border-radius:0 4px 4px 0;"></div><div style="position:absolute;left:6px;top:-12px;width:55px;height:17px;background:#F2994E;transform:skewX(-46deg);transform-origin:bottom left;border-radius:3px;"></div><div style="position:absolute;left:0;top:0;width:66px;height:210px;background:#E0772B;border-radius:7px;box-shadow:0 18px 24px -11px rgba(0,0,0,0.4);border-top:1.5px solid rgba(255,255,255,0.25);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:33px;"><div style="width:12px;height:12px;border-radius:50%;background:rgba(255,255,255,0.7);box-shadow:inset 0 1px 2px rgba(0,0,0,0.5);"></div><div style="width:12px;height:12px;border-radius:50%;background:rgba(255,255,255,0.7);box-shadow:inset 0 1px 2px rgba(0,0,0,0.5);"></div></div></div>
+      </div>
+      <div style="display:flex;width:560px;justify-content:space-between;align-items:center;margin-top:56px;">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:27px;background:#fff;border:1px solid rgba(22,36,42,0.18);border-radius:4px;padding:8px 14px;">cv2</div>
+        <div style="color:#23373B;font-size:25px;">&rarr;</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:27px;background:#fff;border:1px solid rgba(22,36,42,0.18);border-radius:4px;padding:8px 14px;">imread</div>
+        <div style="color:#23373B;font-size:25px;">&rarr;</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:27px;background:#fff;border:1px solid rgba(22,36,42,0.18);border-radius:4px;padding:8px 14px;">scipy&le;1.2</div>
+        <div style="color:#23373B;font-size:25px;">&rarr;</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:27px;background:#fff;border:1px solid #E0772B;color:#E0772B;border-radius:4px;padding:8px 14px;">Python&le;3.7</div>
+      </div>
+      <div style="font-style:italic;font-size:28px;color:#5C6B6E;margin-top:44px;">Hiệu ứng domino trong Dependency Hell</div>
+    </div>
+  </div>
+  <div style="flex:none;margin-top:10px;padding-top:18px;border-top:1px solid rgba(22,36,42,0.12);text-align:center;font-size:26px;color:#23373B;">Không gian tìm kiếm: ~<b style="color:#B5483F;">500K</b> package PyPI &times; <b style="color:#B5483F;">chục</b> phiên bản &times; <b style="color:#B5483F;">nhiều</b> bản Python &rArr; <i>bùng nổ tổ hợp</i>.</div>
+</section>
+
+<section data-label="Bùng nổ tổ hợp" data-screen-label="Bùng nổ tổ hợp" data-speaker-notes="500K package × ~10 version × ~8 Python ≈ 10^7 tổ hợp; chỉ 1 lời giải. Không thể thử tay, cần solver/agent tỉa không gian." style="font-family:'Be Vietnam Pro',sans-serif;background:#F6F4EF;color:#23373B;padding:70px 96px 56px;display:flex;flex-direction:column;">
+  <div style="display:flex;flex-direction:column;gap:8px;flex:none;">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:24px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:#E0772B;">Bài toán · 04</div>
+    <h2 style="margin:0;font-size:48px;font-weight:700;color:#23373B;letter-spacing:-0.5px;">Bùng nổ tổ hợp: Không gian tìm kiếm khổng lồ</h2>
+  </div>
+  <div style="flex:none;display:flex;align-items:center;justify-content:center;gap:34px;margin-top:44px;">
+    <div style="background:#fff;border:1px solid rgba(22,36,42,0.14);border-radius:14px;padding:22px 42px;text-align:center;"><div style="font-size:58px;font-weight:800;color:#23373B;line-height:1;">~500K</div><div style="font-size:26px;color:#5C6B6E;margin-top:8px;">package PyPI</div></div>
+    <div style="font-size:48px;color:#B5483F;font-weight:700;">&times;</div>
+    <div style="background:#fff;border:1px solid rgba(22,36,42,0.14);border-radius:14px;padding:22px 42px;text-align:center;"><div style="font-size:58px;font-weight:800;color:#23373B;line-height:1;">~10</div><div style="font-size:26px;color:#5C6B6E;margin-top:8px;">phiên bản / gói</div></div>
+    <div style="font-size:48px;color:#B5483F;font-weight:700;">&times;</div>
+    <div style="background:#fff;border:1px solid rgba(22,36,42,0.14);border-radius:14px;padding:22px 42px;text-align:center;"><div style="font-size:58px;font-weight:800;color:#23373B;line-height:1;">~8</div><div style="font-size:26px;color:#5C6B6E;margin-top:8px;">runtime Python</div></div>
+    <div style="font-size:48px;color:#B5483F;font-weight:700;">=</div>
+    <div style="background:#B5483F;border-radius:14px;padding:22px 42px;text-align:center;color:#fff;"><div style="font-size:58px;font-weight:800;line-height:1;">&asymp;10<sup style="font-size:32px;">7</sup></div><div style="font-size:26px;opacity:0.9;margin-top:8px;">tổ hợp</div></div>
+  </div>
+  <div style="flex:1;display:flex;gap:54px;align-items:stretch;margin-top:20px;">
+    <div style="flex:1.85;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:30px;">
+      <svg viewBox="0 0 880 330" style="width:100%;height:auto;max-width:1280px;">
+        <defs>
+          <pattern id="dF" width="16" height="16" patternUnits="userSpaceOnUse"><circle cx="4" cy="4" r="2.1" fill="#23373B" opacity="0.78"></circle></pattern>
+          <pattern id="dT" width="16" height="16" patternUnits="userSpaceOnUse"><circle cx="4" cy="4" r="1.7" fill="#23373B" opacity="0.28"></circle></pattern>
+          <pattern id="dR" width="16" height="16" patternUnits="userSpaceOnUse"><circle cx="4" cy="4" r="1.7" fill="#23373B" opacity="0.42"></circle></pattern>
+        </defs>
+        <text x="167" y="42" font-family="'JetBrains Mono',monospace" font-size="21" fill="#5C6B6E" text-anchor="middle">~500K package</text>
+        <text x="300" y="42" font-family="'JetBrains Mono',monospace" font-size="21" fill="#5C6B6E" text-anchor="middle">&#215;~10 ver</text>
+        <rect x="18" y="142" width="82" height="50" rx="7" fill="#23373B" opacity="0.1"></rect>
+        <rect x="18" y="142" width="82" height="50" rx="7" fill="none" stroke="#23373B" stroke-width="1.6"></rect>
+        <text x="59" y="164" font-size="19" font-weight="700" fill="#23373B" text-anchor="middle">1</text>
+        <text x="59" y="184" font-family="'JetBrains Mono',monospace" font-size="17" fill="#23373B" text-anchor="middle">import</text>
+        <g stroke="#23373B" stroke-opacity="0.4" stroke-width="1.2" fill="none">
+          <line x1="100" y1="167" x2="130" y2="100"></line>
+          <line x1="100" y1="167" x2="130" y2="155"></line>
+          <line x1="100" y1="167" x2="130" y2="210"></line>
+        </g>
+        <g font-family="'JetBrains Mono',monospace" font-size="19">
+          <rect x="130" y="86" width="78" height="30" rx="4" fill="#23373B" fill-opacity="0.08" stroke="#23373B" stroke-opacity="0.45" stroke-width="1"></rect><text x="169" y="106" fill="#23373B" text-anchor="middle">scipy</text>
+          <rect x="130" y="141" width="78" height="30" rx="4" fill="#23373B" fill-opacity="0.08" stroke="#23373B" stroke-opacity="0.45" stroke-width="1"></rect><text x="169" y="161" fill="#23373B" text-anchor="middle">numpy</text>
+          <rect x="130" y="196" width="78" height="30" rx="4" fill="#23373B" fill-opacity="0.08" stroke="#23373B" stroke-opacity="0.45" stroke-width="1"></rect><text x="169" y="216" fill="#23373B" text-anchor="middle">cv2</text>
+        </g>
+        <text x="169" y="258" font-size="26" fill="#23373B" opacity="0.55" text-anchor="middle">&#8942;</text>
+        <g stroke="#23373B" stroke-opacity="0.35" stroke-width="1" fill="none">
+          <line x1="208" y1="101" x2="280" y2="92"></line><line x1="208" y1="101" x2="280" y2="101"></line><line x1="208" y1="101" x2="280" y2="110"></line>
+          <line x1="208" y1="156" x2="280" y2="147"></line><line x1="208" y1="156" x2="280" y2="156"></line><line x1="208" y1="156" x2="280" y2="165"></line>
+          <line x1="208" y1="211" x2="280" y2="202"></line><line x1="208" y1="211" x2="280" y2="211"></line><line x1="208" y1="211" x2="280" y2="220"></line>
+        </g>
+        <g fill="#23373B" fill-opacity="0.55">
+          <circle cx="286" cy="92" r="4"></circle><circle cx="286" cy="101" r="4"></circle><circle cx="286" cy="110" r="4"></circle>
+          <circle cx="286" cy="147" r="4"></circle><circle cx="286" cy="156" r="4"></circle><circle cx="286" cy="165" r="4"></circle>
+          <circle cx="286" cy="202" r="4"></circle><circle cx="286" cy="211" r="4"></circle><circle cx="286" cy="220" r="4"></circle>
+        </g>
+        <g stroke="#E0772B" stroke-opacity="0.35" stroke-width="1" fill="none">
+          <line x1="296" y1="150" x2="462" y2="110"></line><line x1="296" y1="150" x2="462" y2="160"></line><line x1="296" y1="150" x2="462" y2="210"></line><line x1="296" y1="150" x2="462" y2="255"></line>
+        </g>
+        <polygon points="462,100 700,100 762,55 524,55" fill="#41606B" fill-opacity="0.22"></polygon>
+        <polygon points="700,100 762,55 762,220 700,265" fill="#152128" fill-opacity="0.28"></polygon>
+        <rect x="462" y="100" width="238" height="165" fill="#fff"></rect>
+        <rect x="462" y="100" width="238" height="165" fill="url(#dF)"></rect>
+        <polygon points="462,100 700,100 762,55 524,55" fill="url(#dT)"></polygon>
+        <polygon points="700,100 762,55 762,220 700,265" fill="url(#dR)"></polygon>
+        <g stroke="#23373B" stroke-opacity="0.5" stroke-width="1.4" fill="none">
+          <rect x="462" y="100" width="238" height="165"></rect>
+          <polygon points="462,100 524,55 762,55 700,100" fill="none" stroke="#23373B" stroke-width="2.6" stroke-linejoin="round"></polygon><polygon points="462,100 700,100 700,265 462,265" fill="none" stroke="#23373B" stroke-width="2.6" stroke-linejoin="round"></polygon></polygon>
+          <polygon points="700,100 762,55 762,220 700,265" fill="none" stroke="#23373B" stroke-width="2.6" stroke-linejoin="round"></polygon></polygon>
+        </g>
+        <g stroke="#23373B" stroke-opacity="0.5" stroke-width="1" fill="none" marker-end="url(#none)">
+          <line x1="500" y1="78" x2="540" y2="62"></line>
+        </g>
+        <text x="497" y="74" font-family="'JetBrains Mono',monospace" font-size="20" fill="#23373B" text-anchor="end">&#215;~8 Python</text>
+        <line x1="595" y1="178" x2="595" y2="48" stroke="#E0772B" stroke-width="1.6"></line>
+        <circle cx="595" cy="185" r="11" fill="#fff"></circle>
+        <circle cx="595" cy="185" r="22" fill="#E0772B" fill-opacity="0.13"></circle><circle cx="595" cy="185" r="14" fill="none" stroke="#E0772B" stroke-width="2.3"></circle><circle cx="595" cy="185" r="8.5" fill="#fff"></circle><circle cx="595" cy="185" r="5.5" fill="#E0772B"></circle>
+        <line x1="595" y1="48" x2="595" y2="168" stroke="#E0772B" stroke-width="1.7" stroke-dasharray="5 4" opacity="0.6"></line></circle>
+        <text x="595" y="40" font-family="'JetBrains Mono',monospace" font-size="21" font-weight="700" fill="#E0772B" text-anchor="middle">1 lời giải</text>
+        <text x="612" y="300" font-size="27" font-weight="800" fill="#B5483F" text-anchor="middle">&#8776;10&#8311; tổ hợp</text>
+      </svg>
+      <div style="font-style:italic;font-size:30px;color:#5C6B6E;">Mò kim đáy bể: 1 tổ hợp đúng giữa ~10⁷ ứng viên</div>
+    </div>
+    <div style="flex:1;display:flex;flex-direction:column;justify-content:center;">
+      <div style="font-size:36px;font-weight:700;color:#23373B;margin-bottom:34px;">Mỗi <span style="font-family:'JetBrains Mono',monospace;">import</span> phải khớp đồng thời:</div>
+      <div style="display:flex;flex-direction:column;gap:34px;font-size:33px;color:#3C4C50;">
+        <div style="display:flex;gap:18px;align-items:baseline;"><span style="color:#E0772B;font-size:23px;flex:none;">&#9654;</span><div><span style="color:#23373B;font-weight:700;">Package</span>: đúng tên pip <span style="font-family:'JetBrains Mono',monospace;font-size:29px;color:#5C6B6E;">(cv2 &rarr; opencv-python)</span></div></div>
+        <div style="display:flex;gap:18px;align-items:baseline;"><span style="color:#E0772B;font-size:23px;flex:none;">&#9654;</span><div><span style="color:#23373B;font-weight:700;">Version</span>: 1 trong ~10 bản thư viện</div></div>
+        <div style="display:flex;gap:18px;align-items:baseline;"><span style="color:#E0772B;font-size:23px;flex:none;">&#9654;</span><div><span style="color:#23373B;font-weight:700;">Python</span>: 1 trong ~8 runtime</div></div>
+      </div>
+      <div style="margin-top:42px;padding-top:32px;border-top:1px solid rgba(22,36,42,0.12);font-size:33px;color:#23373B;">&rArr; Không thể thử hết bằng tay, cần <b>solver / agent</b> để <i>tỉa không gian</i>.</div>
+    </div>
+  </div>
+</section>
+
+<section data-label="Bộ dữ liệu" data-screen-label="Bộ dữ liệu" data-speaker-notes="HG2.9K (in-distribution, 2891 gist khó) và GitChameleon (OOD, 328 snippet có unit test ẩn)." style="font-family:'Be Vietnam Pro',sans-serif;background:#F6F4EF;color:#23373B;padding:70px 96px 52px;display:flex;flex-direction:column;">
+  <div style="display:flex;flex-direction:column;gap:8px;flex:none;">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:24px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:#E0772B;">Bài toán · 05</div>
+    <h2 style="margin:0;font-size:48px;font-weight:700;color:#23373B;letter-spacing:-0.5px;">Datasets</h2>
+  </div>
+  <div style="flex:1;display:flex;gap:40px;margin-top:24px;align-items:stretch;">
+    <div style="flex:1;background:#fff;border:1px solid rgba(22,36,42,0.14);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;">
+      <div style="height:9px;background:#2C3E6B;"></div>
+      <div style="padding:54px 50px;display:flex;flex-direction:column;justify-content:space-between;gap:30px;flex:1;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;padding-bottom:26px;border-bottom:1px solid rgba(44,62,107,0.18);"><div style="font-size:50px;font-weight:800;color:#2C3E6B;">HG2.9K</div><div style="font-family:'JetBrains Mono',monospace;font-size:23px;font-weight:700;background:#2C3E6B;color:#fff;padding:8px 16px;border-radius:5px;">IN-DISTRIBUTION</div></div>
+        <div style="font-size:31px;line-height:1.5;color:#3C4C50;"><span style="color:#2C3E6B;font-weight:700;">Quy mô</span>: 2.891 gist Python &ldquo;khó&rdquo; (hard subset của Gistable, ICSME&rsquo;18).</div>
+        <div style="font-size:31px;line-height:1.5;color:#3C4C50;"><span style="color:#2C3E6B;font-weight:700;">Đặc điểm</span>: file đơn, không requirements; lẫn Python 2/3; thư viện khoa học cũ; phụ thuộc native C/C++.</div>
+        <div style="font-size:31px;line-height:1.5;color:#3C4C50;"><span style="color:#2C3E6B;font-weight:700;">Nhiệm vụ</span>: khôi phục môi trường để mọi <span style="font-family:'JetBrains Mono',monospace;">import</span> chạy được trong Docker.</div>
+        <div style="font-size:31px;line-height:1.5;color:#3C4C50;"><span style="color:#2C3E6B;font-weight:700;">Đánh giá</span>: Pass rate (build + import OK).</div>
+      </div>
+    </div>
+    <div style="flex:1;background:#fff;border:1px solid rgba(22,36,42,0.14);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;">
+      <div style="height:9px;background:#2E7D5B;"></div>
+      <div style="padding:54px 50px;display:flex;flex-direction:column;justify-content:space-between;gap:30px;flex:1;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;padding-bottom:26px;border-bottom:1px solid rgba(46,125,91,0.18);"><div style="font-size:50px;font-weight:800;color:#2E7D5B;">GitChameleon</div><div style="font-family:'JetBrains Mono',monospace;font-size:23px;font-weight:700;background:#2E7D5B;color:#fff;padding:8px 16px;border-radius:5px;">OUT-OF-DISTRIBUTION</div></div>
+        <div style="font-size:31px;line-height:1.5;color:#3C4C50;"><span style="color:#2E7D5B;font-weight:700;">Quy mô</span>: 328 snippet Python, kèm <b>unit test ẩn</b> + version ground-truth.</div>
+        <div style="font-size:31px;line-height:1.5;color:#3C4C50;"><span style="color:#2E7D5B;font-weight:700;">Đặc điểm</span>: xoáy vào <i>breaking changes</i> giữa các version (phải dùng đúng API của đúng bản).</div>
+        <div style="font-size:31px;line-height:1.5;color:#3C4C50;"><span style="color:#2E7D5B;font-weight:700;">Nhiệm vụ</span>: chọn <b>đúng phiên bản</b> để snippet vừa chạy vừa pass unit test.</div>
+        <div style="font-size:31px;line-height:1.5;color:#3C4C50;"><span style="color:#2E7D5B;font-weight:700;">Đánh giá</span>: Pass rate theo unit test (đúng ngữ nghĩa).</div>
+      </div>
+    </div>
+  </div>
+  <div style="flex:none;text-align:center;font-size:24px;color:#5C6B6E;margin-top:22px;line-height:1.4;">HG2.9K: hard subset 2891 gist từ Gistable (Horton &amp; Parnin, ICSME&rsquo;18). GitChameleon: 328 snippet có unit test, re-frame từ GitChameleon 2.0 (arXiv:2507.12367) để đánh giá tổng quát hóa (OOD).</div>
+</section>
+
+<section data-label="Liên quan: 3 hướng" data-screen-label="Related Work 3 hướng" data-speaker-notes="3 hướng: Knowledge Graph, Regex/Log-parsing, LLM+RAG. Khoảng trống: chưa ai học từ thất bại để thu hẹp không gian." style="font-family:'Be Vietnam Pro',sans-serif;background:#F6F4EF;color:#23373B;padding:70px 96px 52px;display:flex;flex-direction:column;">
+  <div style="display:flex;flex-direction:column;gap:8px;flex:none;">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:24px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:#E0772B;">Công trình liên quan · 06</div>
+    <h2 style="margin:0;font-size:48px;font-weight:700;color:#23373B;letter-spacing:-0.5px;">Related Work: 3 hướng tiếp cận</h2>
+  </div>
+  <div style="flex:none;display:flex;gap:28px;margin:auto 0;align-items:stretch;">
+    <div style="flex:1;background:#fff;border:1px solid rgba(22,36,42,0.14);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;">
+      <div style="height:8px;background:#2C3E6B;flex:none;"></div>
+      <div style="flex:1;padding:30px 34px 34px;display:flex;flex-direction:column;justify-content:flex-start;gap:22px;">
+      <div style="display:flex;flex-direction:column;gap:18px;"><div style="display:flex;align-items:center;gap:16px;"><div style="width:48px;height:48px;border-radius:50%;background:#2C3E6B;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:26px;">1</div><div style="font-size:30px;font-weight:700;color:#2C3E6B;">Knowledge Graph</div></div><div style="height:3px;background:#2C3E6B;border-radius:2px;width:100%;"></div></div>
+      <div style="font-size:28px;line-height:1.55;color:#3C4C50;"><b>Ý tưởng:</b> encode quan hệ module–version thành đồ thị tri thức (Libraries.io, PyPI); truy vấn để suy dependency tương thích.</div>
+      <div style="font-size:28px;line-height:1.55;color:#2E7D5B;"><b>✓ Ưu:</b> cấu trúc rõ, deterministic, dễ giải thích.</div>
+      <div style="font-size:28px;line-height:1.55;color:#B5483F;"><b>✗ Hạn chế:</b> DB lỗi thời nhanh, gãy khi registry đổi schema.</div>
+      </div>
+    </div>
+    <div style="flex:1;background:#fff;border:1px solid rgba(22,36,42,0.14);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;">
+      <div style="height:8px;background:#C5A33F;flex:none;"></div>
+      <div style="flex:1;padding:30px 34px 34px;display:flex;flex-direction:column;justify-content:flex-start;gap:22px;">
+      <div style="display:flex;flex-direction:column;gap:18px;"><div style="display:flex;align-items:center;gap:16px;"><div style="width:48px;height:48px;border-radius:50%;background:#C5A33F;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:26px;">2</div><div style="font-size:30px;font-weight:700;color:#C5A33F;">Regex / Log-parsing</div></div><div style="height:3px;background:#C5A33F;border-radius:2px;width:100%;"></div></div>
+      <div style="font-size:28px;line-height:1.55;color:#3C4C50;"><b>Ý tưởng:</b> parse error log bằng regex để suy missing dependency, patch môi trường rồi build lại.</div>
+      <div style="font-size:28px;line-height:1.55;color:#2E7D5B;"><b>✓ Ưu:</b> nhẹ, runtime-driven, không cần DB.</div>
+      <div style="font-size:28px;line-height:1.55;color:#B5483F;"><b>✗ Hạn chế:</b> <i>brittle</i>, log đổi định dạng (Python/pip update) là parser vỡ.</div>
+      </div>
+    </div>
+    <div style="flex:1;background:#fff;border:1px solid rgba(22,36,42,0.14);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;">
+      <div style="height:8px;background:#2E7D5B;flex:none;"></div>
+      <div style="flex:1;padding:30px 34px 34px;display:flex;flex-direction:column;justify-content:flex-start;gap:22px;">
+      <div style="display:flex;flex-direction:column;gap:18px;"><div style="display:flex;align-items:center;gap:16px;"><div style="width:48px;height:48px;border-radius:50%;background:#2E7D5B;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:26px;">3</div><div style="font-size:30px;font-weight:700;color:#2E7D5B;">LLM + RAG</div></div><div style="height:3px;background:#2E7D5B;border-radius:2px;width:100%;"></div></div>
+      <div style="font-size:28px;line-height:1.55;color:#3C4C50;"><b>Ý tưởng:</b> LLM sinh giả thuyết, RAG cấp PyPI metadata, Docker build phản hồi, lặp lại.</div>
+      <div style="font-size:28px;line-height:1.55;color:#2E7D5B;"><b>✓ Ưu:</b> adaptive, không cần hạ tầng tĩnh, tận dụng pretrain.</div>
+      <div style="font-size:28px;line-height:1.55;color:#B5483F;"><b>✗ Hạn chế:</b> thử-sai mù, thất bại <i>không thành tri thức</i> để tỉa không gian.</div>
+      </div>
+    </div>
+  </div>
+  <div style="flex:none;text-align:center;font-size:26px;color:#23373B;margin-top:16px;"><b style="color:#E0772B;">Khoảng trống:</b> chưa phương pháp nào <i>học từ thất bại</i> để thu hẹp không gian tìm kiếm một cách hệ thống.</div>
+</section>
+
+<section data-label="Liên quan: tổng hợp" data-screen-label="Related Work tổng hợp" data-speaker-notes="Bảng tổng hợp các phương pháp; KG-era chạm trần ~47% trên HG2.9K, PLLM (LLM paradigm) phá vỡ lên ~55%." style="font-family:'Be Vietnam Pro',sans-serif;background:#F6F4EF;color:#23373B;padding:70px 96px 52px;display:flex;flex-direction:column;">
+  <div style="display:flex;flex-direction:column;gap:8px;flex:none;">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:24px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:#E0772B;">Công trình liên quan · 07</div>
+    <h2 style="margin:0;font-size:48px;font-weight:700;color:#23373B;letter-spacing:-0.5px;">Related Work: Tổng hợp các phương pháp</h2>
+  </div>
+  <div style="flex:1;display:flex;gap:40px;margin-top:40px;align-items:flex-start;">
+    <div style="flex:1.1;display:flex;flex-direction:column;justify-content:center;">
+      <table style="width:100%;border-collapse:collapse;font-size:26px;">
+        <thead><tr style="color:#5C6B6E;font-family:'JetBrains Mono',monospace;font-size:24px;text-transform:uppercase;letter-spacing:1px;"><th style="text-align:left;padding:16px 10px;white-space:nowrap;border-bottom:2px solid rgba(22,36,42,0.25);">Method</th><th style="text-align:left;padding:16px 10px;white-space:nowrap;border-bottom:2px solid rgba(22,36,42,0.25);">Venue</th><th style="text-align:left;padding:16px 10px;white-space:nowrap;border-bottom:2px solid rgba(22,36,42,0.25);">Approach</th><th style="text-align:left;padding:16px 10px;white-space:nowrap;border-bottom:2px solid rgba(22,36,42,0.25);">Key limitation</th></tr></thead>
+        <tbody>
+          <tr style="background:rgba(44,62,107,0.07);"><td style="padding:30px 10px;white-space:nowrap;font-weight:700;">PyEGo</td><td style="padding:30px 10px;white-space:nowrap;">ICSE&rsquo;22</td><td style="padding:30px 10px;white-space:nowrap;">KG + SMT</td><td style="padding:30px 10px;white-space:nowrap;color:#3C4C50;">DB stale</td></tr>
+          <tr style="background:rgba(44,62,107,0.07);"><td style="padding:30px 10px;white-space:nowrap;font-weight:700;">ReadPyE</td><td style="padding:30px 10px;white-space:nowrap;">TSE&rsquo;24</td><td style="padding:30px 10px;white-space:nowrap;">KG + README</td><td style="padding:30px 10px;white-space:nowrap;color:#3C4C50;">DB drift</td></tr>
+          <tr style="background:rgba(185,138,46,0.12);"><td style="padding:30px 10px;white-space:nowrap;font-weight:700;">PyDFix</td><td style="padding:30px 10px;white-space:nowrap;">ISSTA&rsquo;21</td><td style="padding:30px 10px;white-space:nowrap;">Regex log-parse</td><td style="padding:30px 10px;white-space:nowrap;color:#3C4C50;">Format brittle</td></tr>
+          <tr style="background:rgba(44,62,107,0.04);"><td style="padding:30px 10px;white-space:nowrap;font-weight:700;">GPT-4o / o1</td><td style="padding:30px 10px;white-space:nowrap;">2024</td><td style="padding:30px 10px;white-space:nowrap;">Closed LLM</td><td style="padding:30px 10px;white-space:nowrap;color:#3C4C50;">Closed, expensive</td></tr>
+          <tr style="background:rgba(44,62,107,0.04);"><td style="padding:30px 10px;white-space:nowrap;font-weight:700;">GPT-4.1 + RAG</td><td style="padding:30px 10px;white-space:nowrap;">2025</td><td style="padding:30px 10px;white-space:nowrap;">Closed + RAG</td><td style="padding:30px 10px;white-space:nowrap;color:#3C4C50;">No constraint</td></tr>
+          <tr style="background:rgba(46,125,91,0.1);"><td style="padding:30px 10px;white-space:nowrap;font-weight:700;">PLLM</td><td style="padding:30px 10px;white-space:nowrap;">arXiv&rsquo;25</td><td style="padding:30px 10px;white-space:nowrap;">Open LLM + RAG</td><td style="padding:30px 10px;white-space:nowrap;color:#3C4C50;">Blind trial-error</td></tr>
+          <tr style="background:rgba(46,125,91,0.1);"><td style="padding:30px 10px;white-space:nowrap;font-weight:700;">SMT-LLM</td><td style="padding:30px 10px;white-space:nowrap;">FSE&rsquo;26</td><td style="padding:30px 10px;white-space:nowrap;">Z3 + LLM imput.</td><td style="padding:30px 10px;white-space:nowrap;color:#3C4C50;">Static metadata</td></tr>
+        </tbody>
+      </table>
+      <div style="display:flex;gap:22px;margin-top:22px;font-family:'JetBrains Mono',monospace;font-size:22px;color:#5C6B6E;"><span><span style="color:#2C3E6B;">■</span> KG</span><span><span style="color:#B98A2E;">■</span> Log-parse</span><span><span style="color:#2C3E6B;">■</span> Closed LLM</span><span><span style="color:#2E7D5B;">■</span> Open LLM+RAG</span></div>
+    </div>
+    <div style="flex:0.95;display:flex;flex-direction:column;align-items:center;">
+      <div style="position:relative;width:100%;max-width:620px;height:560px;border-left:2px solid rgba(22,36,42,0.35);border-bottom:2px solid rgba(22,36,42,0.35);margin-top:50px;">
+        <div style="position:absolute;left:0;top:0;width:80%;height:100%;background:linear-gradient(180deg,rgba(44,62,107,0.12),rgba(44,62,107,0.04));"></div>
+        <div style="position:absolute;left:80%;right:0;top:0;height:100%;background:linear-gradient(180deg,rgba(46,125,91,0.16),rgba(46,125,91,0.05));"></div>
+        <div style="position:absolute;left:80%;top:0;height:100%;border-left:2px dotted rgba(22,36,42,0.22);"></div>
+        <div style="position:absolute;left:0;top:-40px;font-family:'JetBrains Mono',monospace;font-size:23px;color:#5C6B6E;">Pass rate HG2.9K (%)</div>
+        <div style="position:absolute;left:0;right:0;top:34%;border-top:3px dashed #B5483F;"></div>
+        <div style="position:absolute;left:6px;top:calc(34% - 40px);font-size:23px;font-weight:700;color:#B5483F;background:#F6F4EF;padding:3px 12px;border:1px solid rgba(181,72,63,0.45);border-radius:4px;">KG ceiling ~47%</div>
+        <div style="position:absolute;left:46%;top:42%;width:24px;height:24px;border-radius:50%;background:#2C3E6B;transform:translate(-50%,-50%);box-shadow:0 0 0 7px rgba(44,62,107,0.16);"></div>
+        <div style="position:absolute;left:46%;top:calc(42% + 22px);transform:translateX(-50%);font-size:23px;font-weight:600;color:#2C3E6B;">PyEGo</div>
+        <div style="position:absolute;left:72%;top:34%;width:24px;height:24px;border-radius:50%;background:#2C3E6B;transform:translate(-50%,-50%);box-shadow:0 0 0 7px rgba(44,62,107,0.16);"></div>
+        <div style="position:absolute;left:72%;top:calc(34% + 22px);transform:translateX(-50%);font-size:23px;font-weight:600;color:#2C3E6B;">ReadPyE</div>
+        <div style="position:absolute;left:91%;top:14%;width:26px;height:26px;border-radius:50%;background:#2E7D5B;transform:translate(-50%,-50%);box-shadow:0 0 0 9px rgba(46,125,91,0.20);"></div>
+        <div style="position:absolute;left:91%;top:calc(14% - 40px);transform:translateX(-50%);font-size:24px;font-weight:700;color:#2E7D5B;">PLLM</div>
+        <div style="position:absolute;left:8px;bottom:-34px;font-family:'JetBrains Mono',monospace;font-size:22px;color:#5C6B6E;">2018</div>
+        <div style="position:absolute;right:0;bottom:-34px;font-family:'JetBrains Mono',monospace;font-size:22px;color:#5C6B6E;">2026 &rarr;</div>
+      </div>
+      <div style="font-size:26px;color:#23373B;margin-top:62px;text-align:center;max-width:560px;line-height:1.4;">KG-era chạm <b style="color:#B5483F;">trần ~47%</b>; PLLM (LLM paradigm) phá vỡ lên <b style="color:#2E7D5B;">~55%</b>.</div>
+    </div>
+  </div>
+</section>
+
+<section data-label="§ MEMRES" data-screen-label="Section: MEMRES" data-speaker-notes="Mở phần 2: MEMRES, phương pháp nền tảng." style="font-family:'Be Vietnam Pro',sans-serif;background:#16242A;color:#F6F4EF;padding:0;display:flex;flex-direction:column;position:relative;overflow:hidden;">
+  <div style="position:absolute;right:-34px;top:50%;margin-top:-330px;font-family:'Be Vietnam Pro',sans-serif;font-size:660px;font-weight:800;line-height:1;color:rgba(255,255,255,0.04);letter-spacing:-24px;pointer-events:none;">02</div>
+  <div style="position:absolute;right:96px;top:50%;margin-top:-250px;width:760px;height:500px;z-index:1;pointer-events:none;"><svg viewBox="0 0 760 500" style="width:100%;height:100%;overflow:visible;">
+    <!-- faint feedback loop: memory -> back to top of cascade -->
+    <path d="M 605 320 C 700 300 710 110 645 82 C 595 60 205 60 132 75" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="2" stroke-dasharray="6 7"/>
+    <polygon points="130,75 148,64 148,87" fill="rgba(255,255,255,0.14)"/>
+    <!-- descending cascade: 5 level-segments stepping down, steel-blue -->
+    <g fill="none" stroke="#7FA6B5" stroke-width="3" stroke-linecap="round">
+      <line x1="120" y1="120" x2="240" y2="120"/>
+      <line x1="240" y1="120" x2="240" y2="170"/>
+      <line x1="240" y1="170" x2="350" y2="170"/>
+      <line x1="350" y1="170" x2="350" y2="220"/>
+      <line x1="350" y1="220" x2="450" y2="220"/>
+      <line x1="450" y1="220" x2="450" y2="270"/>
+      <line x1="450" y1="270" x2="540" y2="270"/>
+      <line x1="540" y1="270" x2="540" y2="320"/>
+      <line x1="540" y1="320" x2="620" y2="320"/>
+    </g>
+    <!-- dots at each level -->
+    <g fill="#7FA6B5">
+      <circle cx="120" cy="120" r="6"/>
+      <circle cx="240" cy="170" r="6"/>
+      <circle cx="350" cy="220" r="6"/>
+      <circle cx="450" cy="270" r="6"/>
+      <circle cx="540" cy="320" r="6"/>
+    </g>
+    <!-- connector from cascade end into memory ledger -->
+    <line x1="620" y1="320" x2="620" y2="372" fill="none" stroke="#7FA6B5" stroke-width="3" stroke-linecap="round"/>
+    <!-- memory ledger: 3 stacked offset rounded rects (orange) -->
+    <g fill="none" stroke="#E0772B" stroke-width="3">
+      <rect x="528" y="408" width="150" height="34" rx="9"/>
+      <rect x="540" y="390" width="150" height="34" rx="9"/>
+      <rect x="552" y="372" width="150" height="34" rx="9"/>
+    </g>
+    <!-- mono labels -->
+    <text x="120" y="98" font-family="JetBrains Mono, monospace" font-size="19" fill="#9DAEB0" letter-spacing="1">cascade &middot; 6 t&#7847;ng</text>
+    <text x="702" y="362" font-family="JetBrains Mono, monospace" font-size="19" fill="#E0772B" letter-spacing="1" text-anchor="end">memory</text>
+  </svg></div>
+  <div style="position:absolute;top:56px;left:96px;right:96px;display:flex;justify-content:space-between;align-items:center;font-family:'JetBrains Mono',monospace;font-size:22px;letter-spacing:3px;color:#6B8082;text-transform:uppercase;z-index:1;"><span>MEMRES &rarr; CGAR</span><span>02 / 05</span></div>
+  <div style="position:absolute;top:100px;left:96px;right:96px;height:1px;background:rgba(255,255,255,0.1);"></div>
+  <div style="flex:1;display:flex;flex-direction:column;justify-content:center;padding:0 96px;position:relative;z-index:1;">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:27px;letter-spacing:5px;color:#E0772B;text-transform:uppercase;margin-bottom:22px;">Phần 02</div>
+    <h2 style="margin:0;font-size:128px;font-weight:800;letter-spacing:-3px;line-height:0.95;color:#F6F4EF;">MEMRES</h2>
+    <div style="width:120px;height:5px;background:#E0772B;margin:38px 0;"></div>
+    <div style="font-size:30px;color:#9DAEB0;max-width:1150px;line-height:1.45;">Phương pháp nền tảng: <i>Memory-augmented retry</i></div>
+  </div>
+</section>
+
+<section data-label="MEMRES" data-screen-label="MEMRES Lookup-First" data-speaker-notes="MEMRES: cascade rẻ trước, đắt sau; memory tích lũy giữa retries. Cứu nhiều lỗi nhưng chưa biến thất bại thành ràng buộc logic." style="font-family:'Be Vietnam Pro',sans-serif;background:#F6F4EF;color:#23373B;padding:70px 96px 52px;display:flex;flex-direction:column;">
+  <div style="display:flex;flex-direction:column;gap:8px;flex:none;">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:24px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:#E0772B;">MEMRES · 08</div>
+    <h2 style="margin:0;font-size:48px;font-weight:700;color:#23373B;letter-spacing:-0.5px;">MEMRES: Lookup-First, LLM-Last</h2>
+  </div>
+  <div style="flex:1;display:flex;gap:30px;margin-top:26px;align-items:center;">
+    <div style="flex:1.5;display:flex;flex-direction:column;gap:18px;">
+      <div style="width:100%;height:520px;display:flex;align-items:center;justify-content:center;"><a href="https://arxiv.org/pdf/2604.16941" target="_blank" style="position:relative;display:inline-block;line-height:0;text-decoration:none;"><img src="uploads/memres-pipeline-crop.png" alt="Sơ đồ pipeline MEMRES" style="display:block;width:1040px;max-width:100%;height:auto;border:3px solid #E0772B;border-radius:8px;box-shadow:0 8px 26px rgba(0,0,0,0.18);"><span style="position:absolute;top:12px;right:12px;background:rgba(14,21,24,0.85);color:#E0772B;font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:600;padding:6px 14px;border-radius:8px;border:1px solid rgba(224,119,43,0.55);line-height:1.2;pointer-events:none;">&#8599; paper</span></a></div>
+      <div style="font-size:22px;color:#5C6B6E;font-style:italic;text-align:center;">4 stage + 2 fast path; 2 memory store phản hồi vào pipeline.</div>
+    </div>
+    <div style="flex:0.62;display:flex;flex-direction:column;align-items:stretch;background:#FFFFFF;border:1px solid rgba(22,36,42,0.12);border-radius:12px;padding:0 28px 26px;box-shadow:0 1px 3px rgba(22,36,42,0.05);overflow:hidden;">
+      <div style="height:5px;background:#2E7D5B;margin:0 -28px 22px;"></div>
+      <div style="font-size:25px;font-weight:700;color:#23373B;margin-bottom:22px;letter-spacing:-0.2px;">Pass rate <span style="color:#5C6B6E;font-weight:500;">(%)</span></div>
+      <div style="display:flex;justify-content:center;gap:64px;align-items:flex-end;height:360px;border-bottom:2px solid rgba(22,36,42,0.22);position:relative;">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:12px;align-self:flex-end;">
+          <div style="display:flex;gap:16px;align-items:flex-end;height:340px;">
+            <div style="display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;"><div style="font-size:24px;font-weight:800;color:#B5483F;margin-bottom:6px;">44.8</div><div style="width:56px;height:152px;background:#B5483F;border-radius:5px 5px 0 0;"></div></div>
+            <div style="display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;"><div style="font-size:24px;font-weight:800;color:#2E7D5B;margin-bottom:6px;">86.3</div><div style="width:56px;height:293px;background:#2E7D5B;border-radius:5px 5px 0 0;"></div></div>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:12px;align-self:flex-end;">
+          <div style="display:flex;gap:16px;align-items:flex-end;height:340px;">
+            <div style="display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;"><div style="font-size:24px;font-weight:800;color:#B5483F;margin-bottom:6px;">65.5</div><div style="width:56px;height:223px;background:#B5483F;border-radius:5px 5px 0 0;"></div></div>
+            <div style="display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;"><div style="font-size:24px;font-weight:800;color:#2E7D5B;margin-bottom:6px;">81.7</div><div style="width:56px;height:278px;background:#2E7D5B;border-radius:5px 5px 0 0;"></div></div>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:center;gap:64px;margin-top:12px;font-size:22px;font-weight:600;color:#5C6B6E;">
+        <span style="width:144px;text-align:center;">HG2.9K</span>
+        <span style="width:144px;text-align:center;">GitCham.</span>
+      </div>
+      <div style="display:flex;justify-content:center;gap:32px;margin-top:20px;font-size:22px;color:#23373B;">
+        <span style="display:inline-flex;align-items:center;gap:9px;"><span style="width:18px;height:18px;border-radius:4px;background:#B5483F;display:inline-block;"></span>PLLM</span>
+        <span style="display:inline-flex;align-items:center;gap:9px;"><span style="width:18px;height:18px;border-radius:4px;background:#2E7D5B;display:inline-block;"></span><b>MEMRES</b></span>
+      </div>
+    </div>
+  </div>
+  <div style="flex:none;text-align:center;font-size:26px;color:#23373B;margin-top:12px;border-top:1px solid rgba(22,36,42,0.12);padding-top:16px;"><b>MEMRES = Memory-augmented retry:</b> cứu được nhiều lỗi, nhưng chưa biến thất bại thành <i>ràng buộc logic</i> để tỉa không gian.</div>
+</section>
+
+<section data-label="MEMRES → CGAR" data-screen-label="Từ MEMRES đến CGAR" data-speaker-notes="3 lỗ hổng MEMRES → 3 thành phần CGAR. Paradigm shift: LLM đoán mò → Multi-Agent + Constraint Acquisition." style="font-family:'Be Vietnam Pro',sans-serif;background:#F6F4EF;color:#23373B;padding:70px 96px 52px;display:flex;flex-direction:column;">
+  <div style="display:flex;flex-direction:column;gap:8px;flex:none;">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:24px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:#E0772B;">MEMRES → CGAR · 09</div>
+    <h2 style="margin:0;font-size:48px;font-weight:700;color:#23373B;letter-spacing:-0.5px;">Từ MEMRES đến CGAR: Vá Đúng 3 Lỗ Hổng</h2>
+  </div>
+  <div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:30px;margin-top:8px;">
+    <div style="display:grid;grid-template-columns:1fr 110px 1fr;gap:0;align-items:center;">
+      <div style="background:#fff;border:1px solid rgba(181,72,63,0.3);border-radius:12px;padding:28px 32px;"><div style="font-size:25px;font-weight:700;color:#B5483F;">✗ 12.8% bí đường</div><div style="font-size:22px;color:#5C6B6E;margin-top:8px;">API removed / source-only, build kẹt 3 phút</div></div>
+      <div style="text-align:center;font-size:40px;color:#E0772B;font-weight:700;">→</div>
+      <div style="background:#fff;border:1px solid rgba(46,125,91,0.3);border-radius:12px;padding:28px 32px;"><div style="font-size:25px;font-weight:700;color:#2E7D5B;">✓ Analyzer Agent</div><div style="font-size:22px;color:#5C6B6E;margin-top:8px;">parse log → constraint</div></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 110px 1fr;gap:0;align-items:center;">
+      <div style="background:#fff;border:1px solid rgba(181,72,63,0.3);border-radius:12px;padding:28px 32px;"><div style="font-size:25px;font-weight:700;color:#B5483F;">✗ Chi phí lỗi cao</div><div style="font-size:22px;color:#5C6B6E;margin-top:8px;">335s/snippet, ca khó vẫn rất chậm</div></div>
+      <div style="text-align:center;font-size:40px;color:#E0772B;font-weight:700;">→</div>
+      <div style="background:#fff;border:1px solid rgba(46,125,91,0.3);border-radius:12px;padding:28px 32px;"><div style="font-size:25px;font-weight:700;color:#2E7D5B;">✓ wheel_filter()</div><div style="font-size:22px;color:#5C6B6E;margin-top:8px;">chỉ thử bản có wheel</div></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 110px 1fr;gap:0;align-items:center;">
+      <div style="background:#fff;border:1px solid rgba(181,72,63,0.3);border-radius:12px;padding:28px 32px;"><div style="font-size:25px;font-weight:700;color:#B5483F;">✗ Không tỉa không gian</div><div style="font-size:22px;color:#5C6B6E;margin-top:8px;">Docker error = blackbox, không thành ràng buộc</div></div>
+      <div style="text-align:center;font-size:40px;color:#E0772B;font-weight:700;">→</div>
+      <div style="background:#fff;border:1px solid rgba(46,125,91,0.3);border-radius:12px;padding:28px 32px;"><div style="font-size:25px;font-weight:700;color:#2E7D5B;">✓ 3-tier constraints</div><div style="font-size:22px;color:#5C6B6E;margin-top:8px;">HARD / SOFT / UPPER</div></div>
+    </div>
+  </div>
+  <div style="flex:none;text-align:center;font-size:26px;color:#23373B;margin-top:14px;border-top:1px solid rgba(22,36,42,0.12);padding-top:16px;"><b style="color:#B5483F;">LLM đoán mò</b> &nbsp;<span style="font-family:'JetBrains Mono',monospace;color:#E0772B;">&middot; paradigm shift →</span>&nbsp; <b style="color:#2E7D5B;">Multi-Agent + Constraint Acquisition</b></div>
+</section>
+
+<section data-label="§ CGAR" data-screen-label="Section: CGAR" data-speaker-notes="Mở phần 3: CGAR, đề xuất của nhóm." style="font-family:'Be Vietnam Pro',sans-serif;background:#16242A;color:#F6F4EF;padding:0;display:flex;flex-direction:column;position:relative;overflow:hidden;">
+  <div style="position:absolute;right:-34px;top:50%;margin-top:-330px;font-family:'Be Vietnam Pro',sans-serif;font-size:660px;font-weight:800;line-height:1;color:rgba(255,255,255,0.04);letter-spacing:-24px;pointer-events:none;">03</div>
+  <div style="position:absolute;right:96px;top:50%;margin-top:-250px;width:640px;height:500px;z-index:1;pointer-events:none;"><svg viewBox="0 0 760 500" style="width:100%;height:100%;overflow:visible;">
+    <!-- ===== PRUNED (faint) BRANCHES ===== -->
+    <g stroke="rgba(255,255,255,0.11)" stroke-width="2" fill="none">
+      <!-- root -> left child (pruned) -->
+      <path d="M380,70 L210,185"/>
+      <!-- left child -> its two leaves (pruned) -->
+      <path d="M210,215 L120,330"/>
+      <path d="M210,215 L300,330"/>
+      <!-- right subtree's pruned sibling leaf -->
+      <path d="M560,215 L660,330"/>
+      <!-- active mid-node's pruned sibling leaf -->
+      <path d="M420,360 L500,430"/>
+    </g>
+    <!-- faint pruned nodes -->
+    <g fill="none" stroke="rgba(255,255,255,0.13)" stroke-width="2">
+      <circle cx="210" cy="200" r="15"/>
+      <circle cx="120" cy="345" r="13"/>
+      <circle cx="300" cy="345" r="13"/>
+      <circle cx="660" cy="345" r="13"/>
+      <circle cx="513" cy="442" r="13"/>
+    </g>
+    <!-- red prune marks on pruned nodes -->
+    <g stroke="#B5483F" stroke-width="2.4" stroke-linecap="round">
+      <path d="M204,194 l12,12 M216,194 l-12,12"/>
+      <path d="M115,340 l10,10 M125,340 l-10,10"/>
+      <path d="M295,340 l10,10 M305,340 l-10,10"/>
+      <path d="M655,340 l10,10 M665,340 l-10,10"/>
+      <path d="M508,437 l10,10 M518,437 l-10,10"/>
+    </g>
+
+    <!-- ===== THE ONE FEASIBLE PATH (bold steel-blue) ===== -->
+    <g stroke="#7FA6B5" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M380,70 L560,185"/>
+      <path d="M560,215 L420,330"/>
+      <path d="M420,361 L362,436"/>
+    </g>
+    <!-- root node (active) -->
+    <circle cx="380" cy="70" r="18" fill="#16242A" stroke="#E0772B" stroke-width="4"/>
+    <!-- intermediate active nodes -->
+    <circle cx="560" cy="200" r="16" fill="#16242A" stroke="#7FA6B5" stroke-width="4"/>
+    <circle cx="420" cy="345" r="16" fill="#16242A" stroke="#7FA6B5" stroke-width="4"/>
+
+    <!-- ===== GREEN FEASIBLE LEAF ===== -->
+    <circle cx="360" cy="455" r="21" fill="#16242A" stroke="#2E7D5B" stroke-width="4.5"/>
+    <path d="M350,455 l7,8 l13,-16" stroke="#2E7D5B" stroke-width="4.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+
+    <!-- ===== MONO LABELS ===== -->
+    <text x="100" y="280" font-family="JetBrains Mono, monospace" font-size="20" fill="#B5483F" letter-spacing="0.5">ràng buộc &#8594; tỉa</text>
+    <text x="170" y="463" font-family="JetBrains Mono, monospace" font-size="22" fill="#2E7D5B" letter-spacing="1">feasible</text>
+  </svg></div>
+  <div style="position:absolute;top:56px;left:96px;right:96px;display:flex;justify-content:space-between;align-items:center;font-family:'JetBrains Mono',monospace;font-size:22px;letter-spacing:3px;color:#6B8082;text-transform:uppercase;z-index:1;"><span>MEMRES &rarr; CGAR</span><span>03 / 05</span></div>
+  <div style="position:absolute;top:100px;left:96px;right:96px;height:1px;background:rgba(255,255,255,0.1);"></div>
+  <div style="flex:1;display:flex;flex-direction:column;justify-content:center;padding:0 96px;position:relative;z-index:1;">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:27px;letter-spacing:5px;color:#E0772B;text-transform:uppercase;margin-bottom:22px;">Phần 03</div>
+    <h2 style="margin:0;font-size:128px;font-weight:800;letter-spacing:-3px;line-height:0.95;color:#F6F4EF;">CGAR</h2>
+    <div style="width:120px;height:5px;background:#E0772B;margin:38px 0;"></div>
+    <div style="font-size:30px;color:#9DAEB0;max-width:1150px;line-height:1.45;">Constraint-Guided Agentic Resolution: Multi-Agent + Constraint Acquisition</div>
+  </div>
+</section>
+
+<section data-label="CGAR: 3 Agent" data-screen-label="CGAR Tổng quan 3 Agent" data-speaker-notes="3 LLM agent: Planner chọn version, Analyzer đọc lỗi sinh ràng buộc, Critic đề xuất pivot. Cùng Docker build loop và Session Store." style="font-family:'Be Vietnam Pro',sans-serif;background:#F6F4EF;color:#23373B;padding:56px 72px 44px;display:flex;flex-direction:column;">
+  <div style="display:flex;flex-direction:column;gap:8px;flex:none;">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:24px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:#E0772B;">CGAR · 10</div>
+    <h2 style="margin:0;font-size:48px;font-weight:700;color:#23373B;letter-spacing:-0.5px;">CGAR: Tổng quan 3 Agent</h2>
+  </div>
+  <div style="flex:1;display:flex;align-items:center;justify-content:center;min-height:0;margin-top:24px;">
+    <a href="https://chatgpt.com/share/6a2a3c91-5640-83ec-8761-25876b30abe3" target="_blank" style="position:relative;display:inline-block;line-height:0;text-decoration:none;"><img src="uploads/cgar-overview.png" alt="CGAR multi-agent overview" style="display:block;width:1360px;max-width:100%;height:auto;border:3px solid #E0772B;border-radius:12px;box-shadow:0 8px 26px rgba(0,0,0,0.18);"><span style="position:absolute;top:14px;right:14px;background:rgba(14,21,24,0.85);color:#E0772B;font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:600;padding:6px 14px;border-radius:8px;border:1px solid rgba(224,119,43,0.55);line-height:1.2;pointer-events:none;">&#8599; ngu&#7891;n AI</span></a>
+  </div>
+  <div style="flex:none;text-align:center;font-size:24px;color:#5C6B6E;margin-top:24px;">3 LLM agent (Planner / Analyzer / Critic) + Docker build loop: <span style="color:#23373B;">chi tiết prompt ở phần Backup.</span></div>
+</section>
+
+<section data-label="CGAR: Loop" data-screen-label="CGAR Multi-Agent Loop" data-speaker-notes="Planner → Executor → (build OK?) → Done / Analyzer ghi constraint vào Store → Critic. Mỗi fail thêm 1 constraint, Planner kế tiếp né cả vùng." style="font-family:'Be Vietnam Pro',sans-serif;background:#F6F4EF;color:#23373B;padding:70px 96px 48px;display:flex;flex-direction:column;">
+  <div style="display:flex;flex-direction:column;gap:8px;flex:none;">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:24px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:#E0772B;">CGAR · 11</div>
+    <h2 style="margin:0;font-size:48px;font-weight:700;color:#23373B;letter-spacing:-0.5px;">CGAR: Multi-Agent Loop</h2>
+  </div>
+  <div style="flex:1;display:flex;flex-direction:column;justify-content:flex-start;margin-top:24px;">
+    <div style="position:relative;width:1440px;height:560px;margin:0 auto;transform:scale(1.18);transform-origin:top center;">
+      <svg viewBox="0 0 1440 560" style="position:absolute;inset:0;width:100%;height:100%;">
+        <defs>
+          <marker id="ah" markerWidth="10" markerHeight="10" refX="7.5" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 Z" fill="#23373B"></path></marker>
+          <marker id="ag" markerWidth="10" markerHeight="10" refX="7.5" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 Z" fill="#2E7D5B"></path></marker>
+          <marker id="ao" markerWidth="10" markerHeight="10" refX="7.5" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 Z" fill="#E0772B"></path></marker>
+        </defs>
+        <line x1="595" y1="96" x2="595" y2="148" stroke="#23373B" stroke-width="2.5" marker-end="url(#ah)"></line>
+        <line x1="595" y1="226" x2="595" y2="278" stroke="#23373B" stroke-width="2.5" marker-end="url(#ah)"></line>
+        <line x1="595" y1="336" x2="595" y2="368" stroke="#23373B" stroke-width="2.5" marker-end="url(#ah)"></line>
+        <line x1="595" y1="446" x2="595" y2="478" stroke="#23373B" stroke-width="2.5" marker-end="url(#ah)"></line>
+        <line x1="695" y1="308" x2="876" y2="308" stroke="#2E7D5B" stroke-width="2.5" marker-end="url(#ag)"></line>
+        <path d="M280,70 L426,56" stroke="#E0772B" stroke-width="2.4" stroke-dasharray="7 5" fill="none" marker-end="url(#ao)"></path>
+        <path d="M430,400 L284,400" stroke="#E0772B" stroke-width="2.4" stroke-dasharray="7 5" fill="none" marker-end="url(#ao)"></path>
+        <path d="M760,548 L1330,548 L1330,30 L764,30" stroke="#E0772B" stroke-width="2.4" fill="none" marker-end="url(#ao)"></path>
+      </svg>
+      <div style="position:absolute;left:0;top:40px;width:280px;height:448px;border:2px dashed #E0772B;border-radius:14px;background:rgba(224,119,43,0.05);padding:26px 26px 22px;display:flex;flex-direction:column;">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:25px;font-weight:700;color:#E0772B;">Session Store</div>
+        <div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:14px;">
+          <div style="font-size:21px;color:#5C6B6E;letter-spacing:0.3px;">Constraints <i>C</i></div>
+          <div style="display:flex;align-items:center;gap:11px;padding:9px 14px;border-radius:9px;background:rgba(181,72,63,0.10);border:1px solid rgba(181,72,63,0.28);"><span style="width:11px;height:11px;border-radius:50%;background:#B5483F;flex:none;"></span><span style="font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:600;color:#8E3A33;letter-spacing:0.5px;">HARD</span></div>
+          <div style="display:flex;align-items:center;gap:11px;padding:9px 14px;border-radius:9px;background:rgba(185,138,46,0.12);border:1px solid rgba(185,138,46,0.30);"><span style="width:11px;height:11px;border-radius:50%;background:#B98A2E;flex:none;"></span><span style="font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:600;color:#8A6620;letter-spacing:0.5px;">SOFT</span></div>
+          <div style="display:flex;align-items:center;gap:11px;padding:9px 14px;border-radius:9px;background:rgba(46,124,166,0.11);border:1px solid rgba(46,124,166,0.32);"><span style="width:11px;height:11px;border-radius:50%;background:#2E7CA6;flex:none;"></span><span style="font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:600;color:#246388;letter-spacing:0.5px;">UPPER</span></div>
+        </div>
+        <div style="font-size:20px;color:#5C6B6E;font-style:italic;text-align:center;padding-top:14px;border-top:1px solid rgba(224,119,43,0.22);">shared / repo</div>
+      </div>
+      <div style="position:absolute;left:430px;top:20px;width:330px;height:76px;background:#23373B;color:#fff;border-radius:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;"><div style="font-size:26px;font-weight:700;">1 &middot; Planner</div><div style="font-size:19px;opacity:0.72;">LLM</div></div>
+      <div style="position:absolute;left:430px;top:150px;width:330px;height:76px;background:#E0772B;color:#fff;border-radius:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;"><div style="font-size:26px;font-weight:700;">2 &middot; Executor</div><div style="font-size:19px;opacity:0.9;">Tool</div></div>
+      <div style="position:absolute;left:495px;top:280px;width:200px;height:56px;background:#fff;border:1.5px solid rgba(22,36,42,0.3);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:23px;font-weight:600;color:#23373B;">build OK?</div>
+      <div style="position:absolute;left:876px;top:282px;width:200px;height:52px;background:rgba(46,125,91,0.12);border:2px solid #2E7D5B;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:700;color:#2E7D5B;">&#10003; Done</div>
+      <div style="position:absolute;left:430px;top:370px;width:330px;height:76px;background:#23373B;color:#fff;border-radius:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;"><div style="font-size:26px;font-weight:700;">3 &middot; Analyzer</div><div style="font-size:19px;opacity:0.72;">LLM</div></div>
+      <div style="position:absolute;left:430px;top:480px;width:330px;height:76px;background:#23373B;color:#fff;border-radius:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;"><div style="font-size:26px;font-weight:700;">4 &middot; Critic</div><div style="font-size:19px;opacity:0.72;">LLM</div></div>
+      <div style="position:absolute;left:800px;top:30px;font-family:'JetBrains Mono',monospace;font-size:20px;color:#5C6B6E;line-height:1.5;">query_pypi() &middot; wheel_filter()<br><b style="color:#23373B;">consult_llm()</b> &middot; solve()</div>
+      <div style="position:absolute;left:800px;top:162px;font-family:'JetBrains Mono',monospace;font-size:20px;color:#5C6B6E;line-height:1.5;">build_docker()<br>run_import()</div>
+      <div style="position:absolute;left:800px;top:378px;font-family:'JetBrains Mono',monospace;font-size:20px;color:#5C6B6E;line-height:1.5;">parse_error() &middot; <b style="color:#23373B;">consult_llm()</b><br>gen_constraint()</div>
+      <div style="position:absolute;left:800px;top:488px;font-family:'JetBrains Mono',monospace;font-size:20px;color:#5C6B6E;line-height:1.5;">analyze_failures() &middot; <b style="color:#23373B;">consult_llm()</b><br>suggest_strategy()</div>
+      <div style="position:absolute;left:338px;top:18px;font-size:20px;font-weight:700;color:#E0772B;background:#F6F4EF;padding:0 7px;">filter <i>D</i></div>
+      <div style="position:absolute;left:344px;top:382px;font-size:20px;font-weight:700;color:#E0772B;background:#F6F4EF;padding:0 7px;">add <i>C</i></div>
+      <div style="position:absolute;left:1340px;top:282px;font-size:21px;font-weight:700;color:#E0772B;">retry</div>
+      <div style="position:absolute;left:712px;top:286px;font-size:19px;color:#2E7D5B;background:#F6F4EF;padding:0 5px;">yes</div>
+      <div style="position:absolute;left:606px;top:344px;font-size:19px;color:#B5483F;background:#F6F4EF;padding:0 5px;">no</div>
+      <div style="position:absolute;left:606px;top:454px;font-size:19px;color:#5C6B6E;background:#F6F4EF;padding:0 5px;">stuck?</div>
+    </div>
+  </div>
+  <div style="flex:none;text-align:center;font-size:25px;color:#23373B;margin-top:14px;border-top:1px solid rgba(22,36,42,0.12);padding-top:14px;">Build thất bại không phí: mỗi fail → <b>+1 constraint</b> → Planner kế tiếp né cả vùng, điều MEMRES không có.</div>
+</section>
+
+<section data-label="CGAR: Miền D" data-screen-label="CGAR Miền giá trị D" data-speaker-notes="Domain D lọc trực tiếp từ PyPI: import→pip map, GET json (no LLM), lọc requires_python + has_wheel, sort wheel-first top-8/gói." style="font-family:'Be Vietnam Pro',sans-serif;background:#F6F4EF;color:#23373B;padding:70px 96px 46px;display:flex;flex-direction:column;">
+  <div style="display:flex;flex-direction:column;gap:8px;flex:none;">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:24px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:#E0772B;">CGAR · 12</div>
+    <h2 style="margin:0;font-size:44px;font-weight:700;color:#23373B;letter-spacing:-0.5px;">CGAR: Miền giá trị D đến từ đâu? (lọc trực tuyến từ PyPI)</h2>
+  </div>
+  <div style="flex:1;display:flex;gap:48px;margin-top:24px;align-items:center;">
+    <div style="flex:1.05;display:flex;flex-direction:column;">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:23px;color:#E0772B;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:30px;">Pipeline lọc: 5 bước &middot; 0 LLM</div>
+      <div style="position:relative;display:flex;flex-direction:column;gap:46px;">
+        <div style="position:absolute;left:19px;top:34px;bottom:34px;width:2px;background:rgba(22,36,42,0.16);"></div>
+      <div style="display:flex;align-items:center;gap:16px;"><div style="width:38px;height:38px;border-radius:50%;background:#23373B;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:21px;flex:none;">1</div><div style="font-size:26px;color:#3C4C50;"><span style="font-family:'JetBrains Mono',monospace;">import scipy, numpy</span> → target Python π=3.7</div></div>
+      <div style="display:flex;align-items:center;gap:16px;"><div style="width:38px;height:38px;border-radius:50%;background:#23373B;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:21px;flex:none;">2</div><div style="font-size:26px;color:#3C4C50;"><b>import → pip</b> (static map): <span style="font-family:'JetBrains Mono',monospace;">scipy.misc→scipy</span></div></div>
+      <div style="display:flex;align-items:center;gap:16px;"><div style="width:38px;height:38px;border-radius:50%;background:#B5483F;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:21px;flex:none;">3</div><div style="font-size:26px;color:#3C4C50;"><span style="font-family:'JetBrains Mono',monospace;">GET pypi.org/pypi/&lt;pkg&gt;/json</span>: <b style="color:#B5483F;">HTTP, không LLM</b></div></div>
+      <div style="display:flex;align-items:center;gap:16px;"><div style="width:38px;height:38px;border-radius:50%;background:#2E7CA6;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:21px;flex:none;">4</div><div style="font-size:26px;color:#3C4C50;"><b>Lọc</b> mỗi version: <span style="font-family:'JetBrains Mono',monospace;">requires_python ⊨ π ∧ has_wheel</span></div></div>
+      <div style="display:flex;align-items:center;gap:16px;"><div style="width:38px;height:38px;border-radius:50%;background:#2E7CA6;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:21px;flex:none;">5</div><div style="font-size:26px;color:#3C4C50;"><b>Sort</b> wheel-first, semver↓ → lấy <b>top-8</b> / gói</div></div>
+      </div>
+    </div>
+    <div style="flex:0.95;display:flex;flex-direction:column;gap:34px;">
+      <div style="background:#16242A;border-radius:12px;padding:34px 38px;font-family:'JetBrains Mono',monospace;font-size:26px;color:#E6EAE9;line-height:1.95;">
+        <div style="color:#8BA0A2;font-weight:700;margin-bottom:4px;">PyPI JSON (rút gọn)</div>
+        <div>1.7.3 → req_py≥3.7, wheel <span style="color:#5BBd7E;">✓</span></div>
+        <div>1.2.3 → req_py py3.7, wheel <span style="color:#5BBd7E;">✓</span></div>
+        <div style="color:#7E9092;">… ~60 bản phát hành</div>
+      </div>
+      <div style="background:#fff;border:1px solid #2E7CA6;border-radius:12px;padding:34px 38px;">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:26px;font-weight:700;color:#2E7CA6;margin-bottom:16px;">Domain D (đầu vào solver)</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:26px;color:#23373B;line-height:1.75;">D(scipy)=[1.7.3, 1.7.2, …] ·8<br>D(numpy)=[1.21.6, 1.21.5, …] ·8</div>
+        <div style="font-size:25px;color:#B5483F;margin-top:18px;">≈10⁷ toàn cục → ≤8 ứng viên / gói</div>
+      </div>
+    </div>
+  </div>
+  <div style="flex:none;text-align:center;font-size:25px;color:#23373B;margin-top:12px;border-top:1px solid rgba(22,36,42,0.12);padding-top:14px;">D = top-8 ứng viên <b>có wheel</b>, hợp π, lọc từ <b>PyPI trực tiếp</b> (reducer xác định, <b style="color:#B5483F;">0 LLM</b>).</div>
+</section>
+
+<section data-label="CGAR: Tích lũy C" data-screen-label="CGAR Tích lũy ràng buộc" data-speaker-notes="Ví dụ: scipy 1.7.3 fail ImportError imread → Analyzer học scipy<1.3 [UPPER] → scipy 1.2.3 build OK. Store tích lũy, chia sẻ cho snippet sau." style="font-family:'Be Vietnam Pro',sans-serif;background:#F6F4EF;color:#23373B;padding:70px 96px 48px;display:flex;flex-direction:column;">
+  <div style="display:flex;flex-direction:column;gap:8px;flex:none;">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:24px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:#E0772B;">CGAR · 13</div>
+    <h2 style="margin:0;font-size:48px;font-weight:700;color:#23373B;letter-spacing:-0.5px;">CGAR: Tích lũy ràng buộc (ví dụ)</h2>
+  </div>
+  <div style="flex:1;display:flex;gap:40px;margin-top:24px;align-items:center;">
+    <div style="flex:1.35;display:flex;flex-direction:column;gap:50px;">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:25px;background:#fff;border:1px solid rgba(22,36,42,0.16);border-radius:8px;padding:14px 22px;align-self:flex-start;">from scipy.misc import imread</div>
+      <div style="display:flex;align-items:center;gap:16px;">
+        <div style="width:38px;height:38px;border-radius:50%;background:#B5483F;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:21px;flex:none;">1</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:24px;background:#fff;border:1px solid rgba(22,36,42,0.16);border-radius:8px;padding:12px 18px;">scipy 1.7.3</div>
+        <div style="font-size:28px;color:#23373B;">&rarr;</div>
+        <div style="font-size:24px;color:#2E7CA6;border:1px solid #2E7CA6;border-radius:8px;padding:12px 16px;background:rgba(46,124,166,0.08);">Docker build</div>
+        <div style="font-size:28px;color:#23373B;">&rarr;</div>
+        <div style="font-size:24px;color:#B5483F;background:rgba(181,72,63,0.1);border:1px solid rgba(181,72,63,0.4);border-radius:8px;padding:12px 16px;">✗ ImportError: cannot import name <span style="font-family:'JetBrains Mono',monospace;">imread</span></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:16px;padding-left:54px;"><div style="font-size:26px;color:#E0772B;">↳ Analyzer học:</div><div style="font-size:25px;font-weight:700;color:#2E7CA6;background:rgba(46,124,166,0.12);border:1px solid #2E7CA6;border-radius:8px;padding:10px 18px;">scipy < 1.3 &nbsp;[UPPER]</div></div>
+      <div style="display:flex;align-items:center;gap:16px;">
+        <div style="width:38px;height:38px;border-radius:50%;background:#2E7D5B;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:21px;flex:none;">2</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:24px;background:#fff;border:1px solid rgba(22,36,42,0.16);border-radius:8px;padding:12px 18px;">scipy 1.2.3 <span style="font-size:19px;color:#5C6B6E;">(cao nhất <1.3, có wheel)</span></div>
+        <div style="font-size:28px;color:#23373B;">&rarr;</div>
+        <div style="font-size:24px;color:#2E7CA6;border:1px solid #2E7CA6;border-radius:8px;padding:12px 16px;background:rgba(46,124,166,0.08);">Docker build</div>
+        <div style="font-size:28px;color:#23373B;">&rarr;</div>
+        <div style="font-size:25px;font-weight:700;color:#2E7D5B;background:rgba(46,125,91,0.12);border:1px solid #2E7D5B;border-radius:8px;padding:12px 18px;">✓ build OK</div>
+      </div>
+    </div>
+    <div style="flex:0.65;background:#fff;border:1px solid rgba(22,36,42,0.14);border-radius:14px;padding:42px 40px;align-self:center;display:flex;flex-direction:column;gap:28px;">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:25px;font-weight:700;color:#23373B;letter-spacing:1px;padding-bottom:16px;border-bottom:1px solid rgba(22,36,42,0.14);">SESSION STORE</div>
+      <div style="display:flex;align-items:center;gap:14px;"><span style="color:#2E7CA6;font-size:26px;">●</span><span style="font-family:'JetBrains Mono',monospace;font-size:25px;">scipy < 1.3</span><span style="font-size:22px;color:#5C6B6E;">(UPPER)</span></div>
+      <div style="font-size:23px;color:#5C6B6E;line-height:1.5;">Tích lũy + chia sẻ cho snippet sau trong cùng session.</div>
+    </div>
+  </div>
+  <div style="flex:none;text-align:center;font-size:25px;color:#23373B;margin-top:12px;border-top:1px solid rgba(22,36,42,0.12);padding-top:14px;">Mỗi build fail → <b>một ràng buộc điển hình</b> → solver thu hẹp miền, hội tụ đúng version mà <b>không thử mù</b>.</div>
+</section>
+
+<section data-label="CGAR: Học ràng buộc" data-screen-label="CGAR Feedback-Guided CA" data-speaker-notes="Ràng buộc ẩn, lộ qua verifier. C0=∅. Mỗi lỗi = counterexample → học ràng buộc (Constraint Acquisition kiểu CEGIS), không giải CSP cho sẵn. HARD/SOFT/UPPER tỉa cây." style="font-family:'Be Vietnam Pro',sans-serif;background:#F6F4EF;color:#23373B;padding:70px 96px 46px;display:flex;flex-direction:column;">
+  <div style="display:flex;flex-direction:column;gap:8px;flex:none;">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:24px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:#E0772B;">CGAR · 14</div>
+    <h2 style="margin:0;font-size:48px;font-weight:700;color:#23373B;letter-spacing:-0.5px;">CGAR: Feedback-Guided Constraint Discovery</h2>
+  </div>
+  <div style="flex:1;display:flex;gap:48px;margin-top:28px;align-items:stretch;">
+    <div style="flex:1.1;display:flex;flex-direction:column;justify-content:space-between;font-size:28px;color:#3C4C50;line-height:1.5;">
+      <div>Ràng buộc thật <b>ẩn</b>, chỉ lộ qua verifier hộp đen <span style="font-family:'JetBrains Mono',monospace;">f(A)→{pass, typed-error}</span>. <span style="color:#5C6B6E;">C₀=∅; mỗi lỗi = một counterexample → agent <b>học</b> ràng buộc (Constraint Acquisition, kiểu CEGIS).</span></div>
+      <div style="background:#fff;border:1px solid rgba(22,36,42,0.14);border-radius:10px;padding:24px 28px;"><b>Search state</b> &nbsp;<span style="font-family:'JetBrains Mono',monospace;">S<sub>t</sub> = ⟨X, D, C<sub>t</sub>⟩</span>, với C<sub>t</sub> lớn dần.<br><span style="font-size:26px;color:#5C6B6E;">X: package + Python π &nbsp;·&nbsp; D: ứng viên có wheel, hợp π</span></div>
+      <div><div style="font-weight:700;color:#23373B;margin-bottom:16px;">Ràng buộc <i>học được</i> C<sub>t</sub> (từ counterexample):</div>
+        <div style="display:flex;flex-direction:column;gap:18px;">
+          <div style="border-left:5px solid #B5483F;background:rgba(181,72,63,0.07);padding:18px 22px;font-size:27px;"><b style="color:#B5483F;">HARD</b>: cấm vĩnh viễn version lỗi rõ ràng</div>
+          <div style="border-left:5px solid #B98A2E;background:rgba(185,138,46,0.09);padding:18px 22px;font-size:27px;"><b style="color:#B98A2E;">SOFT</b>: cấm tạm nếu lỗi ≥ 2 lần</div>
+          <div style="border-left:5px solid #2E7CA6;background:rgba(46,124,166,0.08);padding:18px 22px;font-size:27px;"><b style="color:#2E7CA6;">UPPER</b>: vᵢ &lt; ub(Pᵢ), cấm cả khoảng</div>
+        </div>
+      </div>
+      <div style="font-size:27px;color:#5C6B6E;">Vòng lặp: chọn A⊨C<sub>t</sub> → build → fail? <b>học</b> C<sub>t+1</sub>, re-solve (≤50).</div>
+    </div>
+    <div style="flex:1.05;display:flex;flex-direction:column;align-items:center;justify-content:center;">
+      <svg viewBox="0 0 440 360" style="width:100%;max-width:760px;height:auto;">
+        <line x1="220" y1="34" x2="92" y2="120" stroke="#C2CACA" stroke-width="2"/>
+        <line x1="220" y1="34" x2="300" y2="118" stroke="#2C3E6B" stroke-width="3.5"/>
+        <line x1="92" y1="120" x2="60" y2="210" stroke="#C2CACA" stroke-width="2"/>
+        <line x1="92" y1="120" x2="128" y2="210" stroke="#C2CACA" stroke-width="2"/>
+        <line x1="60" y1="210" x2="44" y2="296" stroke="#D5DBDB" stroke-width="1.5"/>
+        <line x1="60" y1="210" x2="78" y2="296" stroke="#D5DBDB" stroke-width="1.5"/>
+        <line x1="128" y1="210" x2="112" y2="296" stroke="#D5DBDB" stroke-width="1.5"/>
+        <line x1="128" y1="210" x2="146" y2="296" stroke="#D5DBDB" stroke-width="1.5"/>
+        <line x1="300" y1="118" x2="244" y2="212" stroke="#2C3E6B" stroke-width="3.5"/>
+        <line x1="300" y1="118" x2="366" y2="212" stroke="#B98A2E" stroke-width="2.5" stroke-dasharray="6 5"/>
+        <line x1="244" y1="212" x2="244" y2="306" stroke="#2E7CA6" stroke-width="3"/>
+        <line x1="366" y1="212" x2="346" y2="296" stroke="#C2CACA" stroke-width="1.5"/>
+        <line x1="366" y1="212" x2="392" y2="296" stroke="#C2CACA" stroke-width="1.5"/>
+        <circle cx="220" cy="30" r="10" fill="#2C3E6B"/>
+        <circle cx="92" cy="120" r="8" fill="#C2CACA"/>
+        <circle cx="300" cy="118" r="9" fill="#2C3E6B"/>
+        <circle cx="60" cy="210" r="6" fill="#D5DBDB"/>
+        <circle cx="128" cy="210" r="6" fill="#D5DBDB"/>
+        <circle cx="44" cy="298" r="5" fill="#E2E6E6"/>
+        <circle cx="78" cy="298" r="5" fill="#E2E6E6"/>
+        <circle cx="112" cy="298" r="5" fill="#E2E6E6"/>
+        <circle cx="146" cy="298" r="5" fill="#E2E6E6"/>
+        <circle cx="244" cy="212" r="8" fill="#2C3E6B"/>
+        <circle cx="366" cy="212" r="7" fill="#B98A2E"/>
+        <circle cx="346" cy="298" r="5" fill="#C2CACA"/>
+        <circle cx="392" cy="298" r="5" fill="#C2CACA"/>
+        <circle cx="244" cy="308" r="11" fill="#2E7D5B"/>
+        <text x="244" y="314" font-size="15" fill="#fff" text-anchor="middle" font-family="'JetBrains Mono',monospace">✓</text>
+        <text x="120" y="76" font-size="17" fill="#B5483F" font-weight="700" font-family="'JetBrains Mono',monospace">HARD ✗</text>
+        <text x="384" y="180" font-size="17" fill="#B98A2E" font-weight="700" font-family="'JetBrains Mono',monospace">SOFT</text>
+        <text x="256" y="262" font-size="17" fill="#2E7CA6" font-weight="700" font-family="'JetBrains Mono',monospace">UPPER</text>
+      </svg>
+      <div style="font-style:italic;font-size:26px;color:#5C6B6E;text-align:center;margin-top:24px;">HARD / SOFT / UPPER học từ build, tỉa cây → 1 path khả thi.</div>
+    </div>
+  </div>
+</section>
+
+<section data-label="CGAR: Session" data-screen-label="CGAR Session-scoped Learning" data-speaker-notes="Session = 1 repo = nhiều snippets; ràng buộc chia sẻ giữa snippets. Cứu 17.9% MEMRES-failures (71/396)." style="font-family:'Be Vietnam Pro',sans-serif;background:#F6F4EF;color:#23373B;padding:70px 96px 52px;display:flex;flex-direction:column;">
+  <div style="display:flex;flex-direction:column;gap:8px;flex:none;">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:24px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:#E0772B;">CGAR · 15</div>
+    <h2 style="margin:0;font-size:48px;font-weight:700;color:#23373B;letter-spacing:-0.5px;">CGAR: Session-scoped Learning</h2>
+  </div>
+  <div style="flex:none;text-align:center;font-size:26px;color:#23373B;margin-top:14px;"><b>Session = 1 repository = nhiều snippets:</b> ràng buộc học được <i>chia sẻ</i> giữa các snippet trong cùng session.</div>
+  <div style="flex:1;display:flex;align-items:center;justify-content:center;min-height:0;margin-top:18px;">
+    <a href="https://chatgpt.com/share/6a2a3c8b-93f8-83ec-9452-052ef1ef7e87" target="_blank" style="position:relative;display:inline-block;line-height:0;text-decoration:none;"><img src="uploads/session-learning.png" alt="Session Store cross-snippet learning" style="display:block;width:1360px;max-width:100%;height:auto;border:3px solid #E0772B;border-radius:12px;box-shadow:0 8px 26px rgba(0,0,0,0.18);"><span style="position:absolute;top:14px;right:14px;background:rgba(14,21,24,0.85);color:#E0772B;font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:600;padding:6px 14px;border-radius:8px;border:1px solid rgba(224,119,43,0.55);line-height:1.2;pointer-events:none;">&#8599; ngu&#7891;n AI</span></a>
+  </div>
+</section>
+
+<section data-label="§ Kết quả" data-screen-label="Section: Kết quả" data-speaker-notes="Mở phần 4: đánh giá thực nghiệm." style="font-family:'Be Vietnam Pro',sans-serif;background:#16242A;color:#F6F4EF;padding:0;display:flex;flex-direction:column;position:relative;overflow:hidden;">
+  <div style="position:absolute;right:-34px;top:50%;margin-top:-330px;font-family:'Be Vietnam Pro',sans-serif;font-size:660px;font-weight:800;line-height:1;color:rgba(255,255,255,0.04);letter-spacing:-24px;pointer-events:none;">04</div>
+  <div style="position:absolute;right:96px;top:50%;margin-top:-250px;width:760px;height:500px;z-index:1;pointer-events:none;"><svg viewBox="0 0 760 500" style="width:100%;height:100%;overflow:visible;">
+    <!-- baseline axis -->
+    <line x1="120" y1="430" x2="700" y2="430" stroke="rgba(255,255,255,0.13)" stroke-width="2"/>
+    <line x1="120" y1="120" x2="120" y2="430" stroke="rgba(255,255,255,0.09)" stroke-width="2"/>
+    <!-- four baseline bars (muted steel-blue), ascending -->
+    <rect x="150" y="350" width="64" height="80" fill="none" stroke="#7FA6B5" stroke-width="2.5"/>
+    <rect x="252" y="300" width="64" height="130" fill="none" stroke="#7FA6B5" stroke-width="2.5"/>
+    <rect x="354" y="255" width="64" height="175" fill="none" stroke="#7FA6B5" stroke-width="2.5"/>
+    <rect x="456" y="200" width="64" height="230" fill="none" stroke="#7FA6B5" stroke-width="2.5"/>
+    <!-- gap indicator: dashed line from previous-best top up to CGAR top (on left side, clear of label) -->
+    <line x1="520" y1="200" x2="548" y2="200" stroke="#B5483F" stroke-width="2" stroke-dasharray="6 6"/>
+    <line x1="548" y1="200" x2="548" y2="140" stroke="#B5483F" stroke-width="2" stroke-dasharray="6 6"/>
+    <!-- CGAR winner bar (orange, tallest, filled accent edge) -->
+    <rect x="558" y="140" width="64" height="290" fill="rgba(224,119,43,0.10)" stroke="#E0772B" stroke-width="3"/>
+    <polygon points="590,108 580,128 600,128" fill="#E0772B"/>
+    <!-- labels -->
+    <text x="590" y="92" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="22" letter-spacing="2" fill="#E0772B">CGAR</text>
+    <text x="590" y="190" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="19" font-weight="700" fill="#E0772B">87.1%</text>
+  </svg></div>
+  <div style="position:absolute;top:56px;left:96px;right:96px;display:flex;justify-content:space-between;align-items:center;font-family:'JetBrains Mono',monospace;font-size:22px;letter-spacing:3px;color:#6B8082;text-transform:uppercase;z-index:1;"><span>MEMRES &rarr; CGAR</span><span>04 / 05</span></div>
+  <div style="position:absolute;top:100px;left:96px;right:96px;height:1px;background:rgba(255,255,255,0.1);"></div>
+  <div style="flex:1;display:flex;flex-direction:column;justify-content:center;padding:0 96px;position:relative;z-index:1;">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:27px;letter-spacing:5px;color:#E0772B;text-transform:uppercase;margin-bottom:22px;">Phần 04</div>
+    <h2 style="margin:0;font-size:128px;font-weight:800;letter-spacing:-3px;line-height:0.95;color:#F6F4EF;">Kết quả</h2>
+    <div style="width:120px;height:5px;background:#E0772B;margin:38px 0;"></div>
+    <div style="font-size:30px;color:#9DAEB0;max-width:1150px;line-height:1.45;">So sánh tổng thể &nbsp;·&nbsp; phân rã lỗi &nbsp;·&nbsp; tổng quát hóa &nbsp;·&nbsp; tốc độ &amp; ablation</div>
+  </div>
+</section>
+
+<section data-label="So sánh tổng thể" data-screen-label="So sánh tổng thể" data-speaker-notes="CGAR đạt 87.1% HG2.9K, 83.2% GitCham, 22.3s, cao nhất và nhanh nhất trong các open tool, cùng ngân sách build." style="font-family:'Be Vietnam Pro',sans-serif;background:#F6F4EF;color:#23373B;padding:64px 80px 46px;display:flex;flex-direction:column;">
+  <div style="display:flex;flex-direction:column;gap:6px;flex:none;">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:24px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:#E0772B;">Kết quả · 16</div>
+    <h2 style="margin:0;font-size:46px;font-weight:700;color:#23373B;letter-spacing:-0.5px;">Comprehensive Comparison</h2>
+  </div>
+  <div style="flex:1;display:flex;align-items:center;margin-top:12px;">
+    <table style="width:100%;border-collapse:collapse;font-size:26px;">
+      <thead><tr style="color:#5C6B6E;font-family:'JetBrains Mono',monospace;font-size:22px;text-transform:uppercase;letter-spacing:1px;"><th style="text-align:left;padding:12px 14px;border-bottom:2px solid rgba(22,36,42,0.3);">Method</th><th style="text-align:left;padding:12px 14px;border-bottom:2px solid rgba(22,36,42,0.3);">Venue</th><th style="text-align:left;padding:12px 14px;border-bottom:2px solid rgba(22,36,42,0.3);">Approach</th><th style="text-align:right;padding:12px 14px;border-bottom:2px solid rgba(22,36,42,0.3);">HG2.9K</th><th style="text-align:right;padding:12px 14px;border-bottom:2px solid rgba(22,36,42,0.3);">GitCham.</th><th style="text-align:right;padding:12px 14px;border-bottom:2px solid rgba(22,36,42,0.3);">Time</th><th style="text-align:center;padding:12px 14px;border-bottom:2px solid rgba(22,36,42,0.3);">Open</th></tr></thead>
+      <tbody>
+        <tr style="border-bottom:1px solid rgba(22,36,42,0.1);"><td style="padding:12px 14px;font-weight:600;">PyEGo</td><td style="padding:12px 14px;color:#5C6B6E;">ICSE&rsquo;22</td><td style="padding:12px 14px;color:#5C6B6E;">KG + Z3 SMT</td><td style="padding:12px 14px;text-align:right;">45.0%</td><td style="padding:12px 14px;text-align:right;color:#9AA6A7;">—</td><td style="padding:12px 14px;text-align:right;">5.8s</td><td style="padding:12px 14px;text-align:center;color:#9AA6A7;">—</td></tr>
+        <tr style="border-bottom:1px solid rgba(22,36,42,0.1);"><td style="padding:12px 14px;font-weight:600;">ReadPyE</td><td style="padding:12px 14px;color:#5C6B6E;">TSE&rsquo;24</td><td style="padding:12px 14px;color:#5C6B6E;">KG + README</td><td style="padding:12px 14px;text-align:right;">47.2%</td><td style="padding:12px 14px;text-align:right;color:#9AA6A7;">—</td><td style="padding:12px 14px;text-align:right;">106.9s</td><td style="padding:12px 14px;text-align:center;color:#9AA6A7;">—</td></tr>
+        <tr style="background:rgba(44,62,107,0.05);border-bottom:1px solid rgba(22,36,42,0.1);"><td style="padding:12px 14px;font-weight:600;">GPT-4o</td><td style="padding:12px 14px;color:#5C6B6E;">2024</td><td style="padding:12px 14px;color:#5C6B6E;">closed LLM</td><td style="padding:12px 14px;text-align:right;color:#9AA6A7;">—</td><td style="padding:12px 14px;text-align:right;">49.1%</td><td style="padding:12px 14px;text-align:right;color:#9AA6A7;">—</td><td style="padding:12px 14px;text-align:center;color:#B5483F;">✗</td></tr>
+        <tr style="background:rgba(44,62,107,0.05);border-bottom:1px solid rgba(22,36,42,0.1);"><td style="padding:12px 14px;font-weight:600;">o1</td><td style="padding:12px 14px;color:#5C6B6E;">2024</td><td style="padding:12px 14px;color:#5C6B6E;">closed (best)</td><td style="padding:12px 14px;text-align:right;color:#9AA6A7;">—</td><td style="padding:12px 14px;text-align:right;">51.2%</td><td style="padding:12px 14px;text-align:right;color:#9AA6A7;">—</td><td style="padding:12px 14px;text-align:center;color:#B5483F;">✗</td></tr>
+        <tr style="background:rgba(44,62,107,0.05);border-bottom:1px solid rgba(22,36,42,0.1);"><td style="padding:12px 14px;font-weight:600;">GPT-4.1 + RAG</td><td style="padding:12px 14px;color:#5C6B6E;">2025</td><td style="padding:12px 14px;color:#5C6B6E;">closed + RAG</td><td style="padding:12px 14px;text-align:right;color:#9AA6A7;">—</td><td style="padding:12px 14px;text-align:right;">58.5%</td><td style="padding:12px 14px;text-align:right;color:#9AA6A7;">—</td><td style="padding:12px 14px;text-align:center;color:#B5483F;">✗</td></tr>
+        <tr style="border-bottom:1px solid rgba(22,36,42,0.1);"><td style="padding:12px 14px;font-weight:600;">PLLM</td><td style="padding:12px 14px;color:#5C6B6E;">arXiv&rsquo;25</td><td style="padding:12px 14px;color:#5C6B6E;">RAG + LLM iter.</td><td style="padding:12px 14px;text-align:right;">44.8%</td><td style="padding:12px 14px;text-align:right;">65.5%</td><td style="padding:12px 14px;text-align:right;">369.6s</td><td style="padding:12px 14px;text-align:center;color:#2E7D5B;">✓</td></tr>
+        <tr style="border-bottom:1px solid rgba(22,36,42,0.1);"><td style="padding:12px 14px;font-weight:600;">SMT-LLM</td><td style="padding:12px 14px;color:#5C6B6E;">FSE&rsquo;26</td><td style="padding:12px 14px;color:#5C6B6E;">Z3 + LLM imput.</td><td style="padding:12px 14px;text-align:right;">83.6%</td><td style="padding:12px 14px;text-align:right;color:#9AA6A7;">—</td><td style="padding:12px 14px;text-align:right;">23.9s</td><td style="padding:12px 14px;text-align:center;color:#2E7D5B;">✓</td></tr>
+        <tr style="border-bottom:1px solid rgba(22,36,42,0.1);"><td style="padding:12px 14px;font-weight:700;">MEMRES</td><td style="padding:12px 14px;color:#5C6B6E;">FSE&rsquo;26</td><td style="padding:12px 14px;color:#5C6B6E;">Memory + Cascade</td><td style="padding:12px 14px;text-align:right;font-weight:700;">86.3%</td><td style="padding:12px 14px;text-align:right;font-weight:700;">81.7%</td><td style="padding:12px 14px;text-align:right;">335.3s</td><td style="padding:12px 14px;text-align:center;color:#2E7D5B;">✓</td></tr>
+        <tr style="background:rgba(224,119,43,0.16);"><td style="padding:14px 14px;font-weight:800;color:#23373B;">CGAR <span style="font-size:20px;color:#E0772B;">(ours)</span></td><td style="padding:14px 14px;color:#E0772B;font-weight:600;">—</td><td style="padding:14px 14px;font-weight:600;">Multi-Agent + CA</td><td style="padding:14px 14px;text-align:right;font-weight:800;color:#2E7D5B;">87.1%</td><td style="padding:14px 14px;text-align:right;font-weight:800;color:#2E7D5B;">83.2%</td><td style="padding:14px 14px;text-align:right;font-weight:800;">22.3s</td><td style="padding:14px 14px;text-align:center;color:#2E7D5B;">✓</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div style="flex:none;font-size:21px;color:#5C6B6E;line-height:1.45;border-top:1px solid rgba(22,36,42,0.12);padding-top:12px;">PLLM 44.8% = reproduction single-run (paper headline 54.8% là 10-run union). <b>Time</b> = avg mọi snippet trên HG2.9K. <span style="color:#23373B;"><b>Fairness:</b> ngân sách = ≤10 build × 180s ≈1800s/snippet, giống nhau mọi tool. CGAR chỉ cần ≤5 build → time thấp là do hội tụ nhanh, không phải budget khác.</span></div>
+</section>
+
+<section data-label="HG2.9K: lỗi" data-screen-label="HG2.9K Phân rã lỗi" data-speaker-notes="CGAR triệt tiêu 4 nhóm lỗi, gần như chỉ còn ImportError. Total fails 1596 → 373 (-76.6%). Rescue 80.6% toàn bộ PLLM failures." style="font-family:'Be Vietnam Pro',sans-serif;background:#F6F4EF;color:#23373B;padding:64px 80px 44px;display:flex;flex-direction:column;">
+  <div style="display:flex;flex-direction:column;gap:6px;flex:none;">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:24px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:#E0772B;">Kết quả · 17</div>
+    <h2 style="margin:0;font-size:46px;font-weight:700;color:#23373B;letter-spacing:-0.5px;">HG2.9K: Error Breakdown</h2>
+  </div>
+  <div style="flex:1;display:flex;gap:40px;margin-top:14px;">
+    <div style="flex:1.1;display:flex;flex-direction:column;">
+      <div style="display:flex;gap:24px;align-items:center;margin-bottom:8px;"><div style="font-size:23px;font-weight:700;">Số build fail theo loại lỗi</div><div style="font-size:22px;"><span style="color:#B5483F;">■</span> PLLM &nbsp; <span style="color:#2E7D5B;">■</span> CGAR</div></div>
+      <div style="flex:1;display:flex;align-items:flex-end;gap:18px;padding-bottom:54px;border-bottom:2px solid rgba(22,36,42,0.2);">
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;height:100%;justify-content:flex-end;"><div style="display:flex;gap:5px;align-items:flex-end;height:100%;width:100%;justify-content:center;"><div style="width:30px;background:#B5483F;height:88%;position:relative;"><span style="position:absolute;top:-26px;left:50%;transform:translateX(-50%);font-size:20px;color:#B5483F;font-weight:700;">494</span></div><div style="width:30px;background:#2E7D5B;height:1%;"></div></div></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;height:100%;justify-content:flex-end;"><div style="display:flex;gap:5px;align-items:flex-end;height:100%;width:100%;justify-content:center;"><div style="width:30px;background:#B5483F;height:50%;position:relative;"><span style="position:absolute;top:-26px;left:50%;transform:translateX(-50%);font-size:20px;color:#B5483F;font-weight:700;">282</span></div><div style="width:30px;background:#2E7D5B;height:1%;"></div></div></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;height:100%;justify-content:flex-end;"><div style="display:flex;gap:5px;align-items:flex-end;height:100%;width:100%;justify-content:center;"><div style="width:30px;background:#B5483F;height:77%;position:relative;"><span style="position:absolute;top:-26px;left:50%;transform:translateX(-50%);font-size:20px;color:#B5483F;font-weight:700;">433</span></div><div style="width:30px;background:#2E7D5B;height:66%;position:relative;"><span style="position:absolute;top:-26px;left:50%;transform:translateX(-50%);font-size:20px;color:#2E7D5B;font-weight:700;">372</span></div></div></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;height:100%;justify-content:flex-end;"><div style="display:flex;gap:5px;align-items:flex-end;height:100%;width:100%;justify-content:center;"><div style="width:30px;background:#B5483F;height:39%;position:relative;"><span style="position:absolute;top:-26px;left:50%;transform:translateX(-50%);font-size:20px;color:#B5483F;font-weight:700;">221</span></div><div style="width:30px;background:#2E7D5B;height:1%;"></div></div></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;height:100%;justify-content:flex-end;"><div style="display:flex;gap:5px;align-items:flex-end;height:100%;width:100%;justify-content:center;"><div style="width:30px;background:#B5483F;height:15%;position:relative;"><span style="position:absolute;top:-26px;left:50%;transform:translateX(-50%);font-size:20px;color:#B5483F;font-weight:700;">83</span></div><div style="width:30px;background:#2E7D5B;height:1%;"></div></div></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;height:100%;justify-content:flex-end;"><div style="display:flex;gap:5px;align-items:flex-end;height:100%;width:100%;justify-content:center;"><div style="width:30px;background:#B5483F;height:15%;position:relative;"><span style="position:absolute;top:-26px;left:50%;transform:translateX(-50%);font-size:20px;color:#B5483F;font-weight:700;">83</span></div><div style="width:30px;background:#2E7D5B;height:1%;"></div></div></div>
+      </div>
+      <div style="display:flex;gap:18px;margin-top:8px;"><div style="flex:1;text-align:center;font-size:20px;color:#3C4C50;">SyntaxErr</div><div style="flex:1;text-align:center;font-size:20px;color:#3C4C50;">NoMatchDist</div><div style="flex:1;text-align:center;font-size:20px;color:#3C4C50;">ImportErr</div><div style="flex:1;text-align:center;font-size:20px;color:#3C4C50;">Other</div><div style="flex:1;text-align:center;font-size:20px;color:#3C4C50;">NoWheel</div><div style="flex:1;text-align:center;font-size:20px;color:#3C4C50;">AttrErr</div></div>
+      <div style="margin-top:12px;font-size:24px;color:#23373B;">Total fails: PLLM <b style="color:#B5483F;">1596</b> → CGAR <b style="color:#2E7D5B;">373</b> &nbsp;<span style="color:#2E7D5B;font-weight:700;">Δ −76.6%</span></div>
+    </div>
+    <div style="flex:0.85;display:flex;flex-direction:column;">
+      <div style="font-size:23px;font-weight:700;margin-bottom:14px;">Rescue rate theo loại lỗi của PLLM</div>
+      <div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:13px;">
+        <div style="display:flex;align-items:center;gap:12px;"><div style="width:200px;font-size:21px;text-align:right;color:#3C4C50;">NameError</div><div style="flex:1;background:rgba(22,36,42,0.06);border-radius:4px;height:26px;"><div style="width:97%;height:100%;background:#2E7D5B;border-radius:4px;"></div></div><div style="width:64px;font-size:21px;font-weight:700;color:#2E7D5B;">97.1%</div></div>
+        <div style="display:flex;align-items:center;gap:12px;"><div style="width:200px;font-size:21px;text-align:right;color:#3C4C50;">InvalidRequirement</div><div style="flex:1;background:rgba(22,36,42,0.06);border-radius:4px;height:26px;"><div style="width:94%;height:100%;background:#2E7D5B;border-radius:4px;"></div></div><div style="width:64px;font-size:21px;font-weight:700;color:#2E7D5B;">94.1%</div></div>
+        <div style="display:flex;align-items:center;gap:12px;"><div style="width:200px;font-size:21px;text-align:right;color:#3C4C50;">OtherFailure</div><div style="flex:1;background:rgba(22,36,42,0.06);border-radius:4px;height:26px;"><div style="width:91%;height:100%;background:#2E7D5B;border-radius:4px;"></div></div><div style="width:64px;font-size:21px;font-weight:700;color:#2E7D5B;">91.1%</div></div>
+        <div style="display:flex;align-items:center;gap:12px;"><div style="width:200px;font-size:21px;text-align:right;color:#3C4C50;">NoMatchingDist</div><div style="flex:1;background:rgba(22,36,42,0.06);border-radius:4px;height:26px;"><div style="width:86%;height:100%;background:#5E9E7E;border-radius:4px;"></div></div><div style="width:64px;font-size:21px;font-weight:700;color:#3C4C50;">85.8%</div></div>
+        <div style="display:flex;align-items:center;gap:12px;"><div style="width:200px;font-size:21px;text-align:right;color:#3C4C50;">ImportError</div><div style="flex:1;background:rgba(22,36,42,0.06);border-radius:4px;height:26px;"><div style="width:83%;height:100%;background:#5E9E7E;border-radius:4px;"></div></div><div style="width:64px;font-size:21px;font-weight:700;color:#3C4C50;">82.9%</div></div>
+        <div style="display:flex;align-items:center;gap:12px;"><div style="width:200px;font-size:21px;text-align:right;color:#3C4C50;">SyntaxError</div><div style="flex:1;background:rgba(22,36,42,0.06);border-radius:4px;height:26px;"><div style="width:74%;height:100%;background:#E0772B;border-radius:4px;"></div></div><div style="width:64px;font-size:21px;font-weight:700;color:#3C4C50;">73.9%</div></div>
+        <div style="display:flex;align-items:center;gap:12px;"><div style="width:200px;font-size:21px;text-align:right;color:#3C4C50;">FailedToRun</div><div style="flex:1;background:rgba(22,36,42,0.06);border-radius:4px;height:26px;"><div style="width:67%;height:100%;background:#E0772B;border-radius:4px;"></div></div><div style="width:64px;font-size:21px;font-weight:700;color:#3C4C50;">66.7%</div></div>
+      </div>
+      <div style="font-size:23px;color:#23373B;margin-top:10px;border-top:1px solid rgba(22,36,42,0.12);padding-top:10px;">CGAR rescue <b style="color:#2E7D5B;">80.6%</b> (1286/1596) toàn bộ PLLM failures.</div>
+    </div>
+  </div>
+</section>
+
+<section data-label="GitChameleon" data-screen-label="GitChameleon Open vs Closed" data-speaker-notes="CGAR (open 9B, <10GB VRAM) vượt o1 (closed, >200B) +32.0pp trên GitChameleon. Gap HG-GitCham nhỏ nhất → tổng quát hóa tốt." style="font-family:'Be Vietnam Pro',sans-serif;background:#F6F4EF;color:#23373B;padding:64px 80px 46px;display:flex;flex-direction:column;">
+  <div style="display:flex;flex-direction:column;gap:6px;flex:none;">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:24px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:#E0772B;">Kết quả · 18</div>
+    <h2 style="margin:0;font-size:46px;font-weight:700;color:#23373B;letter-spacing:-0.5px;">GitChameleon: Open vs Closed</h2>
+  </div>
+  <div style="flex:1;display:flex;gap:48px;margin-top:36px;align-items:flex-start;">
+    <div style="flex:1;">
+      <div style="font-size:28px;font-weight:700;margin-bottom:22px;">Bảng xếp hạng</div>
+      <table style="width:100%;border-collapse:collapse;font-size:28px;">
+        <thead><tr style="color:#5C6B6E;font-family:'JetBrains Mono',monospace;font-size:22px;text-transform:uppercase;letter-spacing:1px;"><th style="text-align:left;padding:12px 12px;border-bottom:2px solid rgba(22,36,42,0.3);">Method</th><th style="text-align:left;padding:12px 12px;border-bottom:2px solid rgba(22,36,42,0.3);">Type</th><th style="text-align:right;padding:12px 12px;border-bottom:2px solid rgba(22,36,42,0.3);">Pass</th><th style="text-align:center;padding:12px 12px;border-bottom:2px solid rgba(22,36,42,0.3);">Open</th></tr></thead>
+        <tbody>
+          <tr style="background:rgba(44,62,107,0.05);border-bottom:1px solid rgba(22,36,42,0.1);"><td style="padding:14px 12px;font-weight:600;">GPT-4o</td><td style="padding:14px 12px;color:#5C6B6E;">closed gen</td><td style="padding:14px 12px;text-align:right;">49.1%</td><td style="padding:14px 12px;text-align:center;color:#B5483F;">✗</td></tr>
+          <tr style="background:rgba(44,62,107,0.05);border-bottom:1px solid rgba(22,36,42,0.1);"><td style="padding:14px 12px;font-weight:600;">Gemini 2.5 Pro</td><td style="padding:14px 12px;color:#5C6B6E;">closed gen</td><td style="padding:14px 12px;text-align:right;">50.0%</td><td style="padding:14px 12px;text-align:center;color:#B5483F;">✗</td></tr>
+          <tr style="background:rgba(44,62,107,0.05);border-bottom:1px solid rgba(22,36,42,0.1);"><td style="padding:14px 12px;font-weight:600;">o1</td><td style="padding:14px 12px;color:#5C6B6E;">closed (best)</td><td style="padding:14px 12px;text-align:right;">51.2%</td><td style="padding:14px 12px;text-align:center;color:#B5483F;">✗</td></tr>
+          <tr style="background:rgba(44,62,107,0.05);border-bottom:1px solid rgba(22,36,42,0.1);"><td style="padding:14px 12px;font-weight:600;">GPT-4.1 + RAG</td><td style="padding:14px 12px;color:#5C6B6E;">closed + RAG</td><td style="padding:14px 12px;text-align:right;">58.5%</td><td style="padding:14px 12px;text-align:center;color:#B5483F;">✗</td></tr>
+          <tr style="border-bottom:1px solid rgba(22,36,42,0.1);"><td style="padding:14px 12px;font-weight:600;">PLLM</td><td style="padding:14px 12px;color:#5C6B6E;">open + RAG</td><td style="padding:14px 12px;text-align:right;">65.5%</td><td style="padding:14px 12px;text-align:center;color:#2E7D5B;">✓</td></tr>
+          <tr style="border-bottom:1px solid rgba(22,36,42,0.1);"><td style="padding:14px 12px;font-weight:700;">MEMRES</td><td style="padding:14px 12px;color:#5C6B6E;">open + Memory</td><td style="padding:14px 12px;text-align:right;font-weight:700;">81.7%</td><td style="padding:14px 12px;text-align:center;color:#2E7D5B;">✓</td></tr>
+          <tr style="background:rgba(224,119,43,0.16);"><td style="padding:16px 12px;font-weight:800;">CGAR</td><td style="padding:16px 12px;color:#E0772B;font-weight:600;">open + Agent+CA</td><td style="padding:16px 12px;text-align:right;font-weight:800;color:#2E7D5B;">83.2%</td><td style="padding:16px 12px;text-align:center;color:#2E7D5B;">✓</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="flex:0.95;">
+      <div style="font-size:28px;font-weight:700;margin-bottom:22px;">Tổng quát hóa chéo benchmark</div>
+      <table style="width:100%;border-collapse:collapse;font-size:28px;">
+        <thead><tr style="color:#5C6B6E;font-family:'JetBrains Mono',monospace;font-size:22px;text-transform:uppercase;letter-spacing:1px;"><th style="text-align:left;padding:12px 12px;border-bottom:2px solid rgba(22,36,42,0.3);">Tool</th><th style="text-align:right;padding:12px 12px;border-bottom:2px solid rgba(22,36,42,0.3);">HG2.9K</th><th style="text-align:right;padding:12px 12px;border-bottom:2px solid rgba(22,36,42,0.3);">GitCham.</th><th style="text-align:right;padding:12px 12px;border-bottom:2px solid rgba(22,36,42,0.3);">Gap</th></tr></thead>
+        <tbody>
+          <tr style="border-bottom:1px solid rgba(22,36,42,0.1);"><td style="padding:18px 12px;font-weight:600;">PLLM</td><td style="padding:18px 12px;text-align:right;">44.8%</td><td style="padding:18px 12px;text-align:right;">65.5%</td><td style="padding:18px 12px;text-align:right;color:#B5483F;">−20.7pp</td></tr>
+          <tr style="border-bottom:1px solid rgba(22,36,42,0.1);"><td style="padding:18px 12px;font-weight:700;">MEMRES</td><td style="padding:18px 12px;text-align:right;font-weight:700;">86.3%</td><td style="padding:18px 12px;text-align:right;font-weight:700;">81.7%</td><td style="padding:18px 12px;text-align:right;">−4.6pp</td></tr>
+          <tr style="background:rgba(224,119,43,0.16);"><td style="padding:20px 12px;font-weight:800;">CGAR</td><td style="padding:20px 12px;text-align:right;font-weight:800;color:#2E7D5B;">87.1%</td><td style="padding:20px 12px;text-align:right;font-weight:800;color:#2E7D5B;">83.2%</td><td style="padding:20px 12px;text-align:right;font-weight:800;color:#2E7D5B;">−3.9pp</td></tr>
+        </tbody>
+      </table>
+      <div style="font-size:24px;color:#5C6B6E;margin-top:24px;">Gap nhỏ = tổng quát hóa tốt giữa in-distribution và OOD. <span style="color:#5C6B6E;">(closed baselines từ arXiv 2507.12367)</span></div>
+    </div>
+  </div>
+  <div style="flex:none;text-align:center;font-size:26px;color:#23373B;margin-top:14px;border-top:1px solid rgba(22,36,42,0.12);padding-top:16px;">CGAR (open 9B, &lt;10 GB VRAM) vượt o1 (closed, &gt;200B params) <b style="color:#2E7D5B;">+32.0pp</b> trên GitChameleon: <i>system design &gt; raw model scale</i>.</div>
+</section>
+
+<section data-label="Tốc độ & Ablation" data-screen-label="Tốc độ & Ablation" data-speaker-notes="Multi-agent nhưng nhanh nhất; solver tỉa không gian → ít Docker build. Ablation: bỏ upper bound −68% rescue, bỏ wheel filter −44%, bỏ session store −21%." style="font-family:'Be Vietnam Pro',sans-serif;background:#F6F4EF;color:#23373B;padding:64px 80px 44px;display:flex;flex-direction:column;">
+  <div style="display:flex;flex-direction:column;gap:6px;flex:none;">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:24px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:#E0772B;">Kết quả · 19</div>
+    <h2 style="margin:0;font-size:46px;font-weight:700;color:#23373B;letter-spacing:-0.5px;">Speed &amp; Ablation</h2>
+  </div>
+  <div style="flex:1;display:flex;gap:48px;margin-top:14px;">
+    <div style="flex:1;display:flex;flex-direction:column;">
+      <div style="font-size:23px;font-weight:700;">Duration trên GitChameleon (s)</div>
+      <div style="font-size:21px;color:#5C6B6E;margin-bottom:10px;">cùng budget 5 vòng Docker build cho cả 3 tool</div>
+      <div style="flex:1;display:flex;align-items:flex-end;justify-content:space-around;gap:30px;padding-top:38px;padding-bottom:36px;border-bottom:2px solid rgba(22,36,42,0.2);">
+        <div style="display:flex;flex-direction:column;align-items:center;height:100%;justify-content:flex-end;width:100%;"><div style="display:flex;gap:8px;align-items:flex-end;height:100%;"><div style="width:34px;background:#B5483F;height:46%;position:relative;"><span style="position:absolute;top:-26px;left:50%;transform:translateX(-50%);font-size:20px;font-weight:700;color:#B5483F;">67</span></div><div style="width:34px;background:#B98A2E;height:21%;position:relative;"><span style="position:absolute;top:-26px;left:50%;transform:translateX(-50%);font-size:20px;font-weight:700;color:#B98A2E;">30</span></div><div style="width:34px;background:#2E7D5B;height:12%;position:relative;"><span style="position:absolute;top:-26px;left:50%;transform:translateX(-50%);font-size:20px;font-weight:700;color:#2E7D5B;">17.8</span></div></div></div>
+        <div style="display:flex;flex-direction:column;align-items:center;height:100%;justify-content:flex-end;width:100%;"><div style="display:flex;gap:8px;align-items:flex-end;height:100%;"><div style="width:34px;background:#B5483F;height:100%;position:relative;"><span style="position:absolute;top:-26px;left:50%;transform:translateX(-50%);font-size:20px;font-weight:700;color:#B5483F;">146</span></div><div style="width:34px;background:#B98A2E;height:50%;position:relative;"><span style="position:absolute;top:-26px;left:50%;transform:translateX(-50%);font-size:20px;font-weight:700;color:#B98A2E;">73</span></div><div style="width:34px;background:#2E7D5B;height:33%;position:relative;"><span style="position:absolute;top:-26px;left:50%;transform:translateX(-50%);font-size:20px;font-weight:700;color:#2E7D5B;">48.5</span></div></div></div>
+        <div style="display:flex;flex-direction:column;align-items:center;height:100%;justify-content:flex-end;width:100%;"><div style="display:flex;gap:8px;align-items:flex-end;height:100%;"><div style="width:34px;background:#B5483F;height:71%;position:relative;"><span style="position:absolute;top:-26px;left:50%;transform:translateX(-50%);font-size:20px;font-weight:700;color:#B5483F;">104</span></div><div style="width:34px;background:#B98A2E;height:32%;position:relative;"><span style="position:absolute;top:-26px;left:50%;transform:translateX(-50%);font-size:20px;font-weight:700;color:#B98A2E;">47</span></div><div style="width:34px;background:#2E7D5B;height:24%;position:relative;"><span style="position:absolute;top:-26px;left:50%;transform:translateX(-50%);font-size:20px;font-weight:700;color:#2E7D5B;">35.6</span></div></div></div>
+      </div>
+      <div style="display:flex;justify-content:space-around;margin-top:8px;"><div style="font-size:22px;color:#3C4C50;width:100%;text-align:center;">Median</div><div style="font-size:22px;color:#3C4C50;width:100%;text-align:center;">P90</div><div style="font-size:22px;color:#3C4C50;width:100%;text-align:center;">Fail-avg</div></div>
+      <div style="display:flex;gap:24px;margin-top:10px;font-size:21px;"><span><span style="color:#B5483F;">■</span> PLLM</span><span><span style="color:#B98A2E;">■</span> MEMRES</span><span><span style="color:#2E7D5B;">■</span> <b>CGAR</b></span></div>
+    </div>
+    <div style="flex:0.95;display:flex;flex-direction:column;">
+      <div style="font-size:23px;font-weight:700;margin-bottom:16px;">Ablation: CGAR rescue (n=396)</div>
+      <div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:20px;">
+        <div style="display:flex;align-items:center;gap:14px;"><div style="width:230px;font-size:22px;text-align:right;font-weight:700;color:#23373B;">Full CGAR</div><div style="flex:1;background:rgba(22,36,42,0.06);border-radius:4px;height:34px;"><div style="width:100%;height:100%;background:#2E7D5B;border-radius:4px;"></div></div><div style="width:130px;font-size:22px;font-weight:800;color:#2E7D5B;">71</div></div>
+        <div style="display:flex;align-items:center;gap:14px;"><div style="width:230px;font-size:22px;text-align:right;color:#3C4C50;">w/o session store</div><div style="flex:1;background:rgba(22,36,42,0.06);border-radius:4px;height:34px;"><div style="width:79%;height:100%;background:#23373B;border-radius:4px;"></div></div><div style="width:130px;font-size:22px;font-weight:700;">56 <span style="color:#B5483F;">−21%</span></div></div>
+        <div style="display:flex;align-items:center;gap:14px;"><div style="width:230px;font-size:22px;text-align:right;color:#3C4C50;">w/o wheel filter</div><div style="flex:1;background:rgba(22,36,42,0.06);border-radius:4px;height:34px;"><div style="width:56%;height:100%;background:#4A5A5E;border-radius:4px;"></div></div><div style="width:130px;font-size:22px;font-weight:700;">40 <span style="color:#B5483F;">−44%</span></div></div>
+        <div style="display:flex;align-items:center;gap:14px;"><div style="width:230px;font-size:22px;text-align:right;color:#3C4C50;">w/o upper bound</div><div style="flex:1;background:rgba(22,36,42,0.06);border-radius:4px;height:34px;"><div style="width:32%;height:100%;background:#7E8C8E;border-radius:4px;"></div></div><div style="width:130px;font-size:22px;font-weight:700;">23 <span style="color:#B5483F;font-weight:800;">−68%</span></div></div>
+      </div>
+      <div style="font-size:21px;color:#5C6B6E;margin-top:8px;">3 thành phần đều cần thiết; upper bound đóng góp lớn nhất.</div>
+    </div>
+  </div>
+  <div style="flex:none;text-align:center;margin-top:12px;border-top:1px solid rgba(22,36,42,0.12);padding-top:14px;"><span style="font-size:26px;font-style:italic;color:#E0772B;font-weight:600;">&ldquo;The best build is the one you never run.&rdquo;</span> &nbsp;<span style="font-size:23px;color:#23373B;">Solver tỉa không gian → ít Docker build; fail chỉ chậm hơn pass <b>1.31×</b> (PLLM 2.20×).</span></div>
+</section>
+
+<section data-label="§ Hạn chế" data-screen-label="Section: Hạn chế" data-speaker-notes="Mở phần 5: hạn chế và hướng phát triển." style="font-family:'Be Vietnam Pro',sans-serif;background:#16242A;color:#F6F4EF;padding:0;display:flex;flex-direction:column;position:relative;overflow:hidden;">
+  <div style="position:absolute;right:-34px;top:50%;margin-top:-330px;font-family:'Be Vietnam Pro',sans-serif;font-size:660px;font-weight:800;line-height:1;color:rgba(255,255,255,0.04);letter-spacing:-24px;pointer-events:none;">05</div>
+  <div style="position:absolute;right:96px;top:50%;margin-top:-250px;width:760px;height:500px;z-index:1;pointer-events:none;">
+    <svg viewBox="0 0 760 500" style="width:100%;height:100%;overflow:visible;">
+      <defs><marker id="bkw" markerWidth="11" markerHeight="11" refX="6.5" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#E0772B"></path></marker></defs>
+      <line x1="56" y1="448" x2="700" y2="448" stroke="rgba(255,255,255,0.13)" stroke-width="2"></line>
+      <line x1="56" y1="448" x2="56" y2="70" stroke="rgba(255,255,255,0.09)" stroke-width="2"></line>
+      <line x1="74" y1="178" x2="612" y2="178" stroke="#B5483F" stroke-width="2.5" stroke-dasharray="9 7"></line>
+      <text x="610" y="162" font-family="JetBrains Mono, monospace" font-size="21" letter-spacing="1" fill="#C9695C" text-anchor="end">hard floor</text>
+      <polyline points="84,432 196,360 306,300 402,256 472,226 540,214 588,211" fill="none" stroke="#7FA6B5" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"></polyline>
+      <circle cx="84" cy="432" r="6" fill="#7FA6B5"></circle>
+      <circle cx="196" cy="360" r="6" fill="#7FA6B5"></circle>
+      <circle cx="306" cy="300" r="6" fill="#7FA6B5"></circle>
+      <circle cx="402" cy="256" r="6" fill="#7FA6B5"></circle>
+      <circle cx="472" cy="226" r="6" fill="#7FA6B5"></circle>
+      <circle cx="588" cy="211" r="7.5" fill="#9DAEB0"></circle>
+      <path d="M588,211 C648,150 678,120 712,66" fill="none" stroke="#E0772B" stroke-width="5" stroke-linecap="round" marker-end="url(#bkw)"></path>
+      <text x="724" y="58" font-family="JetBrains Mono, monospace" font-size="21" letter-spacing="1" fill="#E0772B" text-anchor="end">tương lai</text>
+    </svg>
+  </div>
+  <div style="position:absolute;top:56px;left:96px;right:96px;display:flex;justify-content:space-between;align-items:center;font-family:'JetBrains Mono',monospace;font-size:22px;letter-spacing:3px;color:#6B8082;text-transform:uppercase;z-index:1;"><span>MEMRES &rarr; CGAR</span><span>05 / 05</span></div>
+  <div style="position:absolute;top:100px;left:96px;right:96px;height:1px;background:rgba(255,255,255,0.1);"></div>
+  <div style="flex:1;display:flex;flex-direction:column;justify-content:center;padding:0 96px;position:relative;z-index:1;">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:27px;letter-spacing:5px;color:#E0772B;text-transform:uppercase;margin-bottom:22px;">Phần 05</div>
+    <h2 style="margin:0;font-size:92px;font-weight:800;letter-spacing:-3px;line-height:0.95;color:#F6F4EF;">Hạn chế &amp;<br>Hướng phát triển</h2>
+    <div style="width:120px;height:5px;background:#E0772B;margin:38px 0;"></div>
+    <div style="font-size:30px;color:#9DAEB0;max-width:1150px;line-height:1.45;">Hard floor &nbsp;·&nbsp; giới hạn kiến trúc &nbsp;·&nbsp; bốn hướng mở rộng</div>
+  </div>
+</section>
+
+<section data-label="Hạn chế" data-screen-label="Hạn chế Hard Floor" data-speaker-notes="310 snippet (10.7%) cả PLLM và CGAR đều fail, irreducible dưới ràng buộc hiện tại. Cộng thêm 4 giới hạn kiến trúc." style="font-family:'Be Vietnam Pro',sans-serif;background:#F6F4EF;color:#23373B;padding:64px 80px 46px;display:flex;flex-direction:column;">
+  <div style="display:flex;flex-direction:column;gap:6px;flex:none;">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:24px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:#E0772B;">Hạn chế · 20</div>
+    <h2 style="margin:0;font-size:46px;font-weight:700;color:#23373B;letter-spacing:-0.5px;">Hạn chế: Hard Floor &amp; Architectural Limits</h2>
+  </div>
+  <div style="flex:1;display:flex;gap:48px;margin-top:16px;">
+    <div style="flex:1;display:flex;flex-direction:column;">
+      <div style="font-size:24px;font-weight:700;">Hard floor: 310 snippet <span style="color:#B5483F;">(10.7%)</span></div>
+      <div style="font-size:21px;color:#5C6B6E;margin-bottom:16px;">cả PLLM và CGAR đều fail</div>
+      <div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:22px;">
+        <div style="display:flex;align-items:center;gap:14px;"><div style="width:300px;font-size:22px;text-align:right;color:#3C4C50;">Python 2 syntax (no Py2 wheel)</div><div style="flex:1;background:rgba(22,36,42,0.06);border-radius:4px;height:30px;"><div style="width:99%;height:100%;background:#B5483F;border-radius:4px;"></div></div><div style="width:74px;font-size:22px;font-weight:700;color:#B5483F;">41.6%</div></div>
+        <div style="display:flex;align-items:center;gap:14px;"><div style="width:300px;font-size:22px;text-align:right;color:#3C4C50;">ImportError system/private pkg</div><div style="flex:1;background:rgba(22,36,42,0.06);border-radius:4px;height:28px;"><div style="width:62%;height:100%;background:#C5683F;border-radius:4px;"></div></div><div style="width:74px;font-size:22px;font-weight:700;color:#3C4C50;">25.8%</div></div>
+        <div style="display:flex;align-items:center;gap:14px;"><div style="width:300px;font-size:22px;text-align:right;color:#3C4C50;">NoMatchingDist (pkg absent)</div><div style="flex:1;background:rgba(22,36,42,0.06);border-radius:4px;height:28px;"><div style="width:32%;height:100%;background:#D89A5B;border-radius:4px;"></div></div><div style="width:74px;font-size:22px;font-weight:700;color:#3C4C50;">13.3%</div></div>
+        <div style="display:flex;align-items:center;gap:14px;"><div style="width:300px;font-size:22px;text-align:right;color:#3C4C50;">CouldNotBuildWheels (glibc/native)</div><div style="flex:1;background:rgba(22,36,42,0.06);border-radius:4px;height:28px;"><div style="width:19%;height:100%;background:#D89A5B;border-radius:4px;"></div></div><div style="width:74px;font-size:22px;font-weight:700;color:#3C4C50;">8.1%</div></div>
+        <div style="display:flex;align-items:center;gap:14px;"><div style="width:300px;font-size:22px;text-align:right;color:#3C4C50;">API removed (no compat older)</div><div style="flex:1;background:rgba(22,36,42,0.06);border-radius:4px;height:28px;"><div style="width:10%;height:100%;background:#D89A5B;border-radius:4px;"></div></div><div style="width:74px;font-size:22px;font-weight:700;color:#3C4C50;">4.0%</div></div>
+        <div style="display:flex;align-items:center;gap:14px;"><div style="width:300px;font-size:22px;text-align:right;color:#3C4C50;">Other</div><div style="flex:1;background:rgba(22,36,42,0.06);border-radius:4px;height:28px;"><div style="width:17%;height:100%;background:#9AA6A7;border-radius:4px;"></div></div><div style="width:74px;font-size:22px;font-weight:700;color:#3C4C50;">7.2%</div></div>
+      </div>
+      <div style="font-size:21px;color:#B5483F;margin-top:14px;font-style:italic;">Irreducible dưới ràng buộc hiện tại (Docker, PyPI public, no source patching, ≤10 retries), không phải lỗi tool.</div>
+    </div>
+    <div style="flex:0.82;display:flex;flex-direction:column;">
+      <div style="font-size:24px;font-weight:700;color:#23373B;margin-bottom:16px;">Hạn chế kiến trúc</div>
+      <div style="flex:1;display:flex;flex-direction:column;justify-content:space-between;gap:18px;">
+        <div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:6px;border-left:4px solid #B5483F;background:#fff;border-radius:0 10px 10px 0;padding:18px 22px;"><div style="font-size:24px;font-weight:700;color:#B5483F;">Phụ thuộc PyPI live</div><div style="font-size:22px;color:#3C4C50;">PyPI down/rate-limit → fallback về MEMRES cascade.</div></div>
+        <div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:6px;border-left:4px solid #B5483F;background:#fff;border-radius:0 10px 10px 0;padding:18px 22px;"><div style="font-size:24px;font-weight:700;color:#B5483F;">Single ecosystem</div><div style="font-size:22px;color:#3C4C50;">chỉ Python, chưa generalize sang JS / Rust / Go.</div></div>
+        <div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:6px;border-left:4px solid #B5483F;background:#fff;border-radius:0 10px 10px 0;padding:18px 22px;"><div style="font-size:24px;font-weight:700;color:#B5483F;">LLM Analyzer brittle với log lạ</div><div style="font-size:22px;color:#3C4C50;">Gemma-2 9B parse sai khi log ngoài pretrain.</div></div>
+        <div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:6px;border-left:4px solid #B5483F;background:#fff;border-radius:0 10px 10px 0;padding:18px 22px;"><div style="font-size:24px;font-weight:700;color:#B5483F;">Single-worker session store</div><div style="font-size:22px;color:#3C4C50;">chưa hỗ trợ multi-user federated learning.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section data-label="Hướng phát triển" data-screen-label="Hướng phát triển" data-speaker-notes="4 hướng: đa ngôn ngữ, chia sẻ constraint federated, fine-tune LLM đọc lỗi, đa mô hình. Mục tiêu: environment archaeologist đa năng." style="font-family:'Be Vietnam Pro',sans-serif;background:#F6F4EF;color:#23373B;padding:64px 96px 48px;display:flex;flex-direction:column;">
+  <div style="display:flex;flex-direction:column;gap:6px;flex:none;">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:24px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:#E0772B;">Hướng phát triển · 21</div>
+    <h2 style="margin:0;font-size:46px;font-weight:700;color:#23373B;letter-spacing:-0.5px;">Hướng phát triển</h2>
+  </div>
+  <div style="flex:1;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:26px;margin-top:18px;">
+    <div style="background:#fff;border:1px solid rgba(22,36,42,0.14);border-radius:14px;padding:42px 38px 36px;position:relative;display:flex;flex-direction:column;justify-content:flex-start;"><div style="position:absolute;top:24px;right:34px;font-size:108px;font-weight:800;color:rgba(224,119,43,0.14);line-height:1;">1</div><div style="font-size:42px;font-weight:700;color:#23373B;margin-bottom:24px;position:relative;">Mở rộng đa ngôn ngữ</div><div style="font-size:33px;color:#3C4C50;line-height:1.7;position:relative;">Áp dụng CGAR cho <b>npm</b>, <b>cargo</b>, <b>go.mod</b>; bộ giải không phụ thuộc ecosystem, chỉ cần adapter cho từng registry.</div></div>
+    <div style="background:#fff;border:1px solid rgba(22,36,42,0.14);border-radius:14px;padding:42px 38px 36px;position:relative;display:flex;flex-direction:column;justify-content:flex-start;"><div style="position:absolute;top:24px;right:34px;font-size:108px;font-weight:800;color:rgba(224,119,43,0.14);line-height:1;">2</div><div style="font-size:42px;font-weight:700;color:#23373B;margin-bottom:24px;position:relative;">Chia sẻ constraint</div><div style="font-size:33px;color:#3C4C50;line-height:1.7;position:relative;">Federated, bảo toàn riêng tư: snippet user A fix giúp user B tránh lỗi tương tự, tận dụng quy mô cộng đồng.</div></div>
+    <div style="background:#fff;border:1px solid rgba(22,36,42,0.14);border-radius:14px;padding:42px 38px 36px;position:relative;display:flex;flex-direction:column;justify-content:flex-start;"><div style="position:absolute;top:24px;right:34px;font-size:108px;font-weight:800;color:rgba(224,119,43,0.14);line-height:1;">3</div><div style="font-size:42px;font-weight:700;color:#23373B;margin-bottom:24px;position:relative;">Tinh chỉnh LLM đọc lỗi</div><div style="font-size:33px;color:#3C4C50;line-height:1.7;position:relative;">Fine-tune Gemma-2 trên dữ liệu <b>đọc log</b> chuyên dụng để phân loại đúng lỗi, sinh constraint chính xác hơn.</div></div>
+    <div style="background:#fff;border:1px solid rgba(22,36,42,0.14);border-radius:14px;padding:42px 38px 36px;position:relative;display:flex;flex-direction:column;justify-content:flex-start;"><div style="position:absolute;top:24px;right:34px;font-size:108px;font-weight:800;color:rgba(224,119,43,0.14);line-height:1;">4</div><div style="font-size:42px;font-weight:700;color:#23373B;margin-bottom:24px;position:relative;">Mở rộng đa mô hình</div><div style="font-size:33px;color:#3C4C50;line-height:1.7;position:relative;">Chạy CGAR trên nhiều LLM backbone (Qwen3, Phi, Llama…) và các <b>model nhỏ/rẻ</b> hơn, chứng minh độc lập với một model cụ thể.</div></div>
+  </div>
+  <div style="flex:none;text-align:center;font-size:25px;color:#23373B;margin-top:16px;"><b style="color:#E0772B;">Mục tiêu dài hạn:</b> từ bộ giải cho Python trở thành <b>&ldquo;environment archaeologist&rdquo;</b> đa năng cho mọi ecosystem.</div>
+</section>
+
+<section data-label="Tham khảo" data-screen-label="Tài liệu tham khảo" data-speaker-notes="Các tài liệu tham khảo chính." style="font-family:'Be Vietnam Pro',sans-serif;background:#F6F4EF;color:#23373B;padding:60px 80px 52px;display:flex;flex-direction:column;">
+  <div style="display:flex;flex-direction:column;gap:6px;flex:none;">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:24px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:#E0772B;">Tham khảo</div>
+    <h2 style="margin:0;font-size:46px;font-weight:700;color:#23373B;letter-spacing:-0.5px;">Tài liệu tham khảo</h2>
+  </div>
+  <div style="flex:1;display:grid;grid-template-columns:1fr 1fr;column-gap:88px;row-gap:30px;align-content:space-between;margin-top:40px;margin-bottom:8px;font-size:31px;line-height:1.5;color:#3C4C50;">
+    <div style="display:flex;gap:12px;"><span style="font-family:'JetBrains Mono',monospace;color:#E0772B;font-weight:700;">[1]</span><span>Horton &amp; Parnin. <i>Gistable: Evaluating the executability of Python code snippets on GitHub.</i> ICSME, 2018.</span></div>
+    <div style="display:flex;gap:12px;"><span style="font-family:'JetBrains Mono',monospace;color:#E0772B;font-weight:700;">[2]</span><span>Ye et al. <i>Knowledge-based environment dependency inference for Python (PyEGo).</i> ICSE, 2022.</span></div>
+    <div style="display:flex;gap:12px;"><span style="font-family:'JetBrains Mono',monospace;color:#E0772B;font-weight:700;">[3]</span><span><i>Revisiting knowledge-based inference of Python runtime environments (ReadPyE).</i> IEEE TSE, vol. 50, 2024.</span></div>
+    <div style="display:flex;gap:12px;"><span style="font-family:'JetBrains Mono',monospace;color:#E0772B;font-weight:700;">[4]</span><span>Mukherjee et al. <i>Fixing dependency errors for Python build reproducibility (PyDFix).</i> ISSTA, 2021.</span></div>
+    <div style="display:flex;gap:12px;"><span style="font-family:'JetBrains Mono',monospace;color:#E0772B;font-weight:700;">[5]</span><span>Bartlett et al. <i>Raiders of the lost dependency: Fixing dependency conflicts using LLMs (PLLM).</i> arXiv:2501.16191, 2025.</span></div>
+    <div style="display:flex;gap:12px;"><span style="font-family:'JetBrains Mono',monospace;color:#E0772B;font-weight:700;">[6]</span><span><i>GitChameleon 2.0: Evaluating AI code generation against Python library version incompatibilities.</i> arXiv:2507.12367, 2025.</span></div>
+    <div style="display:flex;gap:12px;"><span style="font-family:'JetBrains Mono',monospace;color:#E0772B;font-weight:700;">[7]</span><span>Shinn et al. <i>Reflexion: Language agents with verbal reinforcement learning.</i> NeurIPS, 2023.</span></div>
+    <div style="display:flex;gap:12px;"><span style="font-family:'JetBrains Mono',monospace;color:#E0772B;font-weight:700;">[8]</span><span>de Moura &amp; Bjørner. <i>Z3: An efficient SMT solver.</i> TACAS, 2008.</span></div>
+    <div style="display:flex;gap:12px;"><span style="font-family:'JetBrains Mono',monospace;color:#E0772B;font-weight:700;">[9]</span><span><i>SMT-LLM: Z3 SMT + LLM imputation for dependency resolution.</i> FSE-AIWare 2026 competition entry (reproduced).</span></div>
+  </div>
+</section>
+
+<section data-label="Video" data-screen-label="Video demo" data-speaker-notes="Video trình bày; bấm thumbnail hoặc nút Google Drive để mở bản nộp; nút Facebook là bản công khai (nhiều view)." style="font-family:'Be Vietnam Pro',sans-serif;background:#F6F4EF;color:#23373B;padding:72px 96px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:34px;position:relative;overflow:hidden;">
+  <div style="position:absolute;right:-60px;bottom:-140px;font-size:520px;font-weight:800;color:rgba(224,119,43,0.08);line-height:1;pointer-events:none;">&#9658;</div>
+  <div style="font-family:'JetBrains Mono',monospace;font-size:25px;letter-spacing:4px;text-transform:uppercase;color:#E0772B;">Video trình bày</div>
+  <a href="https://drive.google.com/file/d/1HsQ4f8i26Up7yNvycduMMDD5UhxClxp4/view?usp=drive_link" target="_blank" class="vid-thumb" style="position:relative;display:flex;align-items:center;justify-content:center;width:1180px;max-width:100%;height:664px;border:3px solid #E0772B;border-radius:16px;box-shadow:0 16px 44px rgba(0,0,0,0.18);overflow:hidden;text-decoration:none;background:#000;"><img src="uploads/video-demo.png" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;"><div style="position:relative;width:132px;height:132px;border-radius:50%;background:rgba(224,119,43,0.95);display:flex;align-items:center;justify-content:center;box-shadow:0 8px 30px rgba(0,0,0,0.45);"><div style="color:#16242A;font-size:58px;line-height:1;margin-left:10px;">&#9658;</div></div></a>
+  <div style="display:flex;align-items:center;justify-content:center;gap:18px;flex-wrap:wrap;"><a href="https://drive.google.com/file/d/1HsQ4f8i26Up7yNvycduMMDD5UhxClxp4/view?usp=drive_link" target="_blank" class="vid-btn" style="display:inline-flex;align-items:center;gap:10px;background:#E0772B;color:#16242A;font-weight:700;font-size:26px;padding:15px 32px;border-radius:10px;text-decoration:none;letter-spacing:0.3px;">&#9658;&nbsp; Xem trên Google Drive</a><a href="https://www.facebook.com/share/v/18hsDrtGQZ/" target="_blank" class="vid-btn" style="display:inline-flex;align-items:center;gap:10px;background:transparent;color:#E0772B;border:2px solid #E0772B;font-weight:700;font-size:26px;padding:13px 30px;border-radius:10px;text-decoration:none;letter-spacing:0.3px;">&#9658;&nbsp; Facebook</a></div>
+</section>
+
+<section data-label="Cảm ơn" data-screen-label="Cảm ơn" data-speaker-notes="Cảm ơn và mời câu hỏi." style="font-family:'Be Vietnam Pro',sans-serif;background:#16242A;color:#F6F4EF;padding:84px 96px;display:flex;flex-direction:column;position:relative;overflow:hidden;">
+  <div style="position:absolute;right:-80px;bottom:-160px;font-size:600px;font-weight:800;color:rgba(224,119,43,0.05);line-height:1;pointer-events:none;z-index:-1;">&rarr;</div>
+  <div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:20px;">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:25px;letter-spacing:4px;color:#E0772B;text-transform:uppercase;">University of Science · VNU-HCM</div>
+    <h2 style="margin:0;font-size:96px;font-weight:800;letter-spacing:-2px;line-height:1;color:#F6F4EF;">Cảm ơn đã lắng nghe!</h2>
+    <div style="font-size:36px;font-weight:500;color:#C3CDCE;font-style:italic;">Questions &amp; Discussion</div>
+    <div style="width:120px;height:4px;background:#E0772B;margin-top:8px;"></div>
+  </div>
+  <div style="display:flex;justify-content:space-between;align-items:flex-end;flex:none;border-top:1px solid rgba(255,255,255,0.12);padding-top:28px;">
+    <div>
+      <div style="font-size:26px;font-weight:600;color:#F6F4EF;">MEMRES → CGAR: Agentic Python Dependency Resolution</div>
+      <div style="font-size:24px;color:#9DAEB0;margin-top:8px;">Trần Chí Nguyên · Đào Sỹ Duy Minh · Huỳnh Trung Kiệt</div>
+    </div>
+    <div style="display:flex;gap:20px;align-items:center;">
+      <div style="background:#fff;border-radius:10px;padding:8px;height:74px;width:74px;display:flex;align-items:center;justify-content:center;"><img src="uploads/hcmus.png" alt="HCMUS" style="max-width:100%;max-height:100%;object-fit:contain;"></div>
+      <div style="background:#fff;border-radius:10px;padding:8px 12px;height:74px;display:flex;align-items:center;justify-content:center;"><img src="uploads/fse.png" alt="FSE 2026" style="max-height:100%;object-fit:contain;"></div>
+    </div>
+  </div>
+</section>
+
+<section data-label="B1 · Filter/Solver" data-screen-label="Backup Filter & Solver IO" data-speaker-notes="Filter CandidateGraphBuilder và Solver ConstraintSolver: input/output. Hai loại K." style="font-family:'Be Vietnam Pro',sans-serif;background:#F6F4EF;color:#23373B;padding:64px 80px 44px;display:flex;flex-direction:column;">
+  <div style="display:flex;flex-direction:column;gap:6px;flex:none;">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:24px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:#2E7CA6;">Backup · B1</div>
+    <h2 style="margin:0;font-size:44px;font-weight:700;color:#23373B;letter-spacing:-0.5px;">Filter &amp; Constraint Solver (I/O)</h2>
+  </div>
+  <div style="flex:1;display:flex;gap:30px;margin-top:16px;">
+    <div style="flex:1;display:flex;flex-direction:column;gap:8px;">
+      <div style="font-size:24px;font-weight:700;">Filter: <span style="color:#2E7CA6;">CandidateGraphBuilder</span></div>
+      <div style="margin:0;flex:1;background:#16242A;border-radius:12px;padding:28px 30px;font-family:'JetBrains Mono',monospace;font-size:24px;line-height:1.95;color:#D8DEDD;white-space:pre-wrap;overflow:hidden;display:flex;flex-direction:column;justify-content:center;"><div style="white-space:pre-wrap;">Input : packages = ["scipy","numpy"]</div><div style="white-space:pre-wrap;">        python_version = "3.7"</div><div style="white-space:pre-wrap;"> </div><div style="white-space:pre-wrap;"><span style="color:#7E9092;"># per package:</span></div><div style="white-space:pre-wrap;">  GET pypi.org/pypi/&lt;pkg&gt;/json</div><div style="white-space:pre-wrap;">  filter requires_python (SpecifierSet)</div><div style="white-space:pre-wrap;">  wheel filter (linux/x86_64):</div><div style="white-space:pre-wrap;">    <span style="color:#E0A86A;">-none-any.whl | manylinux</span></div><div style="white-space:pre-wrap;"><span style="color:#E0A86A;">    | linux_x86_64 | -cp37- | -py3-</span></div><div style="white-space:pre-wrap;">  sort: wheel-first, newest-first</div><div style="white-space:pre-wrap;">  take <span style="color:#E0772B;">top 8</span></div><div style="white-space:pre-wrap;"> </div><div style="white-space:pre-wrap;">Output: {</div><div style="white-space:pre-wrap;">  "scipy": [{v:"1.7.3", has_wheel:True},</div><div style="white-space:pre-wrap;">            ... up to 8],</div><div style="white-space:pre-wrap;">  "numpy": [...] }</div></div>
+    </div>
+    <div style="flex:1;display:flex;flex-direction:column;gap:8px;">
+      <div style="font-size:24px;font-weight:700;">Solver: <span style="color:#2E7CA6;">ConstraintSolver</span></div>
+      <div style="margin:0;flex:1;background:#16242A;border-radius:12px;padding:28px 30px;font-family:'JetBrains Mono',monospace;font-size:24px;line-height:1.95;color:#D8DEDD;white-space:pre-wrap;overflow:hidden;display:flex;flex-direction:column;justify-content:center;"><div style="white-space:pre-wrap;">Input : graph (from Filter)</div><div style="white-space:pre-wrap;">        python_version</div><div style="white-space:pre-wrap;">        exclude_combo  <span style="color:#7E9092;"># last failed</span></div><div style="white-space:pre-wrap;"> </div><div style="white-space:pre-wrap;">1. viable = filter graph by store</div><div style="white-space:pre-wrap;">   <span style="color:#7E9092;">(HARD/SOFT/UpperBound pruning)</span></div><div style="white-space:pre-wrap;">2. greedy: pick newest viable / pkg</div><div style="white-space:pre-wrap;">3. if combo excluded or infeasible:</div><div style="white-space:pre-wrap;">     _next_assignment() odometer</div><div style="white-space:pre-wrap;">     skip known-bad combos</div><div style="white-space:pre-wrap;">   <span style="color:#E0772B;">max_attempts = 50</span>  <span style="color:#7E9092;"># logic-only,</span></div><div style="white-space:pre-wrap;"><span style="color:#7E9092;">                       # no Docker</span></div><div style="white-space:pre-wrap;"> </div><div style="white-space:pre-wrap;">Output: {"scipy":"1.7.3",</div><div style="white-space:pre-wrap;">         "numpy":"1.21.6"}  or None</div></div>
+    </div>
+  </div>
+  <div style="flex:none;text-align:center;font-size:22px;color:#5C6B6E;margin-top:14px;border-top:1px solid rgba(22,36,42,0.12);padding-top:12px;"><b style="color:#23373B;">Two Ks:</b> K<sub>solve</sub>=50 logical attempts/solve call (μs) · K<sub>build</sub>≤10 Docker retries/snippet (180s/build, expensive).</div>
+</section>
+
+<section data-label="B2 · Agent Comm" data-screen-label="Backup Agent Communication" data-speaker-notes="6 message I/O giữa các agent, loose-coupled qua shared ConstraintStore." style="font-family:'Be Vietnam Pro',sans-serif;background:#F6F4EF;color:#23373B;padding:60px 72px 40px;display:flex;flex-direction:column;">
+  <div style="display:flex;flex-direction:column;gap:4px;flex:none;">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:24px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:#2E7CA6;">Backup · B2</div>
+    <h2 style="margin:0;font-size:44px;font-weight:700;color:#23373B;letter-spacing:-0.5px;">Agent Communication (Message I/O)</h2>
+  </div>
+  <div style="flex:1;display:grid;grid-template-columns:1fr 1fr;column-gap:36px;row-gap:46px;margin-top:18px;align-content:center;">
+    <div><div style="font-size:22px;font-weight:700;margin-bottom:8px;">1 · Planner → Executor <span style="font-weight:400;color:#5C6B6E;font-size:20px;">assignment</span></div><div style="margin:0;background:#16242A;border-radius:8px;padding:26px 30px;font-family:'JetBrains Mono',monospace;font-size:25px;line-height:1.75;color:#D8DEDD;white-space:pre-wrap;"><div style="white-space:pre-wrap;">{"scipy":"1.7.3","numpy":"1.21.6",</div><div style="white-space:pre-wrap;"> "matplotlib":"3.5.3"}</div></div></div>
+    <div><div style="font-size:22px;font-weight:700;margin-bottom:4px;">4 · Store → Planner <span style="font-weight:400;color:#5C6B6E;font-size:20px;">read, next round</span></div><div style="margin:0;background:#16242A;border-radius:8px;padding:26px 30px;font-family:'JetBrains Mono',monospace;font-size:25px;line-height:1.75;color:#D8DEDD;white-space:pre-wrap;"><div style="white-space:pre-wrap;">get_upper_bound("scipy","3.7") <span style="color:#5BBd7E;">→ "1.3"</span></div><div style="white-space:pre-wrap;">get_infeasible_versions(...) → {…}</div></div></div>
+    <div><div style="font-size:22px;font-weight:700;margin-bottom:4px;">2 · Executor → Analyzer <span style="font-weight:400;color:#5C6B6E;font-size:20px;">build result</span></div><div style="margin:0;background:#16242A;border-radius:8px;padding:26px 30px;font-family:'JetBrains Mono',monospace;font-size:25px;line-height:1.75;color:#D8DEDD;white-space:pre-wrap;"><div style="white-space:pre-wrap;">{"success": False,</div><div style="white-space:pre-wrap;"> "error_type": "ImportError",</div><div style="white-space:pre-wrap;"> "error_log": "cannot import imread…"}</div></div></div>
+    <div><div style="font-size:22px;font-weight:700;margin-bottom:4px;">5 · Analyzer → Critic <span style="font-weight:400;color:#5C6B6E;font-size:20px;">record_failure</span></div><div style="margin:0;background:#16242A;border-radius:8px;padding:26px 30px;font-family:'JetBrains Mono',monospace;font-size:25px;line-height:1.75;color:#D8DEDD;white-space:pre-wrap;"><div style="white-space:pre-wrap;">{"assignment": {"scipy":"1.7.3",…},</div><div style="white-space:pre-wrap;"> "python_version":"3.7",</div><div style="white-space:pre-wrap;"> "error_type":"ImportError"}</div></div></div>
+    <div><div style="font-size:22px;font-weight:700;margin-bottom:4px;">3 · Analyzer → Store <span style="font-weight:400;color:#5C6B6E;font-size:20px;">write</span></div><div style="margin:0;background:#16242A;border-radius:8px;padding:26px 30px;font-family:'JetBrains Mono',monospace;font-size:25px;line-height:1.75;color:#D8DEDD;white-space:pre-wrap;"><div style="white-space:pre-wrap;"><span style="color:#E0772B;">add_upper_bound</span>("scipy","3.7","1.3")</div><div style="white-space:pre-wrap;"><span style="color:#7E9092;"># imread removed in scipy 1.3</span></div></div></div>
+    <div><div style="font-size:22px;font-weight:700;margin-bottom:4px;">6 · Critic → Orchestrator <span style="font-weight:400;color:#5C6B6E;font-size:20px;">strategic action</span></div><div style="margin:0;background:#16242A;border-radius:8px;padding:26px 30px;font-family:'JetBrains Mono',monospace;font-size:25px;line-height:1.75;color:#D8DEDD;white-space:pre-wrap;"><div style="white-space:pre-wrap;">{"action":"switch_python","target":"2.7",</div><div style="white-space:pre-wrap;"> "reason":"repeated SyntaxError"}</div></div></div>
+  </div>
+  <div style="flex:none;text-align:center;font-size:22px;color:#5C6B6E;margin-top:10px;border-top:1px solid rgba(22,36,42,0.12);padding-top:10px;">Agents không gọi nhau trực tiếp: coordinator (<span style="font-family:'JetBrains Mono',monospace;">CGARResolver</span>) điều phối; shared <span style="font-family:'JetBrains Mono',monospace;">ConstraintStore</span> mang tri thức chéo snippet.</div>
+</section>
+
+<section data-label="B3 · Store" data-screen-label="Backup Session Store Data" data-speaker-notes="Cấu trúc dữ liệu ConstraintStore: InfeasibleRecord, 3 stores, regex classifiers, flow error log → record." style="font-family:'Be Vietnam Pro',sans-serif;background:#F6F4EF;color:#23373B;padding:60px 72px 40px;display:flex;flex-direction:column;">
+  <div style="display:flex;flex-direction:column;gap:4px;flex:none;">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:24px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:#2E7CA6;">Backup · B3</div>
+    <h2 style="margin:0;font-size:44px;font-weight:700;color:#23373B;letter-spacing:-0.5px;">Session Store: Data Structures</h2>
+  </div>
+  <div style="flex:1;display:flex;gap:30px;margin-top:14px;">
+    <div style="flex:1;display:flex;flex-direction:column;">
+      <div style="font-size:23px;font-weight:700;color:#23373B;margin-bottom:8px;">Cấu trúc dữ liệu &amp; bộ phân loại</div>
+      <div style="display:flex;flex-direction:column;gap:20px;">
+      <div style="margin:0;background:#16242A;border-radius:12px;padding:24px 26px;font-family:'JetBrains Mono',monospace;font-size:22px;line-height:1.75;color:#D8DEDD;white-space:pre-wrap;"><div style="white-space:pre-wrap;"><span style="color:#7E9092;">@dataclass</span></div><div style="white-space:pre-wrap;">class <span style="color:#E0A86A;">InfeasibleRecord</span>:</div><div style="white-space:pre-wrap;">  package, version, python_version: str</div><div style="white-space:pre-wrap;">  error_type:      ConstraintType <span style="color:#7E9092;"># HARD|SOFT</span></div><div style="white-space:pre-wrap;">  error_signature: str</div><div style="white-space:pre-wrap;">  confidence:      float <span style="color:#7E9092;"># 1.0 / 0.8</span></div><div style="white-space:pre-wrap;">  count:           int   <span style="color:#7E9092;"># ++ re-observe</span></div><div style="white-space:pre-wrap;"> </div><div style="white-space:pre-wrap;">_records:       {(pkg,ver,py) → Record}</div><div style="white-space:pre-wrap;">_combo_records: {(FrozenSet,py) → sig}</div><div style="white-space:pre-wrap;">_upper_bounds:  {(pkg,py) → version}</div></div>
+      <div style="margin:0;background:#16242A;border-radius:12px;padding:24px 26px;font-family:'JetBrains Mono',monospace;font-size:22px;line-height:1.75;color:#D8DEDD;white-space:pre-wrap;"><div style="white-space:pre-wrap;"><span style="color:#7E9092;"># regex classifiers</span></div><div style="white-space:pre-wrap;">_HARD = ["requires a different Python",</div><div style="white-space:pre-wrap;">  "No matching distribution found"]</div><div style="white-space:pre-wrap;">_SOFT = ["ImportError","ModuleNotFoundError",</div><div style="white-space:pre-wrap;">  "cannot import name"]</div><div style="white-space:pre-wrap;">_API_REMOVED_RE =</div><div style="white-space:pre-wrap;">  r"cannot import name '(\w+)' from '…'"</div></div>
+      </div>
+    </div>
+    <div style="flex:1;display:flex;flex-direction:column;">
+      <div style="font-size:23px;font-weight:700;margin-bottom:8px;">Flow: error log → stored record</div>
+      <div style="margin:0;background:#16242A;border-radius:12px;padding:24px 26px;font-family:'JetBrains Mono',monospace;font-size:22px;line-height:1.85;color:#D8DEDD;white-space:pre-wrap;"><div style="white-space:pre-wrap;">log = "ImportError: cannot import</div><div style="white-space:pre-wrap;">       name 'imread' from 'scipy.misc'"</div><div style="white-space:pre-wrap;"> </div><div style="white-space:pre-wrap;"><span style="color:#7E9092;"># 1.</span> normalize_error_signature(log)</div><div style="white-space:pre-wrap;">       <span style="color:#7E9092;"># strip line-N, 0xADDR, paths</span></div><div style="white-space:pre-wrap;"><span style="color:#7E9092;"># 2.</span> classify_error(log) → (SOFT, sig)</div><div style="white-space:pre-wrap;"><span style="color:#7E9092;"># 3.</span> _API_REMOVED_RE.search(log)</div><div style="white-space:pre-wrap;">       → ("imread","scipy.misc")</div><div style="white-space:pre-wrap;">     <span style="color:#E0772B;">add_upper_bound("scipy","3.7","1.3")</span></div><div style="white-space:pre-wrap;"><span style="color:#7E9092;"># 4.</span> Analyzer LLM confirms UB</div><div style="white-space:pre-wrap;"> </div><div style="white-space:pre-wrap;"><span style="color:#5BBd7E;">_records[("scipy","1.7.3","3.7")]</span></div><div style="white-space:pre-wrap;">  = Record(SOFT, count=1, 0.8)</div><div style="white-space:pre-wrap;"><span style="color:#5BBd7E;">_upper_bounds[("scipy","3.7")]</span> = "1.3"</div></div>
+    </div>
+  </div>
+</section>
+
+<section data-label="B4 · LLM Call" data-screen-label="Backup LLM Call Mechanics" data-speaker-notes="HTTP đến Ollama Gemma-2 9B. Request/response, budget per agent, hard limits." style="font-family:'Be Vietnam Pro',sans-serif;background:#F6F4EF;color:#23373B;padding:60px 80px 42px;display:flex;flex-direction:column;">
+  <div style="display:flex;flex-direction:column;gap:4px;flex:none;">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:24px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:#2E7CA6;">Backup · B4</div>
+    <h2 style="margin:0;font-size:44px;font-weight:700;color:#23373B;letter-spacing:-0.5px;">LLM Call Mechanics</h2>
+    <div style="font-size:21px;color:#5C6B6E;font-family:'JetBrains Mono',monospace;">HTTP → Ollama Gemma-2 9B (localhost:11434/api/generate)</div>
+  </div>
+  <div style="flex:1;display:flex;gap:44px;margin-top:24px;align-items:center;">
+    <div style="flex:0.9;display:flex;flex-direction:column;justify-content:center;gap:14px;">
+      <div style="display:flex;gap:14px;align-items:flex-start;">
+        <div style="flex:1;display:flex;flex-direction:column;"><div style="font-size:24px;font-weight:700;margin-bottom:12px;">Request</div><div style="margin:0;background:#16242A;border-radius:10px;padding:30px 30px;font-family:'JetBrains Mono',monospace;font-size:23px;line-height:2.0;color:#D8DEDD;white-space:pre-wrap;display:flex;flex-direction:column;justify-content:flex-start;"><div style="white-space:pre-wrap;">{"model":"gemma2",</div><div style="white-space:pre-wrap;"> "prompt":"&lt;agent&gt;",</div><div style="white-space:pre-wrap;"> "format":"json",</div><div style="white-space:pre-wrap;"> "options":{</div><div style="white-space:pre-wrap;">   "temperature":0.3,</div><div style="white-space:pre-wrap;">   "num_predict":128}}</div></div></div>
+        <div style="flex:1;display:flex;flex-direction:column;"><div style="font-size:24px;font-weight:700;margin-bottom:12px;">Response (Planner)</div><div style="margin:0;background:#16242A;border-radius:10px;padding:30px 30px;font-family:'JetBrains Mono',monospace;font-size:23px;line-height:2.0;color:#D8DEDD;white-space:pre-wrap;display:flex;flex-direction:column;justify-content:flex-start;"><div style="white-space:pre-wrap;">{"assignment":{</div><div style="white-space:pre-wrap;">   "scipy":"1.2.3",</div><div style="white-space:pre-wrap;">   "numpy":"1.16.6"},</div><div style="white-space:pre-wrap;"> "reason":</div><div style="white-space:pre-wrap;">   "imread needs scipy&lt;1.3"}</div></div></div>
+      </div>
+    </div>
+    <div style="flex:1.1;display:flex;flex-direction:column;justify-content:center;gap:48px;">
+      <div>
+        <div style="font-size:24px;font-weight:700;margin-bottom:14px;">Budget &amp; trigger / agent</div>
+        <table style="width:100%;border-collapse:collapse;font-size:24px;">
+          <thead><tr style="font-family:'JetBrains Mono',monospace;font-size:21px;color:#5C6B6E;text-transform:uppercase;"><th style="text-align:left;padding:6px 10px;border-bottom:1.5px solid rgba(22,36,42,0.25);">Agent</th><th style="text-align:center;padding:6px 10px;border-bottom:1.5px solid rgba(22,36,42,0.25);">tok</th><th style="text-align:left;padding:6px 10px;border-bottom:1.5px solid rgba(22,36,42,0.25);">Khi nào call</th></tr></thead>
+          <tbody>
+            <tr><td style="padding:26px 10px;font-weight:600;">Planner</td><td style="padding:26px 10px;text-align:center;">128</td><td style="padding:26px 10px;color:#3C4C50;">mỗi plan step</td></tr>
+            <tr><td style="padding:26px 10px;font-weight:600;">Analyzer</td><td style="padding:26px 10px;text-align:center;">128</td><td style="padding:26px 10px;color:#3C4C50;">mỗi Docker fail</td></tr>
+            <tr><td style="padding:26px 10px;font-weight:600;">Critic</td><td style="padding:26px 10px;text-align:center;">96</td><td style="padding:26px 10px;color:#3C4C50;">≥3 same-type fails</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <div style="font-size:24px;font-weight:700;margin-bottom:16px;">Hard limits</div>
+        <div style="display:flex;flex-direction:column;gap:14px;font-family:'JetBrains Mono',monospace;font-size:23px;color:#3C4C50;">
+          <div style="display:flex;gap:12px;align-items:baseline;"><span style="color:#E0772B;font-size:15px;flex:none;font-family:sans-serif;">&#9654;</span><div>HTTP timeout/call <b style="color:#23373B;">60s</b> &middot; retry <b style="color:#23373B;">1&times;</b></div></div>
+          <div style="display:flex;gap:12px;align-items:baseline;"><span style="color:#E0772B;font-size:15px;flex:none;font-family:sans-serif;">&#9654;</span><div>Docker build timeout <b style="color:#23373B;">180s</b> &middot; retries/snippet <b style="color:#23373B;">&le;10</b></div></div>
+          <div style="display:flex;gap:12px;align-items:baseline;"><span style="color:#E0772B;font-size:15px;flex:none;font-family:sans-serif;">&#9654;</span><div>Empty / parse-fail &rarr; <span style="color:#E0772B;">rule fallback</span></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section data-label="B5 · Build Loop" data-screen-label="Backup Build Loop & Anti-Hallucination" data-speaker-notes="Build loop per snippet ≤10 attempts; anti-hallucination validation tại mỗi agent; telemetry." style="font-family:'Be Vietnam Pro',sans-serif;background:#F6F4EF;color:#23373B;padding:60px 80px 42px;display:flex;flex-direction:column;">
+  <div style="display:flex;flex-direction:column;gap:4px;flex:none;">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:24px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:#2E7CA6;">Backup · B5</div>
+    <h2 style="margin:0;font-size:44px;font-weight:700;color:#23373B;letter-spacing:-0.5px;">Build Loop &amp; Anti-Hallucination</h2>
+  </div>
+  <div style="flex:1;display:flex;gap:40px;margin-top:30px;">
+    <div style="flex:1;display:flex;flex-direction:column;justify-content:flex-start;">
+      <div style="font-size:28px;font-weight:700;margin-bottom:6px;">Vòng lặp / snippet</div>
+      <div style="font-size:23px;color:#5C6B6E;margin-bottom:22px;"><b style="color:#E0772B;">reset</b> state, rồi <b style="color:#E0772B;">loop ≤10</b> Docker attempts</div>
+
+      <!-- HERO: build-attempt timeline strip -->
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+        <div style="font-size:21px;font-weight:700;color:#23373B;letter-spacing:0.3px;">≤10 Docker attempts</div>
+        <div style="font-size:19px;color:#2E7D5B;font-weight:700;">pass &rarr; break</div>
+      </div>
+      <div style="position:relative;height:118px;margin-bottom:30px;">
+        <svg viewBox="0 0 760 118" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%;">
+          <line x1="70" y1="58" x2="625" y2="58" stroke="rgba(22,36,42,0.22)" stroke-width="2.5" stroke-dasharray="1 0"></line>
+        </svg>
+        <!-- reset cap -->
+        <div style="position:absolute;left:0px;top:33px;width:60px;height:50px;background:#fff;border:2px solid #E0772B;border-radius:9px;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:700;color:#E0772B;">&#8635;</div>
+        <div style="position:absolute;left:0px;top:88px;width:60px;text-align:center;font-size:16px;color:#E0772B;font-weight:600;">reset</div>
+        <!-- attempt tokens -->
+        <div style="position:absolute;left:96px;top:33px;width:50px;height:50px;background:rgba(181,72,63,0.16);border:2px solid #B5483F;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:700;color:#B5483F;">1</div>
+        <div style="position:absolute;left:171px;top:33px;width:50px;height:50px;background:rgba(181,72,63,0.16);border:2px solid #B5483F;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:700;color:#B5483F;">2</div>
+        <div style="position:absolute;left:246px;top:33px;width:50px;height:50px;background:rgba(181,72,63,0.16);border:2px solid #B5483F;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:700;color:#B5483F;">3</div>
+        <div style="position:absolute;left:321px;top:28px;width:60px;height:60px;background:#2E7D5B;border:2px solid #2E7D5B;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:700;color:#fff;box-shadow:0 2px 8px rgba(46,125,91,0.4);">&#10003;</div>
+        <div style="position:absolute;left:316px;top:90px;width:70px;text-align:center;font-size:16px;color:#2E7D5B;font-weight:700;">pass</div>
+        <!-- ghosted remaining slots -->
+        <div style="position:absolute;left:406px;top:38px;width:40px;height:40px;background:transparent;border:2px dashed rgba(22,36,42,0.18);border-radius:50%;"></div>
+        <div style="position:absolute;left:471px;top:38px;width:40px;height:40px;background:transparent;border:2px dashed rgba(22,36,42,0.18);border-radius:50%;"></div>
+        <div style="position:absolute;left:536px;top:46px;font-family:'JetBrains Mono',monospace;font-size:22px;color:rgba(22,36,42,0.32);font-weight:600;">&hellip;</div>
+        <div style="position:absolute;left:600px;top:33px;width:50px;height:50px;background:transparent;border:2px dashed rgba(22,36,42,0.28);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:700;color:rgba(22,36,42,0.4);">10</div>
+        <div style="position:absolute;left:594px;top:88px;width:62px;text-align:center;font-size:16px;color:#5C6B6E;">cap</div>
+      </div>
+
+      <!-- per-attempt step chips: inline pills + connectors -->
+      <div style="font-size:21px;font-weight:700;color:#23373B;margin-bottom:18px;letter-spacing:0.3px;">Mỗi attempt: 4 bước</div>
+      <div style="display:flex;flex-direction:column;gap:7px;">
+        <div style="display:flex;align-items:center;gap:16px;">
+          <div style="flex:none;display:inline-flex;align-items:center;gap:9px;padding:8px 18px;background:#2E7CA6;border-radius:22px;font-size:24px;font-weight:700;color:#fff;width:118px;justify-content:center;">Planner</div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:21px;color:#3C4C50;">PyPI + Solver + LLM</div>
+        </div>
+        <div style="font-size:20px;color:rgba(22,36,42,0.32);margin-left:66px;line-height:0.9;">&#8595;</div>
+        <div style="display:flex;align-items:center;gap:16px;">
+          <div style="flex:none;display:inline-flex;align-items:center;gap:9px;padding:8px 18px;background:#E0772B;border-radius:22px;font-size:24px;font-weight:700;color:#fff;width:118px;justify-content:center;">Executor</div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:21px;color:#3C4C50;">Docker &middot; 180s</div>
+        </div>
+        <div style="font-size:20px;color:rgba(22,36,42,0.32);margin-left:66px;line-height:0.9;">&#8595;</div>
+        <div style="display:flex;align-items:center;gap:16px;">
+          <div style="flex:none;display:inline-flex;align-items:center;gap:9px;padding:8px 18px;background:#B98A2E;border-radius:22px;font-size:24px;font-weight:700;color:#fff;width:118px;justify-content:center;">Analyzer</div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:21px;color:#3C4C50;">ghi HARD / SOFT / UPPER</div>
+        </div>
+        <div style="font-size:20px;color:rgba(22,36,42,0.32);margin-left:66px;line-height:0.9;">&#8595;</div>
+        <div style="display:flex;align-items:center;gap:16px;">
+          <div style="flex:none;display:inline-flex;align-items:center;gap:9px;padding:8px 18px;background:#B5483F;border-radius:22px;font-size:24px;font-weight:700;color:#fff;width:118px;justify-content:center;">Critic</div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:21px;color:#3C4C50;">fires nếu &ge;3 same-fails</div>
+        </div>
+      </div>
+
+      <div style="font-size:24px;color:#5C6B6E;margin-top:26px;border-top:1px solid rgba(22,36,42,0.1);padding-top:22px;"><b style="color:#2C3E6B;">Store persists</b> qua snippet kế tiếp trong cùng session, constraints tích lũy.</div>
+    </div>
+    <div style="flex:1;display:flex;flex-direction:column;justify-content:flex-start;">
+      <div style="font-size:28px;font-weight:700;margin-bottom:24px;">Anti-hallucination check</div>
+      <div style="display:flex;flex-direction:column;gap:30px;">
+        <div style="border-left:5px solid #2E7CA6;background:#fff;border-radius:0 10px 10px 0;padding:36px 32px;font-size:26px;box-shadow:0 1px 4px rgba(22,36,42,0.05);"><b>Planner:</b> <span style="font-family:'JetBrains Mono',monospace;">version ∈ candidate graph</span> → else solver</div>
+        <div style="border-left:5px solid #2E7CA6;background:#fff;border-radius:0 10px 10px 0;padding:36px 32px;font-size:26px;box-shadow:0 1px 4px rgba(22,36,42,0.05);"><b>Analyzer:</b> <span style="font-family:'JetBrains Mono',monospace;">type ∈ {HARD,SOFT,UPPER}</span> → else discard</div>
+        <div style="border-left:5px solid #2E7CA6;background:#fff;border-radius:0 10px 10px 0;padding:36px 32px;font-size:26px;box-shadow:0 1px 4px rgba(22,36,42,0.05);"><b>Critic:</b> <span style="font-family:'JetBrains Mono',monospace;">action ∈ {continue, switch_python, mark_unfixable}</span></div>
+        <div style="border-left:5px solid #E0772B;background:#fff;border-radius:0 10px 10px 0;padding:36px 32px;font-size:26px;box-shadow:0 1px 4px rgba(22,36,42,0.05);"><b>JSON parse fail</b> → regex salvage; <b>empty/timeout</b> → rule-only path</div>
+      </div>
+    </div>
+  </div>
+  <div style="flex:none;text-align:center;font-size:21px;color:#5C6B6E;margin-top:12px;border-top:1px solid rgba(22,36,42,0.12);padding-top:12px;"><b style="color:#23373B;">Telemetry per agent:</b> <span style="font-family:'JetBrains Mono',monospace;">llm_consultations · llm_accepted (P) · llm_upper_bounds (A) · llm_overrides (C)</span></div>
+</section>
+
+<section data-label="B6 · Planner Prompt" data-screen-label="Backup Planner Prompt" data-speaker-notes="PLANNER_PROMPT đầy đủ; placeholder cam." style="font-family:'Be Vietnam Pro',sans-serif;background:#F6F4EF;color:#23373B;padding:60px 80px 44px;display:flex;flex-direction:column;">
+  <div style="display:flex;flex-direction:column;gap:4px;flex:none;">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:24px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:#2E7CA6;">Backup · B6</div>
+    <h2 style="margin:0;font-size:44px;font-weight:700;color:#23373B;letter-spacing:-0.5px;">Planner Agent Prompt</h2>
+  </div>
+  <div style="margin:16px 0 0;flex:1;background:#16242A;border-radius:12px;padding:30px 36px;font-family:'JetBrains Mono',monospace;font-size:23px;line-height:1.62;color:#D8DEDD;white-space:pre-wrap;overflow:hidden;display:flex;flex-direction:column;justify-content:center;"><div style="white-space:pre-wrap;">You are the <b style="color:#fff;">Planner</b> agent in a dependency-resolution system.</div><div style="white-space:pre-wrap;"> </div><div style="white-space:pre-wrap;">Goal: choose one version per package most likely to install AND import</div><div style="white-space:pre-wrap;">successfully on Python <span style="color:#E0772B;">{python_version}</span>, given constraints learned from</div><div style="white-space:pre-wrap;">previous failures this session.</div><div style="white-space:pre-wrap;"> </div><div style="white-space:pre-wrap;">Candidate versions per package (newest first, wheel-available *):</div><div style="white-space:pre-wrap;">  <span style="color:#E0772B;">{candidate_block}</span></div><div style="white-space:pre-wrap;">Past failures (do NOT repeat):  <span style="color:#E0772B;">{constraint_block}</span></div><div style="white-space:pre-wrap;">Rule-based solver's current pick:  <span style="color:#E0772B;">{rule_pick}</span></div><div style="white-space:pre-wrap;"> </div><div style="white-space:pre-wrap;">Rules:</div><div style="white-space:pre-wrap;">- Pick ONE version per package from candidates above.</div><div style="white-space:pre-wrap;">- Prefer wheel-available (*) versions to avoid source builds.</div><div style="white-space:pre-wrap;">- Avoid versions in past failures.  If rule pick is safe, return it.</div><div style="white-space:pre-wrap;"> </div><div style="white-space:pre-wrap;">Output ONLY valid JSON:</div><div style="white-space:pre-wrap;"><span style="color:#5BBd7E;">{"assignment": {"pkg": "X.Y.Z", ...}, "reason": "&lt;short&gt;"}</span></div><div style="white-space:pre-wrap;color:#8BA0A2;">JSON output:</div><div style="white-space:pre-wrap;"><span style="color:#5BBd7E;">{"assignment": {"scipy": "1.2.3", "numpy": "1.16.6"}, "reason": "imread requires scipy&lt;1.3"}</span></div></div>
+</section>
+
+<section data-label="B7 · Analyzer Prompt" data-screen-label="Backup Analyzer Prompt" data-speaker-notes="ANALYZER_PROMPT đầy đủ." style="font-family:'Be Vietnam Pro',sans-serif;background:#F6F4EF;color:#23373B;padding:60px 80px 44px;display:flex;flex-direction:column;">
+  <div style="display:flex;flex-direction:column;gap:4px;flex:none;">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:24px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:#2E7CA6;">Backup · B7</div>
+    <h2 style="margin:0;font-size:44px;font-weight:700;color:#23373B;letter-spacing:-0.5px;">Analyzer Agent Prompt</h2>
+  </div>
+  <div style="margin:16px 0 0;flex:1;background:#16242A;border-radius:12px;padding:30px 36px;font-family:'JetBrains Mono',monospace;font-size:23px;line-height:1.62;color:#D8DEDD;white-space:pre-wrap;overflow:hidden;display:flex;flex-direction:column;justify-content:center;"><div style="white-space:pre-wrap;">You are the <b style="color:#fff;">Analyzer</b> agent. A Docker build just failed.</div><div style="white-space:pre-wrap;"> </div><div style="white-space:pre-wrap;">Assignment tried: <span style="color:#E0772B;">{assignment_block}</span>   Python: <span style="color:#E0772B;">{python_version}</span></div><div style="white-space:pre-wrap;">Regex classifier guess: type=<span style="color:#E0772B;">{regex_type}</span>, sig=<span style="color:#E0772B;">{regex_sig}</span></div><div style="white-space:pre-wrap;">Error log (truncated):  <span style="color:#E0772B;">{error_log}</span></div><div style="white-space:pre-wrap;"> </div><div style="white-space:pre-wrap;">Rules:</div><div style="white-space:pre-wrap;">- type in {HARD, SOFT, UPPER}.</div><div style="white-space:pre-wrap;">  HARD  = deterministic incompat (Python mismatch, no matching dist).</div><div style="white-space:pre-wrap;">  SOFT  = runtime error needing >= 2 observations (ImportError, …).</div><div style="white-space:pre-wrap;">  UPPER = API removed in current version -> infer an upper bound.</div><div style="white-space:pre-wrap;">- "cannot import name X from PKG" -> type=UPPER, fill upper_bound.</div><div style="white-space:pre-wrap;">- upper_bound = LAST known-good version before X removed (null if unsure).</div><div style="white-space:pre-wrap;"> </div><div style="white-space:pre-wrap;">Output ONLY valid JSON:</div><div style="white-space:pre-wrap;"><span style="color:#5BBd7E;">{"type":"HARD|SOFT|UPPER", "package":"&lt;pkg&gt;", "upper_bound":"X.Y.Z|null", "reason":"…"}</span></div><div style="white-space:pre-wrap;color:#8BA0A2;">JSON output:</div><div style="white-space:pre-wrap;"><span style="color:#5BBd7E;">{"type": "UPPER", "package": "scipy", "upper_bound": "1.3", "reason": "imread removed in scipy 1.3"}</span></div></div>
+</section>
+
+<section data-label="B8 · Critic Prompt" data-screen-label="Backup Critic Prompt" data-speaker-notes="CRITIC_PROMPT đầy đủ; fires khi ≥3 consecutive same-type fails." style="font-family:'Be Vietnam Pro',sans-serif;background:#F6F4EF;color:#23373B;padding:60px 80px 44px;display:flex;flex-direction:column;">
+  <div style="display:flex;flex-direction:column;gap:4px;flex:none;">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:24px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:#2E7CA6;">Backup · B8</div>
+    <h2 style="margin:0;font-size:44px;font-weight:700;color:#23373B;letter-spacing:-0.5px;">Critic Agent Prompt</h2>
+  </div>
+  <div style="margin:16px 0 0;flex:1;background:#16242A;border-radius:12px;padding:30px 36px;font-family:'JetBrains Mono',monospace;font-size:21px;line-height:1.5;color:#D8DEDD;white-space:pre-wrap;overflow:hidden;display:flex;flex-direction:column;justify-content:center;"><div style="white-space:pre-wrap;">You are the <b style="color:#fff;">Critic</b> agent. The Planner has failed several attempts on the</div><div style="white-space:pre-wrap;">current snippet; propose a strategic pivot.</div><div style="white-space:pre-wrap;"> </div><div style="white-space:pre-wrap;">Failure pattern: <span style="color:#E0772B;">{pattern}</span> · total: <span style="color:#E0772B;">{total_failures}</span></div><div style="white-space:pre-wrap;">recent error types: <span style="color:#E0772B;">{last_error_types}</span></div><div style="white-space:pre-wrap;">python versions tried: <span style="color:#E0772B;">{python_versions_tried}</span></div><div style="white-space:pre-wrap;"> </div><div style="white-space:pre-wrap;">Available actions (pick exactly one):</div><div style="white-space:pre-wrap;">- "continue"       : keep retrying, no structural problem.</div><div style="white-space:pre-wrap;">- "switch_python"  : likely Python 2/3 mismatch; try another Python.</div><div style="white-space:pre-wrap;">- "mark_unfixable" : structurally infeasible (private pkg, Py2-only), stop.</div><div style="white-space:pre-wrap;"> </div><div style="white-space:pre-wrap;">Rules:</div><div style="white-space:pre-wrap;">- Repeated SyntaxError under Py3+ and 2.7 not tried -> switch_python 2.7.</div><div style="white-space:pre-wrap;">- Repeated ImportError with > 4 failures -> mark_unfixable.</div><div style="white-space:pre-wrap;">- > 8 attempts, mixed errors -> mark_unfixable.  Else -> continue.</div><div style="white-space:pre-wrap;"> </div><div style="white-space:pre-wrap;">Output ONLY valid JSON:</div><div style="white-space:pre-wrap;"><span style="color:#5BBd7E;">{"action":"continue|switch_python|mark_unfixable", "target":"&lt;py|null&gt;", "reason":"…"}</span></div><div style="white-space:pre-wrap;color:#8BA0A2;">JSON output:</div><div style="white-space:pre-wrap;"><span style="color:#5BBd7E;">{"action": "switch_python", "target": "2.7", "reason": "repeated SyntaxError -&gt; likely Python 2 code"}</span></div></div>
+</section>
+
+</x-import>
+</x-dc>
+</body>
+</html>

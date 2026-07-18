@@ -224,6 +224,9 @@ SESSION_SUMMARY.md
 # External paper PDFs (reference reading, not our work)
 manuscripts/slide/docs/papers/*.pdf
 
+# Local QA vector model binaries are too large for regular GitHub pushes.
+manuscripts/slide/qa-vector/models/**/*.onnx
+
 # Video render artifacts (large; keep sources only)
 manuscripts/video/renders/
 manuscripts/video/audio/*.wav

@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CGAR Q&amp;A · Hybrid (vector + lexical)</title>
+<style>
+  :root{
+    --bg:#FAF8F4; --panel:#FFFFFF; --panel2:#F1EDE6; --text:#2B3338; --muted:#6B7A81;
+    --accent:#C9640A; --teal:#177A8C; --green:#3E7D31; --violet:#6A4C93; --border:#E2DCD2; --mark:#F7C97F66;
+  }
+  .dark{
+    --bg:#0E1518; --panel:#18242B; --panel2:#1E2E36; --text:#E8ECEE; --muted:#8FA1A8;
+    --accent:#EB811B; --teal:#4FB8C9; --green:#7CC46B; --violet:#B79CE0; --border:#2A3A42; --mark:#EB811B33;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{background:var(--bg); color:var(--text); font-family:'Segoe UI',system-ui,sans-serif; padding-bottom:80px;}
+  header{position:sticky; top:0; z-index:10; background:var(--bg); border-bottom:1px solid var(--border); padding:14px 18px 10px;}
+  .row{display:flex; align-items:center; gap:12px; max-width:1000px; margin:0 auto;}
+  h1{font-size:17px; white-space:nowrap;}
+  h1 span{color:var(--accent);}
+  #q{flex:1; font-size:18px; padding:10px 14px; border-radius:10px; border:1.5px solid var(--border); background:var(--panel); color:var(--text); outline:none;}
+  #q:focus{border-color:var(--accent);}
+  #themeBtn{background:var(--panel); border:1px solid var(--border); color:var(--muted); border-radius:8px; padding:8px 10px; cursor:pointer; font-size:14px;}
+  #vstat{font-size:12px; padding:5px 9px; border-radius:999px; border:1px solid var(--border); white-space:nowrap;}
+  #vstat.load{color:var(--muted);} #vstat.ok{color:var(--violet); border-color:var(--violet);} #vstat.off{color:var(--muted);}
+  .chips{display:flex; flex-wrap:wrap; gap:6px; max-width:1000px; margin:10px auto 0;}
+  .chip{font-size:12.5px; padding:4px 10px; border-radius:999px; border:1px solid var(--border); background:var(--panel); color:var(--muted); cursor:pointer; user-select:none;}
+  .chip.on{background:var(--accent); color:#fff; border-color:var(--accent);}
+  .cheat{max-width:1000px; margin:8px auto 0; font-size:12px; color:var(--muted); display:flex; flex-wrap:wrap; gap:12px;}
+  .cheat b{color:var(--accent);}
+  main{max-width:1000px; margin:14px auto; padding:0 18px;}
+  .hint{color:var(--muted); font-size:13px; margin:6px 0 12px;}
+  .card{background:var(--panel); border:1px solid var(--border); border-radius:12px; padding:14px 16px; margin-bottom:10px; box-shadow:0 1px 4px rgba(60,50,30,0.06);}
+  .card.top{border-left:3px solid var(--accent);}
+  .qline{display:flex; align-items:baseline; gap:8px; flex-wrap:wrap;}
+  .qtext{font-weight:700; font-size:15.5px;}
+  .badge{font-size:11px; padding:2px 8px; border-radius:999px; background:var(--panel2); color:var(--teal); white-space:nowrap;}
+  .badge.slide{color:var(--green); font-weight:700;}
+  .badge.vec{color:var(--violet); border:1px solid var(--violet);}
+  .ans{margin-top:8px; font-size:14.5px; line-height:1.55;}
+  .ans b{color:var(--accent);} .ans code{background:var(--panel2); padding:1px 5px; border-radius:4px; font-size:13px;}
+  pre{background:var(--panel2); border:1px solid var(--border); border-radius:8px; padding:10px 12px; margin-top:8px; overflow-x:auto; font-size:12.5px; line-height:1.45; white-space:pre-wrap;}
+  mark{background:var(--mark); color:inherit; border-radius:3px; padding:0 1px;}
+  details{margin-bottom:8px;}
+  details summary{cursor:pointer; padding:9px 12px; background:var(--panel); border:1px solid var(--border); border-radius:10px; font-size:14.5px; font-weight:600; list-style:none; display:flex; gap:8px; align-items:baseline; box-shadow:0 1px 3px rgba(60,50,30,0.05);}
+  details summary::before{content:'▸'; color:var(--accent); font-size:12px;} details[open] summary::before{content:'▾';}
+  details .ans, details pre{margin-left:12px;} details .ans{margin:6px 0;}
+  .grp{margin:20px 0 8px; font-size:13px; letter-spacing:1px; text-transform:uppercase; color:var(--accent); font-weight:700;}
+  .none{color:var(--muted); padding:30px 0; text-align:center;}
+  kbd{background:var(--panel2); border:1px solid var(--border); border-radius:4px; padding:0 5px; font-size:12px;}
+</style>
+</head>
+<body>
+<header>
+  <div class="row">
+    <h1>CGAR <span>Q&amp;A</span></h1>
+    <input id="q" type="text" placeholder="Gõ câu hỏi tự nhiên hoặc số slide (16, b4)... vector + từ khóa" autofocus autocomplete="off">
+    <span id="vstat" class="load">vector: đang tải…</span>
+    <button id="themeBtn" title="Đổi theme">☾/☀</button>
+  </div>
+  <div class="chips" id="chips"></div>
+  <div class="cheat">
+    <span>HG2.9K <b>87.1%</b></span><span>GitCham <b>83.2%</b></span><span>avg <b>22.3s</b></span>
+    <span>vs o1 <b>+32.0pp</b></span><span>rescue PLLM <b>80.6%</b></span>
+    <span>ablation store <b>−21%</b> · wheel <b>−44%</b> · upper <b>−68%</b></span>
+    <span>fail/pass <b>1.31×</b></span>
+  </div>
+</header>
+<main>
+  <div class="hint">Hybrid: từ khóa + synonym (tức thì) <b>+</b> vector ngữ nghĩa (e5, chạy local). Gõ số slide để bốc theo slide. <kbd>Esc</kbd> xóa.</div>
+  <div id="out"></div>
+</main>
+
+<script src="data.js"></script>
+<script type="module">
+import { pipeline, env } from './lib/transformers.min.js';
+
+/* ================= LEXICAL ENGINE (giống bản instant) ================= */
+const DB = window.DB, EXP = window.EXP, CATS = window.CATS;
+const strip = s => s.normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/đ/g,'d').replace(/Đ/g,'D').toLowerCase();
+const plain = html => html.replace(/<[^>]+>/g,' ');
+const STOP = new Set('slide trang la gi thi co khong nao cua va sao vi o dau mot cai nhe the nhu den cho khi bao nhieu con duoc hay ma di nay kia ra se cung cac nhung to em minh ban ai qua rat hon nua chi voi tren duoi trong ngoai boi tai vay oi nhi deu khac giua tu theo hoac neu con xin chao thay cam on nghe hom troi dep lang da gio bay hi hello oke okay um uh a u anh chi thua kinh'.split(' '));
+const words = s => new Set(s.split(/\s+/).filter(x => x.length > 1));
+
+DB.forEach((e, i) => {
+  e.sq = strip(e.q); e.sk = strip(e.keys || ''); e.se = strip(EXP[i] || '');
+  e.sa = strip(plain(e.a) + ' ' + (e.codeblock || ''));
+  e.st = strip(e.slide).split(/[^a-z0-9.]+/).filter(Boolean);
+  e.wq = words(e.sq); e.wk = words(e.sk); e.we = words(e.se); e.wa = words(e.sa);
+});
+let activeCat = 'all';
+
+function within1(a, b){
+  if(a === b) return true;
+  const la = a.length, lb = b.length;
+  if(Math.abs(la - lb) > 1) return false;
+  let i = 0, j = 0, edits = 0;
+  while(i < la && j < lb){
+    if(a[i] === b[j]){ i++; j++; continue; }
+    if(++edits > 1) return false;
+    if(la > lb) i++; else if(lb > la) j++; else { i++; j++; }
+  }
+  if((la - i) + (lb - j) > 0) edits++;
+  return edits <= 1;
+}
+function fieldHit(t, wordSet, str, allowSub){
+  if(wordSet.has(t)) return 1;
+  if(allowSub && t.length >= 5 && str.includes(t)) return 1;
+  if(t.length >= 4){ for(const w of wordSet){ if(w.length >= 4 && within1(t, w)) return 0.6; } }
+  return 0;
+}
+function lexScore(e, toks){
+  const use = toks.filter(t => !STOP.has(t));
+  if(!use.length) return 0;
+  let sc = 0, strong = 0;
+  for(const t of use){
+    if(e.st.some(x => x === t || x.split(/[,\/\s-]/).includes(t))){ sc += 9; strong++; continue; }
+    const hq = fieldHit(t, e.wq, e.sq, true) * 5, he = fieldHit(t, e.we, e.se, true) * 4;
+    const hk = fieldHit(t, e.wk, e.sk, true) * 3, ha = fieldHit(t, e.wa, e.sa, false) * 1;
+    const best = Math.max(hq, he, hk, ha);
+    if(best > 0){ sc += best; if(Math.max(hq, he, hk) >= 2.4) strong++; }
+  }
+  return strong === 0 ? 0 : sc;
+}
+const esc = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+function hl(text, toks){
+  let out = '', i = 0; const st = strip(text); const spans = [];
+  for(const t of toks){ if(STOP.has(t)) continue; let f = 0, idx; while((idx = st.indexOf(t, f)) !== -1){ spans.push([idx, idx+t.length]); f = idx+1; } }
+  spans.sort((a,b)=>a[0]-b[0]); const m = [];
+  for(const s of spans){ if(m.length && s[0] <= m[m.length-1][1]) m[m.length-1][1] = Math.max(m[m.length-1][1], s[1]); else m.push([...s]); }
+  for(const [a,b] of m){ out += esc(text.slice(i,a)) + '<mark>' + esc(text.slice(a,b)) + '</mark>'; i = b; }
+  return out + esc(text.slice(i));
+}
+
+/* ================= VECTOR ENGINE (e5, local) ================= */
+let extractor = null, docVecs = null, vecReady = false;
+env.allowRemoteModels = false; env.allowLocalModels = true;
+env.localModelPath = './models/';
+env.backends.onnx.wasm.wasmPaths = '/lib/';
+
+function cos(a, b){ let s = 0; for(let i = 0; i < a.length; i++) s += a[i] * b[i]; return s; }
+async function embed(texts){ const o = await extractor(texts, { pooling: 'mean', normalize: true }); return o.tolist(); }
+
+async function initVector(){
+  const st = document.getElementById('vstat');
+  try{
+    extractor = await pipeline('feature-extraction', 'Xenova/multilingual-e5-small', { dtype: 'q8' });
+    st.textContent = 'vector: nhúng ' + DB.length + ' câu…';
+    docVecs = [];
+    for(let i = 0; i < DB.length; i += 16){
+      const batch = DB.slice(i, i + 16).map(d => 'passage: ' + d.q + ' ' + (d.keys||'') + ' ' + (EXP[DB.indexOf(d)]||''));
+      const v = await embed(batch); docVecs.push(...v);
+    }
+    vecReady = true; st.className = 'ok'; st.textContent = 'vector: sẵn sàng ✓';
+    render();
+  }catch(err){
+    console.error(err); st.className = 'off'; st.textContent = 'vector: tắt (chỉ từ khóa)';
+  }
+}
+
+/* ================= HYBRID SEARCH ================= */
+let qvecCache = { q: null, v: null };
+async function queryVec(q){
+  if(qvecCache.q === q) return qvecCache.v;
+  const v = (await embed(['query: ' + q]))[0]; qvecCache = { q, v }; return v;
+}
+
+async function hybridRank(raw){
+  const toks = strip(raw).split(/\s+/).filter(Boolean);
+  const content = toks.filter(t => !STOP.has(t));
+  if(!content.length) return [];                 // query toàn stopword (lời chào) -> rỗng
+  const pool = activeCat === 'all' ? DB : DB.filter(e => e.cat === activeCat);
+  let qv = null;
+  if(vecReady){ try{ qv = await queryVec(raw); }catch(e){ qv = null; } }
+  const rows = pool.map(e => {
+    const i = DB.indexOf(e);
+    const lex = lexScore(e, toks);
+    let vboost = 0, vc = 0;
+    if(qv){ vc = cos(qv, docVecs[i]); vboost = Math.max(0, vc - 0.82) * 18; } // vector yếu trên miền này -> gentle
+    // lexical là chính; vector chỉ tiebreak (cap 2đ). Pure-vector chỉ cứu khi RẤT gần nghĩa.
+    const total = lex > 0 ? lex + Math.min(vboost, 2) : vboost;
+    return { e, toks, total, lex, vboost, vc };
+  }).filter(r => r.lex > 0 || r.vboost >= 1.2)     // rescue thuần-vector: hiếm, chỉ khi cos rất cao
+    .sort((a, b) => b.total - a.total)
+    .slice(0, 12);
+  return rows;
+}
+
+/* ================= RENDER ================= */
+function card(r, top){
+  const e = r.e;
+  const vb = (r.vboost > 0.3 && r.lex === 0) ? '<span class="badge vec">⃗ ngữ nghĩa</span>' :
+             (r.vboost > 0.3 ? '<span class="badge vec">⃗</span>' : '');
+  return `<div class="card${top ? ' top' : ''}">
+    <div class="qline">
+      <span class="badge slide">Slide ${esc(e.slide)}</span>
+      <span class="qtext">${hl(e.q, r.toks)}</span>
+      <span class="badge">${CATS[e.cat]}</span>${vb}
+    </div>
+    <div class="ans">${e.a}</div>
+    ${e.codeblock ? '<pre>'+esc(e.codeblock)+'</pre>' : ''}
+  </div>`;
+}
+function browseItem(e){
+  return `<details><summary><span class="badge slide">S${esc(e.slide)}</span> ${esc(e.q)}</summary>
+    <div class="ans">${e.a}</div>${e.codeblock ? '<pre>'+esc(e.codeblock)+'</pre>' : ''}</details>`;
+}
+
+let renderToken = 0;
+async function render(){
+  const raw = document.getElementById('q').value.trim();
+  const out = document.getElementById('out');
+  if(!raw){
+    let html = ''; const cats = activeCat === 'all' ? Object.keys(CATS) : [activeCat];
+    for(const c of cats){ const items = DB.filter(e => e.cat === c).sort((a,b)=>a.ord-b.ord);
+      if(items.length) html += `<div class="grp">${CATS[c]} · ${items.length}</div>` + items.map(browseItem).join(''); }
+    out.innerHTML = html; return;
+  }
+  const my = ++renderToken;
+  const hits = await hybridRank(raw);
+  if(my !== renderToken) return;   // query đã đổi, bỏ kết quả cũ
+  out.innerHTML = hits.length ? hits.map((r, i) => card(r, i === 0)).join('')
+    : '<div class="none">Không có kết quả. Thử từ khóa khác hoặc số slide.</div>';
+}
+
+/* ================= CHIPS + EVENTS ================= */
+const chipsEl = document.getElementById('chips');
+chipsEl.innerHTML = `<span class="chip on" data-c="all">Tất cả · ${DB.length}</span>` +
+  Object.entries(CATS).map(([k,v]) => `<span class="chip" data-c="${k}">${v.split(' (')[0]} · ${DB.filter(e=>e.cat===k).length}</span>`).join('');
+chipsEl.addEventListener('click', ev => { const c = ev.target.dataset.c; if(!c) return; activeCat = c;
+  chipsEl.querySelectorAll('.chip').forEach(x => x.classList.toggle('on', x.dataset.c === c)); render(); });
+const qEl = document.getElementById('q');
+qEl.addEventListener('input', render);
+document.addEventListener('keydown', ev => {
+  if(ev.key === 'Escape'){ qEl.value = ''; render(); qEl.focus(); }
+  if(ev.key === '/' && document.activeElement !== qEl){ ev.preventDefault(); qEl.focus(); }
+});
+document.getElementById('themeBtn').addEventListener('click', () => document.body.classList.toggle('dark'));
+
+render();          // hiển thị ngay (lexical + browse)
+initVector();      // nạp vector nền, xong thì bật hybrid
+</script>
+</body>
+</html>
