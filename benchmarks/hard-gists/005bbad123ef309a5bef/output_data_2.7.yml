@@ -1,0 +1,22 @@
+---
+python_version: 2.7
+start_time: 1771226927.0029793
+iterations:
+  iteration_1:
+    - python_module: {'redis': '3.5.3', 'python-memcached': '1.59'}
+    - error_type: ImportError
+    - error: |
+        Traceback (most recent call last):
+          File "/app/snippet.py", line 1, in <module>
+            from sqlalchemy import create_engine
+        ImportError: No module named sqlalchemy
+  iteration_2:
+    - python_module: {'redis': '3.5.3', 'python-memcached': '1.59'}
+    - error_type: ImportError
+    - error: |
+        Traceback (most recent call last):
+          File "/app/snippet.py", line 1, in <module>
+            from sqlalchemy import create_engine
+        ImportError: No module named sqlalchemy
+end_time: 1771227181.95782
+total_time: 254.95484066009521

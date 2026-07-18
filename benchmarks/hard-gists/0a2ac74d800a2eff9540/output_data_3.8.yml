@@ -1,0 +1,27 @@
+---
+python_version: 3.8
+start_time: 1771222692.899037
+iterations:
+  iteration_1:
+    - python_module: {'appindicator': '0.14.3', 'gtk': '4.2.0', 'urllib2': '1.0'}
+    - error_type: VersionNotFound
+    - error: |
+        \u001b[91mERROR Could not find a version that satisfies the requirement appindicator==0.14.3 (from versions none)\n\u001b[0m"}
+        \u001b[91mERROR No matching distribution found for appindicator==0.14.3\n\u001b[0m"}
+        {"error""The command 'pip install --trusted-host pypi.python.org --default-timeout=100 appindicator==0.14.3' returned a non-zero code 1","errorDetail"{"code"1,"message""The command 'pip install --trusted-host pypi.python.org --default-timeout=100 appindicator==0.14.3' returned a non-zero code 1
+  iteration_2:
+    - python_module: {'gtk': '4.2.0', 'urllib2': '1.0'}
+    - error_type: VersionNotFound
+    - error: |
+        \u001b[91mERROR Could not find a version that satisfies the requirement gtk==4.2.0 (from versions none)\n\u001b[0m"}
+        \u001b[91mERROR No matching distribution found for gtk==4.2.0\n\u001b[0m"}
+        {"error""The command 'pip install --trusted-host pypi.python.org --default-timeout=100 gtk==4.2.0' returned a non-zero code 1","errorDetail"{"code"1,"message""The command 'pip install --trusted-host pypi.python.org --default-timeout=100 gtk==4.2.0' returned a non-zero code 1
+  iteration_3:
+    - python_module: {'gtk': '4.2.0', 'urllib2': '1.0'}
+    - error_type: VersionNotFound
+    - error: |
+        \u001b[91mERROR Could not find a version that satisfies the requirement gtk==4.2.0 (from versions none)\n\u001b[0m"}
+        \u001b[91mERROR No matching distribution found for gtk==4.2.0\n\u001b[0m"}
+        {"error""The command 'pip install --trusted-host pypi.python.org --default-timeout=100 gtk==4.2.0' returned a non-zero code 1","errorDetail"{"code"1,"message""The command 'pip install --trusted-host pypi.python.org --default-timeout=100 gtk==4.2.0' returned a non-zero code 1
+end_time: 1771224015.2803383
+total_time: 1322.3813014030457

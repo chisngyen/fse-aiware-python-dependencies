@@ -1,0 +1,329 @@
+gist_id,python_version,library,version,extra_dependencies
+sample_0,3.7,torch,1.9.0,scipy==1.7.3 numpy==1.21.6
+sample_1,3.7,torch,1.9.0,scipy==1.7.3 numpy==1.21.6
+sample_2,3.7,torch,1.9.0,scipy==1.7.3 numpy==1.21.6
+sample_3,3.7,torch,1.9.0,scipy==1.7.3 numpy==1.21.6
+sample_4,3.7,torch,1.9.0,scipy==1.7.3 numpy==1.21.6
+sample_5,3.7,torch,1.9.0,scipy==1.7.3 numpy==1.21.6
+sample_6,3.7,torch,1.10.0,
+sample_7,3.7,torch,1.10.0,
+sample_8,3.7,torch,1.10.0,
+sample_9,3.7,torch,1.10.0,
+sample_10,3.7,torch,1.10.0,
+sample_11,3.7,torch,1.10.0,
+sample_12,3.10,torch,1.12.0,
+sample_13,3.10,torch,1.13,
+sample_14,3.10,torch,1.13,
+sample_15,3.10,torch,2,
+sample_16,3.10,torch,1.13,
+sample_17,3.10,torch,2,
+sample_18,3.10,geopandas,0.10.0,rtree==0.9.3
+sample_19,3.10,geopandas,0.9.0,rtree==0.9.3 shapely==1.8.5
+sample_20,3.10,geopandas,0.10.0,
+sample_21,3.10,geopandas,0.9.0,shapely==1.8.5
+sample_22,3.10,geopandas,0.10.0,
+sample_23,3.10,geopandas,0.9.0,shapely==1.8.5
+sample_24,3.10,geopandas,0.13.0,rtree==1.0.1
+sample_25,3.10,geopandas,0.10.0,rtree==0.9.3
+sample_26,3.10,nltk,3.6.3,
+sample_27,3.10,networkx,2.8,
+sample_28,3.10,networkx,2.7,numpy==1.21.2
+sample_29,3.10,networkx,2.8,
+sample_30,3.10,networkx,2.6,
+sample_31,3.10,networkx,2.5,
+sample_32,3.10,networkx,2.4,
+sample_33,3.10,networkx,2.5,
+sample_34,3.10,networkx,2.5,
+sample_35,3.10,networkx,2.5,
+sample_36,3.10,gradio,3.24.0,
+sample_37,3.10,gradio,3.36.0,
+sample_38,3.10,gradio,3.36.0,
+sample_39,3.10,gradio,3.0.0,
+sample_40,3.10,gradio,2.9.2,black==22.1.0
+sample_41,3.10,gradio,3.24.0,
+sample_42,3.10,gradio,3.17.0,
+sample_43,3.10,scikit-learn,1.1,numpy==1.23.5
+sample_44,3.10,scikit-learn,1.1,numpy==1.23.5
+sample_45,3.10,scikit-learn,1.2,numpy==1.23.5
+sample_46,3.10,scikit-learn,1.3,numpy==1.23.5
+sample_47,3.10,scikit-learn,1.1,numpy==1.23.5
+sample_48,3.10,scikit-learn,1.1,numpy==1.23.5
+sample_49,3.10,scikit-learn,1.3,numpy==1.23.5
+sample_50,3.10,scikit-learn,1.1,numpy==1.23.5
+sample_51,3.10,scikit-learn,1.3,numpy==1.23.5
+sample_52,3.10,scikit-learn,1.2,numpy==1.23.5
+sample_53,3.10,scikit-learn,1.1,numpy==1.23.5
+sample_54,3.10,scikit-learn,1.2,numpy==1.23.5
+sample_55,3.10,matplotlib,3.4.0,
+sample_56,3.10,pandas,1.5.0,numpy==1.21.6
+sample_57,3.10,pandas,1.5.1,numpy==1.21.6
+sample_58,3.10,pandas,1.5.0,numpy==1.21.6
+sample_59,3.10,pandas,2,numpy==1.21.6
+sample_60,3.10,pandas,1.5.0,numpy==1.21.6
+sample_61,3.10,pandas,2,numpy==1.21.6
+sample_62,3.10,pandas,1.4.0,numpy==1.21.6
+sample_63,3.10,pandas,1.4.0,numpy==1.21.6
+sample_64,3.10,pandas,2,numpy==1.21.6
+sample_65,3.10,pandas,2,numpy==1.21.6
+sample_66,3.10,numpy,1.21.0,
+sample_67,3.10,numpy,1.21.0,
+sample_68,3.10,numpy,1.21.0,
+sample_69,3.10,numpy,1.25.0,
+sample_70,3.10,numpy,1.21.0,
+sample_71,3.10,numpy,1.25.0,
+sample_72,3.10,numpy,1.25.0,
+sample_73,3.10,numpy,1.25.0,
+sample_74,3.10,numpy,1.25.0,
+sample_75,3.10,numpy,1.25.0,
+sample_76,3.10,numpy,1.21.0,
+sample_77,3.10,numpy,1.21.0,
+sample_78,3.10,numpy,1.21.0,
+sample_79,3.10,numpy,1.21.0,
+sample_80,3.10,numpy,1.21.0,
+sample_82,3.10,lightgbm,3.0.0,numpy==1.26.4 scikit-learn==1.3.2
+sample_83,3.10,lightgbm,3.0.0,
+sample_84,3.10,lightgbm,3.0.0,numpy==1.26.4 scikit-learn==1.3.2
+sample_85,3.10,lightgbm,3.0.0,numpy==1.26.4
+sample_86,3.10,lightgbm,3.0.0,numpy==1.26.4
+sample_87,3.10,lightgbm,3.0.0,numpy==1.26.4
+sample_88,3.10,lightgbm,4.3.0,
+sample_89,3.10,lightgbm,4.3.0,
+sample_90,3.10,lightgbm,4.3.0,numpy==1.26.4
+sample_91,3.10,spacy,3.5.0,numpy==1.26.4
+sample_92,3.10,spacy,3.5.0,numpy==1.26.4
+sample_93,3.10,spacy,3.5.0,numpy==1.26.4
+sample_94,3.10,nltk,3.7,
+sample_95,3.10,nltk,3.7,
+sample_96,3.10,nltk,3.7,
+sample_97,3.10,nltk,3.5,
+sample_98,3.10,nltk,3.5,
+sample_99,3.10,django,5.0.0,
+sample_100,3.10,django,4.0.0,
+sample_101,3.10,django,4.0.0,
+sample_102,3.10,django,5.0.0,
+sample_103,3.10,django,5.0.0,
+sample_104,3.10,django,4.0.0,
+sample_105,3.10,django,4.0.0,
+sample_106,3.10,django,5.0.0,
+sample_107,3.10,django,5.0.0,
+sample_108,3.10,django,4.0.0,
+sample_109,3.10,scipy,1.7.3,
+sample_110,3.10,scipy,1.9.2,
+sample_111,3.10,scipy,1.8.1,
+sample_112,3.10,scipy,1.9.2,
+sample_113,3.10,scipy,1.8.1,
+sample_114,3.10,scipy,1.9.2,
+sample_115,3.10,scipy,1.8.1,
+sample_116,3.10,scipy,1.9.2,
+sample_117,3.10,scipy,1.8.1,
+sample_118,3.10,scipy,1.9.2,
+sample_119,3.10,scipy,1.11.2,
+sample_120,3.10,scipy,1.9.2,
+sample_121,3.10,scipy,1.9.2,
+sample_122,3.10,scipy,1.11.2,
+sample_123,3.10,scipy,1.9.2,
+sample_124,3.10,scipy,1.11.2,
+sample_125,3.10,scipy,1.11.2,
+sample_126,3.10,scipy,1.9.2,
+sample_127,3.10,scipy,1.10.1,
+sample_128,3.10,scipy,1.9.2,
+sample_129,3.10,scipy,1.11.2,
+sample_130,3.10,scipy,1.9.2,
+sample_131,3.10,scipy,1.11.2,
+sample_132,3.10,scipy,1.9.2,
+sample_133,3.10,scipy,1.11.2,
+sample_134,3.10,scipy,1.9.2,
+sample_135,3.10,scipy,1.11.2,
+sample_136,3.10,scipy,1.9.2,
+sample_137,3.10,scipy,1.11.2,
+sample_138,3.10,scipy,1.9.2,
+sample_139,3.10,scipy,1.11.2,
+sample_140,3.10,scipy,1.9.2,
+sample_141,3.10,scipy,1.11.2,
+sample_142,3.10,scipy,1.9.2,
+sample_143,3.10,flask,2.0.0,werkzeug==2.0.0
+sample_144,3.10,flask,3.0.0,
+sample_145,3.10,flask,2.0.0,werkzeug==2.0.0
+sample_146,3.10,flask,3.0.0,
+sample_147,3.10,flask,2.0.1,werkzeug==2.0.0
+sample_148,3.10,flask,3.0.0,
+sample_149,3.10,flask,2.0.1,werkzeug==2.0.0
+sample_150,3.10,flask,3.0.0,
+sample_151,3.10,flask,2.0.1,werkzeug==2.0.0
+sample_152,3.10,flask,3.0.0,
+sample_153,3.10,jinja2,2.11,markupsafe==2.0.1
+sample_154,3.10,jinja2,3.1,
+sample_155,3.10,jinja2,2.11,markupsafe==2.0.1
+sample_156,3.10,jinja2,3.1,
+sample_157,3.10,scipy,1.11.1,numpy==1.25.1
+sample_158,3.10,scipy,1.9.1,numpy==1.21.6
+sample_159,3.10,scipy,1.11.1,numpy==1.25.1
+sample_160,3.10,scipy,1.8.1,numpy==1.21.6
+sample_161,3.10,scipy,1.11.1,numpy==1.25.1
+sample_162,3.10,scipy,1.8.1,numpy==1.21.6
+sample_163,3.10,flask,2.0.0,numpy==1.21.6 werkzeug==2.0.0
+sample_164,3.10,flask,3.0.0,numpy==1.25.1
+sample_165,3.10,flask,2.0.0,numpy==1.21.6 werkzeug==2.0.0
+sample_166,3.10,flask,3.0.0,numpy==1.25.1
+sample_167,3.10,flask,2.0.0,numpy==1.21.6 werkzeug==2.0.0
+sample_168,3.10,flask,3.0.0,numpy==1.25.1
+sample_169,3.10,flask,3.0.0,scipy==1.11.1
+sample_170,3.10,flask,2.0.0,scipy==1.8.1 Werkzeug==2.0.0
+sample_171,3.10,flask,3.0.0,scipy==1.11.1
+sample_172,3.10,flask,2.0.0,scipy==1.8.1 Werkzeug==2.0.0
+sample_173,3.10,flask,3.0.0,scipy==1.11.1
+sample_174,3.10,flask,2.0.0,scipy==1.8.1 Werkzeug==2.0.0
+sample_175,3.9,sympy,1.9,scipy==1.8.0
+sample_176,3.9,sympy,1.9,
+sample_177,3.9,sympy,1.9,
+sample_178,3.9,sympy,1.11,
+sample_179,3.9,sympy,1.11,
+sample_180,3.9,sympy,1.11,
+sample_181,3.9,sympy,1.12,
+sample_182,3.9,sympy,1.12,
+sample_183,3.9,sympy,1.13,
+sample_184,3.9,sympy,1.13,
+sample_185,3.9,sympy,1.13,
+sample_186,3.9,sympy,1.13,
+sample_187,3.9,sympy,1.13,
+sample_188,3.9,sympy,1.13,
+sample_189,3.9,sympy,1.13,
+sample_190,3.9,sympy,1.13,
+sample_191,3.9,sympy,1.9,
+sample_192,3.9,sympy,1.9,
+sample_193,3.9,sympy,1.9,
+sample_194,3.9,sympy,1.9,
+sample_195,3.9,sympy,1.10,
+sample_196,3.9,sympy,1.10,
+sample_197,3.9,sympy,1.11,
+sample_198,3.9,sympy,1.11,
+sample_199,3.9,sympy,1.11,
+sample_200,3.9,sympy,1.12,
+sample_201,3.9,sympy,1.13,
+sample_202,3.9,sympy,1.13,
+sample_203,3.9,sympy,1.13,
+sample_204,3.9,sympy,1.13,
+sample_205,3.9,sympy,1.13,
+sample_206,3.9,sympy,1.13,
+sample_207,3.9,sympy,1.13,
+sample_208,3.10,seaborn,0.13.0,pandas==2.0.0 numpy==1.26.4
+sample_209,3.10,seaborn,0.13.0,pandas==2.0.0 numpy==1.26.4
+sample_210,3.10,seaborn,0.13.0,pandas==2.0.0 numpy==1.26.4
+sample_211,3.10,seaborn,0.13.0,pandas==2.0.0 numpy==1.26.4
+sample_212,3.10,seaborn,0.13.0,pandas==2.0.0 numpy==1.26.4
+sample_213,3.10,seaborn,0.13.0,pandas==2.0.0 numpy==1.26.4
+sample_214,3.10,seaborn,0.12.0,pandas==1.4.0 numpy==1.26.4
+sample_215,3.10,seaborn,0.12.0,scipy==1.8.0
+sample_216,3.10,mitmproxy,9.0.1,
+sample_217,3.10,mitmproxy,9.0.1,
+sample_218,3.10,mitmproxy,7.0.0,
+sample_219,3.10,mitmproxy,7.0.0,
+sample_220,3.10,mitmproxy,7.0.0,
+sample_221,3.10,mitmproxy,7.0.0,
+sample_222,3.10,mitmproxy,7.0.0,
+sample_223,3.10,mitmproxy,7.0.0,
+sample_224,3.10,mitmproxy,7.0.0,
+sample_225,3.10,mitmproxy,7.0.0,
+sample_226,3.10,pytest,7.0.0,
+sample_227,3.10,pytest,7.0.0,
+sample_228,3.10,pytest,7.0.0,
+sample_229,3.10,pytest,7.0.0,
+sample_230,3.10,pytest,7.0.0,
+sample_231,3.10,pytest,7.0.0,
+sample_232,3.10,pytest,7.0.0,
+sample_233,3.10,pytest,7.0.0,
+sample_234,3.10,pytest,7.2.0,
+sample_237,3.10,falcon,3.0.0,
+sample_238,3.10,falcon,3.0.0,
+sample_239,3.10,falcon,3.0.0,
+sample_240,3.10,falcon,3.0.0,
+sample_241,3.10,falcon,3.0.0,
+sample_242,3.10,falcon,3.0.0,
+sample_243,3.10,falcon,3.0.0,
+sample_244,3.10,falcon,3.0.0,
+sample_245,3.10,falcon,3.0.0,
+sample_246,3.10,falcon,3.0.0,
+sample_247,3.10,falcon,3.0.0,
+sample_248,3.10,falcon,3.0.0,
+sample_249,3.10,falcon,3.0.0,
+sample_250,3.10,falcon,3.0.0,
+sample_251,3.10,falcon,2.0.0,
+sample_252,3.10,falcon,2.0.0,
+sample_253,3.10,falcon,2.0.0,
+sample_254,3.10,falcon,2.0.0,
+sample_255,3.10,falcon,2.0.0,
+sample_256,3.10,falcon,2.0.0,
+sample_257,3.10,falcon,2.0.0,
+sample_258,3.10,tornado,6.3.0,
+sample_259,3.10,tornado,6.3.0,
+sample_260,3.10,tornado,6.3.0,
+sample_261,3.10,tornado,6.3.0,
+sample_262,3.10,tornado,6.3.0,
+sample_263,3.10,tornado,6.0.0,
+sample_264,3.10,tornado,6.0.0,
+sample_265,3.10,tornado,5.0.0,
+sample_266,3.9,plotly,4.8.0,
+sample_267,3.9,plotly,5.8.0,
+sample_268,3.9,plotly,5.10.0,
+sample_269,3.9,plotly,5.10.0,
+sample_270,3.9,plotly,4.0.0,
+sample_271,3.9,plotly,4.0.0,
+sample_272,3.9,plotly,4.0.0,chart-studio==1.0.0
+sample_273,3.9,plotly,4.0.0,chart-studio==1.0.0
+sample_274,3.9,plotly,3.0.0,
+sample_275,3.7,librosa,0.6.0,numpy==1.16.0 scipy==1.1.0
+sample_276,3.7,librosa,0.7.0,numpy==1.16.0 scipy==1.1.0
+sample_277,3.7,librosa,0.6.0,numpy==1.16.0 scipy==1.1.0
+sample_278,3.7,librosa,0.7.0,numpy==1.16.0 scipy==1.1.0
+sample_279,3.7,librosa,0.6.0,numpy==1.16.0 scipy==1.1.0
+sample_280,3.7,librosa,0.7.0,numpy==1.16.0 scipy==1.1.0
+sample_281,3.7,librosa,0.6.0,numpy==1.16.0 scipy==1.1.0
+sample_282,3.7,librosa,0.7.0,numpy==1.16.0 scipy==1.1.0
+sample_283,3.7,librosa,0.6.0,scikit-learn==0.21.0 numpy==1.16.0 scipy==1.1.0 soundfile==0.10.2
+sample_284,3.7,librosa,0.7.0,scikit-learn==0.21.0 numpy==1.16.0 scipy==1.1.0
+sample_285,3.7,librosa,0.6.0,scikit-learn==0.21.0 numpy==1.16.0 scipy==1.1.0 soundfile==0.10.2
+sample_286,3.7,librosa,0.7.0,numpy==1.16.0 scipy==1.1.0 soundfile==0.10.2
+sample_287,3.7,librosa,0.6.0,numpy==1.16.0 scipy==1.1.0 soundfile==0.10.2
+sample_288,3.7,librosa,0.7.0,numpy==1.16.0 scipy==1.1.0 soundfile==0.10.2
+sample_289,3.7,librosa,0.6.0,scikit-learn==0.21.0 numpy==1.16.0 scipy==1.1.0 soundfile==0.10.2
+sample_290,3.7,librosa,0.7.0,numpy==1.16.0 scipy==1.1.0 soundfile==0.10.2
+sample_291,3.7,librosa,0.6.0,scikit-learn==0.21.0 numpy==1.16.0 scipy==1.1.0 soundfile==0.10.2
+sample_292,3.7,librosa,0.7.0,numpy==1.16.0 scipy==1.1.0 soundfile==0.10.2
+sample_293,3.7,librosa,0.6.0,scikit-learn==0.21.0 numpy==1.16.0 scipy==1.1.0 soundfile==0.10.2
+sample_294,3.7,librosa,0.7.0,numpy==1.16.0 scipy==1.1.0 soundfile==0.10.2
+sample_295,3.7,librosa,0.6.0,scikit-learn==0.21.0 numpy==1.16.0 scipy==1.1.0 soundfile==0.10.2
+sample_296,3.7,librosa,0.7.0,numpy==1.16.0 scipy==1.1.0 soundfile==0.10.2
+sample_297,3.7,librosa,0.6.0,scikit-learn==0.21.0 numpy==1.16.0 scipy==1.1.0 soundfile==0.10.2
+sample_298,3.7,librosa,0.7.0,numpy==1.16.0 scipy==1.1.0 soundfile==0.10.2
+sample_299,3.7,librosa,0.6.0,scikit-learn==0.21.0 numpy==1.16.0 scipy==1.1.0 soundfile==0.10.2
+sample_300,3.7,librosa,0.7.0,numpy==1.16.0 scipy==1.1.0 soundfile==0.10.2
+sample_301,3.7,librosa,0.7.0,numpy==1.16.0 scipy==1.1.0 soundfile==0.10.2
+sample_302,3.7,librosa,0.7.1,numpy==1.16.0 scipy==1.1.0 soundfile==0.10.2
+sample_303,3.7,librosa,0.7.0,numpy==1.16.0 scipy==1.1.0 soundfile==0.10.2
+sample_304,3.7,librosa,0.8.0,numpy==1.16.0 scipy==1.1.0 soundfile==0.10.2
+sample_305,3.7,librosa,0.7.0,numpy==1.16.0 scipy==1.1.0 soundfile==0.10.2
+sample_306,3.7,librosa,0.8.0,numpy==1.16.0 scipy==1.1.0 soundfile==0.10.2
+sample_307,3.7,librosa,0.7.0,numpy==1.16.0 scipy==1.1.0 soundfile==0.10.2
+sample_308,3.7,librosa,0.8.0,numpy==1.16.0 scipy==1.1.0 soundfile==0.10.2
+sample_309,3.7,librosa,0.7.0,numpy==1.16.0 scipy==1.1.0 soundfile==0.10.2
+sample_310,3.7,librosa,0.8.0,numpy==1.16.0 scipy==1.1.0 soundfile==0.10.2
+sample_311,3.7,librosa,0.7.0,numpy==1.16.0 scipy==1.1.0 soundfile==0.10.2
+sample_312,3.7,librosa,0.8.0,numpy==1.16.0 scipy==1.1.0 soundfile==0.10.2
+sample_313,3.7,librosa,0.6.0,numpy==1.16.0 scipy==1.1.0 soundfile==0.10.2
+sample_314,3.7,librosa,0.7.0,numpy==1.16.0 scipy==1.1.0 soundfile==0.10.2
+sample_315,3.7,librosa,0.6.0,numpy==1.16.0 scipy==1.1.0 soundfile==0.10.2
+sample_316,3.7,librosa,0.7.0,numpy==1.16.0 scipy==1.1.0 soundfile==0.10.2
+sample_317,3.7,pillow,7.0.0,numpy==1.16
+sample_318,3.7,pillow,7.0.0,numpy==1.16
+sample_319,3.7,pillow,7.0.0,numpy==1.16
+sample_320,3.7,pillow,7.1.0,numpy==1.16
+sample_321,3.7,pillow,7.1.0,numpy==1.16
+sample_322,3.7,pillow,7.1.0,numpy==1.16
+sample_323,3.7,tqdm,4.28,
+sample_324,3.7,tqdm,4.29,
+sample_325,3.7,kymatio,0.3.0,torch==1.4.0
+sample_326,3.7,matplotlib,3.4.0,numpy==1.18.1 pyparsing==2.3.1 packaging==19.0
+sample_327,3.7,matplotlib,3.2.0,numpy==1.18.1 pyparsing==2.3.1 packaging==19.0
+sample_328,3.7,matplotlib,3.5.0,numpy==1.18.1 pyparsing==2.3.1
+sample_329,3.7,matplotlib,3.5.0,numpy==1.18.1 pyparsing==2.3.1
+sample_330,3.10,matplotlib,3.8.0,pyparsing==2.3.1

@@ -1,0 +1,35 @@
+---
+python_version: 2.7
+start_time: 1771224607.147144
+iterations:
+  iteration_1:
+    - python_module: {'pyqt4': '4.11.3', 'maya': '0.6.1', 'sip': '6.13.1'}
+    - error_type: VersionNotFound
+    - error: |
+        \u001b[91mERROR Could not find a version that satisfies the requirement pyqt4==4.11.3 (from versions none)\nERROR No matching distribution found for pyqt4==4.11.3\n\u001b[0m"}
+        {"error""The command 'pip install --trusted-host pypi.python.org --default-timeout=100 pyqt4==4.11.3' returned a non-zero code 1","errorDetail"{"code"1,"message""The command 'pip install --trusted-host pypi.python.org --default-timeout=100 pyqt4==4.11.3' returned a non-zero code 1
+  iteration_2:
+    - python_module: {'pyqt4': '4.11.3', 'maya': '0.6.1', 'sip': '6.13.1'}
+    - error_type: VersionNotFound
+    - error: |
+        \u001b[91mERROR Could not find a version that satisfies the requirement pyqt4==4.11.3 (from versions none)\nERROR No matching distribution found for pyqt4==4.11.3\n\u001b[0m"}
+        {"error""The command 'pip install --trusted-host pypi.python.org --default-timeout=100 pyqt4==4.11.3' returned a non-zero code 1","errorDetail"{"code"1,"message""The command 'pip install --trusted-host pypi.python.org --default-timeout=100 pyqt4==4.11.3' returned a non-zero code 1
+end_time: 1771225355.7611692
+total_time: 748.6140251159668---
+python_version: 2.7
+start_time: 1771226710.547369
+iterations:
+  iteration_1:
+    - python_module: {'pyqt4': '4.12.5', 'maya': '0.6.1', 'sip': '6.13.1'}
+    - error_type: VersionNotFound
+    - error: |
+        \u001b[91mERROR Could not find a version that satisfies the requirement pyqt4==4.12.5 (from versions none)\nERROR No matching distribution found for pyqt4==4.12.5\n\u001b[0m"}
+        {"error""The command 'pip install --trusted-host pypi.python.org --default-timeout=100 pyqt4==4.12.5' returned a non-zero code 1","errorDetail"{"code"1,"message""The command 'pip install --trusted-host pypi.python.org --default-timeout=100 pyqt4==4.12.5' returned a non-zero code 1
+  iteration_2:
+    - python_module: {'pyqt4': '4.12.5', 'maya': '0.6.1', 'sip': '6.13.1'}
+    - error_type: VersionNotFound
+    - error: |
+        \u001b[91mERROR Could not find a version that satisfies the requirement pyqt4==4.12.5 (from versions none)\nERROR No matching distribution found for pyqt4==4.12.5\n\u001b[0m"}
+        {"error""The command 'pip install --trusted-host pypi.python.org --default-timeout=100 pyqt4==4.12.5' returned a non-zero code 1","errorDetail"{"code"1,"message""The command 'pip install --trusted-host pypi.python.org --default-timeout=100 pyqt4==4.12.5' returned a non-zero code 1
+end_time: 1771226923.810497
+total_time: 213.26312804222107
